@@ -24,7 +24,7 @@ const PricingSection = () => {
       price: "347",
       description: "Para empresas que querem escalar com inteligência artificial",
       features: [
-        "3 Números de WhatsApp",
+        "1 Números de WhatsApp",
         "IA Avançada com GPT-4",
         "Agendamento inteligente",
         "Gestão financeira completa",
