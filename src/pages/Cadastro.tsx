@@ -38,12 +38,30 @@ function formatPhoneBR(value: string) {
 const schema = z
   .object({
     nome_estabelecimento: z.string().trim().min(1, "Informe o nome do estabelecimento").max(200),
-    endereco: z.string().trim().min(1, "Informe o endereço").max(500),
+
+    // Endereço (armazenado como texto único em `endereco` no backend)
+    rua: z.string().trim().min(1, "Informe a rua").max(200),
+    numero: z.string().trim().min(1, "Informe o número").max(30),
+    bairro: z.string().trim().min(1, "Informe o bairro").max(120),
+    cep: z
+      .string()
+      .trim()
+      .min(1, "Informe o CEP")
+      .refine((v) => v.replace(/\D/g, "").length === 8, "Informe um CEP válido"),
+    cidade: z.string().trim().min(1, "Informe a cidade").max(120),
+    estado: z
+      .string()
+      .trim()
+      .min(1, "Informe o estado")
+      .transform((v) => v.toUpperCase())
+      .refine((v) => /^[A-Z]{2}$/.test(v), "Use a sigla do estado (ex.: SP)"),
+
     telefone: z
       .string()
       .trim()
       .min(1, "Informe o telefone")
       .refine((v) => v.replace(/\D/g, "").length >= 10, "Informe um telefone válido"),
+
     nome_proprietario: z.string().trim().min(1, "Informe o nome do proprietário").max(200),
     email: z.string().trim().email("Informe um email válido").max(254),
     password: z.string().min(8, "Senha deve ter no mínimo 8 caracteres"),
@@ -69,7 +87,12 @@ export default function Cadastro() {
     resolver: zodResolver(schema),
     defaultValues: {
       nome_estabelecimento: "",
-      endereco: "",
+      rua: "",
+      numero: "",
+      bairro: "",
+      cep: "",
+      cidade: "",
+      estado: "",
       telefone: "",
       nome_proprietario: "",
       email: "",
@@ -79,12 +102,19 @@ export default function Cadastro() {
     mode: "onTouched",
   });
 
+  const buildEndereco = (values: FormValues) => {
+    const cepDigits = values.cep.replace(/\D/g, "");
+    const cepFmt = cepDigits.length === 8 ? `${cepDigits.slice(0, 5)}-${cepDigits.slice(5)}` : values.cep;
+    const endereco = `Rua ${values.rua}, Nº ${values.numero} - ${values.bairro} - CEP ${cepFmt} - ${values.cidade}/${values.estado}`;
+    return endereco.trim().slice(0, 500);
+  };
+
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
     try {
       const payload = {
         nome_estabelecimento: values.nome_estabelecimento,
-        endereco: values.endereco,
+        endereco: buildEndereco(values),
         telefone: values.telefone,
         nome_proprietario: values.nome_proprietario,
         email: values.email,
@@ -160,7 +190,10 @@ export default function Cadastro() {
 
           <div className="mt-5 flex flex-wrap gap-2">
             {badges.map((b) => (
-              <Badge key={b} variant="secondary">
+              <Badge
+                key={b}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
                 {b}
               </Badge>
             ))}
@@ -189,10 +222,72 @@ export default function Cadastro() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="endereco">Endereço</Label>
-                      <Input id="endereco" autoComplete="street-address" {...form.register("endereco")} />
-                      {form.formState.errors.endereco ? (
-                        <p className="text-sm text-destructive">{form.formState.errors.endereco.message}</p>
+                      <Label htmlFor="rua">Rua</Label>
+                      <Input id="rua" autoComplete="address-line1" {...form.register("rua")} />
+                      {form.formState.errors.rua ? (
+                        <p className="text-sm text-destructive">{form.formState.errors.rua.message}</p>
+                      ) : null}
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="numero">Número</Label>
+                        <Input id="numero" autoComplete="address-line2" {...form.register("numero")} />
+                        {form.formState.errors.numero ? (
+                          <p className="text-sm text-destructive">{form.formState.errors.numero.message}</p>
+                        ) : null}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="bairro">Bairro</Label>
+                        <Input id="bairro" autoComplete="address-level3" {...form.register("bairro")} />
+                        {form.formState.errors.bairro ? (
+                          <p className="text-sm text-destructive">{form.formState.errors.bairro.message}</p>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="cep">CEP</Label>
+                        <Input
+                          id="cep"
+                          inputMode="numeric"
+                          autoComplete="postal-code"
+                          {...form.register("cep")}
+                        />
+                        {form.formState.errors.cep ? (
+                          <p className="text-sm text-destructive">{form.formState.errors.cep.message}</p>
+                        ) : null}
+                      </div>
+
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="cidade">Cidade</Label>
+                        <Input id="cidade" autoComplete="address-level2" {...form.register("cidade")} />
+                        {form.formState.errors.cidade ? (
+                          <p className="text-sm text-destructive">{form.formState.errors.cidade.message}</p>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="estado">Estado (UF)</Label>
+                      <Input
+                        id="estado"
+                        autoComplete="address-level1"
+                        maxLength={2}
+                        {...form.register("estado", {
+                          onChange: (e) => {
+                            form.setValue("estado", String(e.target.value).toUpperCase(), {
+                              shouldDirty: true,
+                              shouldTouch: true,
+                              shouldValidate: true,
+                            });
+                          },
+                        })}
+                      />
+                      {form.formState.errors.estado ? (
+                        <p className="text-sm text-destructive">{form.formState.errors.estado.message}</p>
                       ) : null}
                     </div>
 
@@ -205,7 +300,11 @@ export default function Cadastro() {
                         {...form.register("telefone")}
                         onChange={(e) => {
                           const formatted = formatPhoneBR(e.target.value);
-                          form.setValue("telefone", formatted, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+                          form.setValue("telefone", formatted, {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                            shouldValidate: true,
+                          });
                         }}
                       />
                       {form.formState.errors.telefone ? (
