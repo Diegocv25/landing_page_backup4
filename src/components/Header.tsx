@@ -41,7 +41,7 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-4">
             <Button asChild variant="outline" size="sm">
               
-                href="https://wa.me/5548991015688?text=Olá,%20gostaria%20de%20conhecer%20o%20Nexus%20Automações"
+                href="https://wa.me/554891015688?text=Olá,%20gostaria%20de%20conhecer%20o%20Nexus%20Automações"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Falar no WhatsApp"
@@ -89,7 +89,7 @@ const Header = () => {
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 <Button asChild variant="outline" size="sm">
                   
-                    href="https://wa.me/5548991015688?text=Olá,%20gostaria%20de%20conhecer%20o%20Nexus%20Automações"
+                    href="https://wa.me/554891015688?text=Olá,%20gostaria%20de%20conhecer%20o%20Nexus%20Automações"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Falar no WhatsApp"
