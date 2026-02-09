@@ -28,7 +28,7 @@ const Header = () => {
 
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              
                 key={link.href}
                 href={link.href}
                 className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
@@ -38,20 +38,20 @@ const Header = () => {
             ))}
           </nav>
 
-           <div className="hidden md:flex items-center gap-4">
-             <Button asChild variant="outline" size="sm">
-               <a
-                 href="https://api.whatsapp.com/send?phone=554891015688"
-                 target="_blank"
-                 rel="noreferrer"
-                 aria-label="Falar no WhatsApp"
-               >
-                 <MessageCircle className="w-4 h-4" />
-                 WhatsApp
-               </a>
-             </Button>
-             <Button size="sm">Teste grátis</Button>
-           </div>
+          <div className="hidden md:flex items-center gap-4">
+            <Button asChild variant="outline" size="sm">
+              
+                href="https://wa.me/5548991015688"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Falar no WhatsApp"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </a>
+            </Button>
+            <Button size="sm">Teste grátis</Button>
+          </div>
 
           <button
             className="md:hidden p-2"
@@ -76,7 +76,7 @@ const Header = () => {
           >
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
+                
                   key={link.href}
                   href={link.href}
                   className="text-muted-foreground hover:text-foreground transition-colors"
@@ -85,20 +85,20 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
-               <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                 <Button asChild variant="outline" size="sm">
-                   <a
-                     href="https://api.whatsapp.com/send?phone=554891015688"
-                     target="_blank"
-                     rel="noreferrer"
-                     aria-label="Falar no WhatsApp"
-                   >
-                     <MessageCircle className="w-4 h-4" />
-                     WhatsApp
-                   </a>
-                 </Button>
-                 <Button size="sm">Teste grátis</Button>
-               </div>
+              <div className="flex flex-col gap-2 pt-4 border-t border-border">
+                <Button asChild variant="outline" size="sm">
+                  
+                    href="https://wa.me/5548991015688"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Falar no WhatsApp"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    WhatsApp
+                  </a>
+                </Button>
+                <Button size="sm">Teste grátis</Button>
+              </div>
             </nav>
           </motion.div>
         )}
