@@ -41,7 +41,7 @@ const Header = () => {
            <div className="hidden md:flex items-center gap-4">
              <Button asChild variant="outline" size="sm">
                <a
-                 href="https://api.whatsapp.com/send?phone=554891015688"
+                 href="https://wa.me/554891015688"
                  target="_blank"
                  rel="noreferrer"
                  aria-label="Falar no WhatsApp"
@@ -88,7 +88,7 @@ const Header = () => {
                <div className="flex flex-col gap-2 pt-4 border-t border-border">
                  <Button asChild variant="outline" size="sm">
                    <a
-                     href="https://api.whatsapp.com/send?phone=554891015688"
+                     href="https://wa.me/554891015688"
                      target="_blank"
                      rel="noreferrer"
                      aria-label="Falar no WhatsApp"
