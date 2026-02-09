@@ -28,8 +28,10 @@ const PricingSection = () => {
       popular: false,
     },
     {
-      name: "PRO + IA",
-      subtitle: "Tudo do plano Profissional + IA",
+      name: [
+        "PRO + IA",
+        "Tudo do plano Profissional + IA",
+      ],
       price: "347",
       description: "Para empresas que querem escalar com inteligência artificial",
       features: [
@@ -66,7 +68,7 @@ const PricingSection = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div
-              key={plan.name}
+              key={Array.isArray(plan.name) ? plan.name[0] : plan.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -87,12 +89,14 @@ const PricingSection = () => {
               )}
 
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                {plan.subtitle && (
-                  <p className="text-sm font-medium text-muted-foreground mb-2">
-                    {plan.subtitle}
-                  </p>
-                )}
+                <h3 className="text-2xl font-bold mb-2">
+                  {Array.isArray(plan.name) 
+                    ? plan.name.map((line, i) => (
+                        <div key={i}>{line}</div>
+                      ))
+                    : plan.name
+                  }
+                </h3>
                 <p className="text-muted-foreground text-sm mb-4">
                   {plan.description}
                 </p>
