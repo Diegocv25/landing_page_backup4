@@ -19,7 +19,7 @@ const Footer = () => {
   };
 
   const socials = [
-    { icon: MessageSquare, href: "#", label: "WhatsApp" },
+    { icon: MessageSquare, href: "https://wa.me/554891015688", label: "WhatsApp" },
     { icon: Instagram, href: "#", label: "Instagram" },
     { icon: Youtube, href: "#", label: "Youtube" },
     { icon: Linkedin, href: "#", label: "LinkedIn" },
