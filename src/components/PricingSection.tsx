@@ -28,10 +28,8 @@ const PricingSection = () => {
       popular: false,
     },
     {
-      name: [
-        "PRO + IA",
-        "Tudo do plano Profissional + IA",
-      ],
+      name: "PRO + IA",
+      subtitle: "Tudo do plano Profissional + IA",
       price: "347",
       description: "Para empresas que querem escalar com inteligência artificial",
       features: [
@@ -90,6 +88,11 @@ const PricingSection = () => {
 
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                {plan.subtitle && (
+                  <p className="text-sm font-medium text-muted-foreground mb-2">
+                    {plan.subtitle}
+                  </p>
+                )}
                 <p className="text-muted-foreground text-sm mb-4">
                   {plan.description}
                 </p>
