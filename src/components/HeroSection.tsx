@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 const HeroSection = () => {
   const features = [
@@ -51,16 +52,18 @@ const HeroSection = () => {
             caixa financeiro.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Button size="lg" className="group text-base px-8 animate-pulse-glow">
-              Quero Testar por 7 Dias
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button size="lg" variant="outline" className="text-base px-8">
-              <Play className="mr-2 w-4 h-4" />
-              Ver Demonstração
-            </Button>
-          </div>
+           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+             <Button asChild size="lg" className="group text-base px-8 animate-pulse-glow">
+               <Link to="/cadastro">
+                 Quero Testar por 7 Dias
+                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+               </Link>
+             </Button>
+             <Button size="lg" variant="outline" className="text-base px-8">
+               <Play className="mr-2 w-4 h-4" />
+               Ver Demonstração
+             </Button>
+           </div>
 
           <motion.div initial={{
           opacity: 0

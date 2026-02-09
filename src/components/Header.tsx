@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -50,7 +51,9 @@ const Header = () => {
                  WhatsApp
                </a>
              </Button>
-             <Button size="sm">Teste grátis</Button>
+             <Button asChild size="sm">
+               <Link to="/cadastro">Teste grátis</Link>
+             </Button>
            </div>
 
           <button
@@ -97,7 +100,11 @@ const Header = () => {
                      WhatsApp
                    </a>
                  </Button>
-                 <Button size="sm">Teste grátis</Button>
+                 <Button asChild size="sm">
+                   <Link to="/cadastro" onClick={() => setIsMenuOpen(false)}>
+                     Teste grátis
+                   </Link>
+                 </Button>
                </div>
             </nav>
           </motion.div>

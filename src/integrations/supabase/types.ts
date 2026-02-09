@@ -165,6 +165,54 @@ export type Database = {
         }
         Relationships: []
       }
+      cadastros_estabelecimento: {
+        Row: {
+          acesso_ate: string | null
+          created_at: string
+          email: string | null
+          endereco: string | null
+          id: string
+          nome_estabelecimento: string | null
+          nome_proprietario: string | null
+          plano_atual: string | null
+          status: string | null
+          telefone: string | null
+          trial_fim: string | null
+          trial_inicio: string | null
+          user_id: string
+        }
+        Insert: {
+          acesso_ate?: string | null
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome_estabelecimento?: string | null
+          nome_proprietario?: string | null
+          plano_atual?: string | null
+          status?: string | null
+          telefone?: string | null
+          trial_fim?: string | null
+          trial_inicio?: string | null
+          user_id: string
+        }
+        Update: {
+          acesso_ate?: string | null
+          created_at?: string
+          email?: string | null
+          endereco?: string | null
+          id?: string
+          nome_estabelecimento?: string | null
+          nome_proprietario?: string | null
+          plano_atual?: string | null
+          status?: string | null
+          telefone?: string | null
+          trial_fim?: string | null
+          trial_inicio?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       clientes: {
         Row: {
           auth_user_id: string | null
