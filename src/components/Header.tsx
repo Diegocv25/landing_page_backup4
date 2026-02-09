@@ -13,6 +13,16 @@ const Header = () => {
     { href: "#faq", label: "FAQ" },
   ];
 
+  const handleWhatsAppClick = (e) => {
+    e.preventDefault();
+    const phone = "554891015688";
+    const text = encodeURIComponent("Olá, gostaria de conhecer o Nexus Automações");
+    
+    // Tenta abrir com wa.me primeiro
+    const waLink = `https://wa.me/${phone}?text=${text}`;
+    window.open(waLink, '_blank');
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
@@ -39,16 +49,9 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button asChild variant="outline" size="sm">
-              
-                href="https://wa.me/+554891015688?text=Olá,%20gostaria%20de%20conhecer%20o%20Nexus%20Automações"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Falar no WhatsApp"
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp
-              </a>
+            <Button variant="outline" size="sm" onClick={handleWhatsAppClick}>
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp
             </Button>
             <Button size="sm">Teste grátis</Button>
           </div>
@@ -87,16 +90,9 @@ const Header = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                <Button asChild variant="outline" size="sm">
-                  
-                    href="https://wa.me/+554891015688?text=Olá,%20gostaria%20de%20conhecer%20o%20Nexus%20Automações"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Falar no WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    WhatsApp
-                  </a>
+                <Button variant="outline" size="sm" onClick={handleWhatsAppClick}>
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp
                 </Button>
                 <Button size="sm">Teste grátis</Button>
               </div>
