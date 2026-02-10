@@ -993,6 +993,27 @@ export type Database = {
           },
         ]
       }
+      trial_locks: {
+        Row: {
+          created_at: string
+          id: number
+          lock_hash: string
+          lock_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          lock_hash: string
+          lock_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          lock_hash?: string
+          lock_type?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

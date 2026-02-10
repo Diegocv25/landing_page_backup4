@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,32 @@ import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const SYSTEM_AUTH_URL = "https://id-preview--2195ef19-036f-4926-9a8e-4b3085c4a170.lovable.app/auth";
+
+function bytesToHex(bytes: ArrayBuffer) {
+  return Array.from(new Uint8Array(bytes))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function sha256Hex(input: string) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return bytesToHex(digest);
+}
+
+function buildDeviceFingerprintSource() {
+  const ua = navigator.userAgent ?? "";
+  const lang = navigator.language ?? "";
+  const w = String(screen?.width ?? "");
+  const h = String(screen?.height ?? "");
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+  const platform = (navigator as any).platform ?? "";
+  const hc = String((navigator as any).hardwareConcurrency ?? "");
+
+  // String “normalizada” (não envia os dados crus; só o hash)
+  return [ua, lang, w, h, tz, platform, hc].map((s) => String(s).trim()).join("|");
+}
 
 function formatPhoneBR(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -77,6 +103,28 @@ type FormValues = z.infer<typeof schema>;
 export default function Cadastro() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [deviceFingerprint, setDeviceFingerprint] = useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const compute = async () => {
+      try {
+        if (!crypto?.subtle) return;
+        const source = buildDeviceFingerprintSource();
+        if (!source) return;
+        const fp = await sha256Hex(source);
+        if (!cancelled) setDeviceFingerprint(fp);
+      } catch {
+        // Fallback silencioso: não pode quebrar o cadastro
+      }
+    };
+
+    void compute();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const badges = useMemo(
     () => ["7 dias grátis", "Plano Profissional", "Sem cartão", "Acesso imediato"],
@@ -119,6 +167,7 @@ export default function Cadastro() {
         nome_proprietario: values.nome_proprietario,
         email: values.email,
         password: values.password,
+        device_fingerprint: deviceFingerprint || undefined,
       };
 
       const { data, error } = await supabase.functions.invoke("public-signup-trial", {
@@ -130,11 +179,23 @@ export default function Cadastro() {
         const serverMsg = (data as any)?.error as string | undefined;
 
         if (status === 409) {
-          toast({
-            title: "Email já cadastrado",
-            description: "Este email já está cadastrado. Faça login.",
-            variant: "destructive",
-          });
+          const msg = (serverMsg ?? "").toLowerCase();
+          const isEmailAlreadyRegistered = msg.includes("email já cadastrado") || msg.includes("email ja cadastrado");
+
+          if (isEmailAlreadyRegistered) {
+            toast({
+              title: "Email já cadastrado",
+              description: "Este email já está cadastrado. Faça login.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Teste grátis indisponível",
+              description:
+                "Teste grátis já utilizado para alguns dos dados informados. Se você já tem conta, faça login. Caso precise de acesso, entre em contato para assinar.",
+              variant: "destructive",
+            });
+          }
           return;
         }
 
@@ -158,8 +219,19 @@ export default function Cadastro() {
       if ((data as any)?.success) {
         toast({
           title: "Conta criada com sucesso!",
-          description: "Conta criada com sucesso! 🎉",
+          description: "Conta criada com sucesso!",
         });
+
+        // Tenta sair do embed do Lovable (iframe)
+        try {
+          if (window.top) {
+            window.top.location.href = SYSTEM_AUTH_URL;
+            return;
+          }
+        } catch {
+          // fallback abaixo
+        }
+
         window.location.href = SYSTEM_AUTH_URL;
         return;
       }
@@ -173,7 +245,6 @@ export default function Cadastro() {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-10 md:py-14">
