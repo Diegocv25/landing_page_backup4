@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
@@ -162,9 +162,11 @@ export default function Cadastro() {
   const cepAbortRef = useRef<AbortController | null>(null);
   const [isCepLoading, setIsCepLoading] = useState(false);
 
+  const cepValue = useWatch({ control: form.control, name: "cep" });
+
   useEffect(() => {
-    const raw = form.watch("cep") ?? "";
-    const digits = raw.replace(/\D/g, "");
+    const raw = cepValue ?? "";
+    const digits = String(raw).replace(/\D/g, "");
 
     if (digits.length !== 8) return;
     if (lastCepAutofilledRef.current === digits) return;
@@ -215,7 +217,7 @@ export default function Cadastro() {
     return () => {
       window.clearTimeout(timeout);
     };
-  }, [form]);
+  }, [cepValue, form]);
 
 
   const onSubmit = async (values: FormValues) => {
