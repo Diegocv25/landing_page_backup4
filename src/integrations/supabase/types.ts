@@ -428,6 +428,33 @@ export type Database = {
           },
         ]
       }
+      email_confirm_tokens: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: number
+          token_hash: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: number
+          token_hash: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: number
+          token_hash?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       folha_salarial_mensal: {
         Row: {
           competencia: string

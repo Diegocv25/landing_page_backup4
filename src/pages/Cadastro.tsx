@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -150,12 +150,73 @@ export default function Cadastro() {
     mode: "onTouched",
   });
 
+
   const buildEndereco = (values: FormValues) => {
     const cepDigits = values.cep.replace(/\D/g, "");
     const cepFmt = cepDigits.length === 8 ? `${cepDigits.slice(0, 5)}-${cepDigits.slice(5)}` : values.cep;
     const endereco = `Rua ${values.rua}, Nº ${values.numero} - ${values.bairro} - CEP ${cepFmt} - ${values.cidade}/${values.estado}`;
     return endereco.trim().slice(0, 500);
   };
+
+  const lastCepAutofilledRef = useRef<string>("");
+  const cepAbortRef = useRef<AbortController | null>(null);
+  const [isCepLoading, setIsCepLoading] = useState(false);
+
+  useEffect(() => {
+    const raw = form.watch("cep") ?? "";
+    const digits = raw.replace(/\D/g, "");
+
+    if (digits.length !== 8) return;
+    if (lastCepAutofilledRef.current === digits) return;
+
+    const timeout = window.setTimeout(async () => {
+      try {
+        setIsCepLoading(true);
+
+        if (cepAbortRef.current) cepAbortRef.current.abort();
+        const controller = new AbortController();
+        cepAbortRef.current = controller;
+
+        const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`, {
+          signal: controller.signal,
+          headers: { Accept: "application/json" },
+        });
+
+        if (!res.ok) return;
+        const data: any = await res.json();
+        if (data?.erro) return;
+
+        // Preenche o que vier da API (sem travar o usuário caso algo esteja faltando)
+        if (typeof data?.logradouro === "string" && data.logradouro.trim()) {
+          form.setValue("rua", data.logradouro.trim(), { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+        }
+        if (typeof data?.bairro === "string" && data.bairro.trim()) {
+          form.setValue("bairro", data.bairro.trim(), { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+        }
+        if (typeof data?.localidade === "string" && data.localidade.trim()) {
+          form.setValue("cidade", data.localidade.trim(), { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+        }
+        if (typeof data?.uf === "string" && data.uf.trim()) {
+          form.setValue("estado", String(data.uf).trim().toUpperCase(), {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
+        }
+
+        lastCepAutofilledRef.current = digits;
+      } catch {
+        // fallback silencioso: não pode quebrar a UX do cadastro
+      } finally {
+        setIsCepLoading(false);
+      }
+    }, 350);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [form]);
+
 
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
@@ -292,32 +353,6 @@ export default function Cadastro() {
                       ) : null}
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="rua">Rua</Label>
-                      <Input id="rua" autoComplete="address-line1" {...form.register("rua")} />
-                      {form.formState.errors.rua ? (
-                        <p className="text-sm text-destructive">{form.formState.errors.rua.message}</p>
-                      ) : null}
-                    </div>
-
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="numero">Número</Label>
-                        <Input id="numero" autoComplete="address-line2" {...form.register("numero")} />
-                        {form.formState.errors.numero ? (
-                          <p className="text-sm text-destructive">{form.formState.errors.numero.message}</p>
-                        ) : null}
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="bairro">Bairro</Label>
-                        <Input id="bairro" autoComplete="address-level3" {...form.register("bairro")} />
-                        {form.formState.errors.bairro ? (
-                          <p className="text-sm text-destructive">{form.formState.errors.bairro.message}</p>
-                        ) : null}
-                      </div>
-                    </div>
-
                     <div className="grid gap-4 md:grid-cols-3">
                       <div className="space-y-2">
                         <Label htmlFor="cep">CEP</Label>
@@ -327,6 +362,9 @@ export default function Cadastro() {
                           autoComplete="postal-code"
                           {...form.register("cep")}
                         />
+                        {isCepLoading ? (
+                          <p className="text-sm text-muted-foreground">Buscando endereço pelo CEP…</p>
+                        ) : null}
                         {form.formState.errors.cep ? (
                           <p className="text-sm text-destructive">{form.formState.errors.cep.message}</p>
                         ) : null}
@@ -360,6 +398,32 @@ export default function Cadastro() {
                       {form.formState.errors.estado ? (
                         <p className="text-sm text-destructive">{form.formState.errors.estado.message}</p>
                       ) : null}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="rua">Rua</Label>
+                      <Input id="rua" autoComplete="address-line1" {...form.register("rua")} />
+                      {form.formState.errors.rua ? (
+                        <p className="text-sm text-destructive">{form.formState.errors.rua.message}</p>
+                      ) : null}
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="numero">Número</Label>
+                        <Input id="numero" autoComplete="address-line2" {...form.register("numero")} />
+                        {form.formState.errors.numero ? (
+                          <p className="text-sm text-destructive">{form.formState.errors.numero.message}</p>
+                        ) : null}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="bairro">Bairro</Label>
+                        <Input id="bairro" autoComplete="address-level3" {...form.register("bairro")} />
+                        {form.formState.errors.bairro ? (
+                          <p className="text-sm text-destructive">{form.formState.errors.bairro.message}</p>
+                        ) : null}
+                      </div>
                     </div>
 
                     <div className="space-y-2">
