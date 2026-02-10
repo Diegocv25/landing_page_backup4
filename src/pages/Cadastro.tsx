@@ -163,13 +163,53 @@ export default function Cadastro() {
   const [isCepLoading, setIsCepLoading] = useState(false);
 
   const cepValue = useWatch({ control: form.control, name: "cep" });
+  const ruaValue = useWatch({ control: form.control, name: "rua" });
+  const bairroValue = useWatch({ control: form.control, name: "bairro" });
+  const cidadeValue = useWatch({ control: form.control, name: "cidade" });
+  const estadoValue = useWatch({ control: form.control, name: "estado" });
+
+  // Refs (evita closures "velhas" dentro do debounce/timeout)
+  const cepRef = useRef<string>("");
+  const ruaRef = useRef<string>("");
+  const bairroRef = useRef<string>("");
+  const cidadeRef = useRef<string>("");
+  const estadoRef = useRef<string>("");
+
+  useEffect(() => {
+    cepRef.current = cepValue ?? "";
+  }, [cepValue]);
+  useEffect(() => {
+    ruaRef.current = ruaValue ?? "";
+  }, [ruaValue]);
+  useEffect(() => {
+    bairroRef.current = bairroValue ?? "";
+  }, [bairroValue]);
+  useEffect(() => {
+    cidadeRef.current = cidadeValue ?? "";
+  }, [cidadeValue]);
+  useEffect(() => {
+    estadoRef.current = estadoValue ?? "";
+  }, [estadoValue]);
 
   useEffect(() => {
     const raw = cepValue ?? "";
     const digits = String(raw).replace(/\D/g, "");
 
-    if (digits.length !== 8) return;
-    if (lastCepAutofilledRef.current === digits) return;
+    // Se o usuário apagou/alterou o CEP, liberamos nova tentativa no futuro
+    if (digits.length !== 8) {
+      lastCepAutofilledRef.current = "";
+      if (cepAbortRef.current) cepAbortRef.current.abort();
+      return;
+    }
+
+    const anyAddressFieldEmpty =
+      !String(ruaRef.current).trim() ||
+      !String(bairroRef.current).trim() ||
+      !String(cidadeRef.current).trim() ||
+      !String(estadoRef.current).trim();
+
+    // Se já buscamos esse CEP, mas o usuário limpou algum campo, buscamos de novo.
+    if (lastCepAutofilledRef.current === digits && !anyAddressFieldEmpty) return;
 
     const timeout = window.setTimeout(async () => {
       try {
@@ -188,17 +228,32 @@ export default function Cadastro() {
         const data: any = await res.json();
         if (data?.erro) return;
 
-        // Preenche o que vier da API (sem travar o usuário caso algo esteja faltando)
-        if (typeof data?.logradouro === "string" && data.logradouro.trim()) {
-          form.setValue("rua", data.logradouro.trim(), { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+        // Só preenche o que estiver vazio (não sobrescreve edições manuais)
+        if (!String(ruaRef.current).trim() && typeof data?.logradouro === "string" && data.logradouro.trim()) {
+          form.setValue("rua", data.logradouro.trim(), {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
         }
-        if (typeof data?.bairro === "string" && data.bairro.trim()) {
-          form.setValue("bairro", data.bairro.trim(), { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+
+        if (!String(bairroRef.current).trim() && typeof data?.bairro === "string" && data.bairro.trim()) {
+          form.setValue("bairro", data.bairro.trim(), {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
         }
-        if (typeof data?.localidade === "string" && data.localidade.trim()) {
-          form.setValue("cidade", data.localidade.trim(), { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+
+        if (!String(cidadeRef.current).trim() && typeof data?.localidade === "string" && data.localidade.trim()) {
+          form.setValue("cidade", data.localidade.trim(), {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
         }
-        if (typeof data?.uf === "string" && data.uf.trim()) {
+
+        if (!String(estadoRef.current).trim() && typeof data?.uf === "string" && String(data.uf).trim()) {
           form.setValue("estado", String(data.uf).trim().toUpperCase(), {
             shouldDirty: true,
             shouldTouch: true,
@@ -217,7 +272,7 @@ export default function Cadastro() {
     return () => {
       window.clearTimeout(timeout);
     };
-  }, [cepValue, form]);
+  }, [cepValue, form, ruaValue, bairroValue, cidadeValue, estadoValue]);
 
 
   const onSubmit = async (values: FormValues) => {
