@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { UserPlus, Settings, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const HowItWorksSection = () => {
   const steps = [
@@ -53,7 +54,7 @@ const HowItWorksSection = () => {
               {index < steps.length - 1 && (
                 <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-primary/10" />
               )}
-              
+
               <div className="relative z-10 w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-primary-foreground">
                 {step.number}
               </div>
@@ -72,8 +73,8 @@ const HowItWorksSection = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Button size="lg" className="text-base px-8">
-            Começar Agora
+          <Button asChild size="lg" className="text-base px-8">
+            <Link to="/planos">Começar Agora</Link>
           </Button>
         </motion.div>
       </div>

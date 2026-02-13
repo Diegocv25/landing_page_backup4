@@ -1,0 +1,173 @@
+// Edge Function: create-account-after-payment
+// Public endpoint.
+// Creates Auth User and resources after payment is confirmed.
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.3";
+import { z } from "https://esm.sh/zod@3.25.76";
+
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+const schema = z.object({
+    session_id: z.string().uuid(),
+    password: z.string().min(8).max(72),
+    confirm_password: z.string().min(8).max(72),
+}).refine((data) => data.password === data.confirm_password, {
+    message: "As senhas não conferem",
+    path: ["confirm_password"],
+});
+
+Deno.serve(async (req) => {
+    if (req.method === "OPTIONS") {
+        return new Response("ok", { headers: corsHeaders });
+    }
+
+    try {
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+        const admin = createClient(supabaseUrl, serviceRoleKey);
+
+        const body = await req.json();
+        const parsed = schema.safeParse(body);
+
+        if (!parsed.success) {
+            return new Response(
+                JSON.stringify({ success: false, error: parsed.error.issues[0].message }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+            );
+        }
+
+        const { session_id, password } = parsed.data;
+
+        // 1) Fetch Session
+        const { data: session, error: sessErr } = await admin
+            .from("payment_sessions")
+            .select("*")
+            .eq("id", session_id)
+            .single();
+
+        if (sessErr || !session) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Sessão não encontrada." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 404 }
+            );
+        }
+
+        // 2) Verify Payment Status
+        if (session.status !== "paid" && session.status !== "paid_waiting_account") {
+            return new Response(
+                JSON.stringify({ success: false, error: "Pagamento não confirmado ainda." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+            );
+        }
+
+        // 3) Idempotency: User already created for this session?
+        if (session.created_user_at) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Conta já foi criada para este pagamento." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+            );
+        }
+
+        // 4) Create Auth User
+        const { data: created, error: createErr } = await admin.auth.admin.createUser({
+            email: session.user_email,
+            password: password,
+            email_confirm: true, // Already verified via token
+            user_metadata: {
+                nome: session.nome_proprietario
+            }
+        });
+
+        if (createErr) {
+            const msg = createErr.message.toLowerCase();
+            if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+                return new Response(
+                    JSON.stringify({ success: false, error: "Este email já possui conta. Por favor, faça login." }),
+                    { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 409 }
+                );
+            }
+            console.error("Auth Create Error:", createErr);
+            return new Response(
+                JSON.stringify({ success: false, error: "Erro ao criar usuário." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+            );
+        }
+
+        const userId = created.user!.id;
+
+        // 5) Create Resources (Salao, Roles, Cadastro)
+
+        // Create Salao
+        const salaoNome = session.nome_estabelecimento || "Meu Estabelecimento";
+        const { data: newSalao, error: salaoErr } = await admin
+            .from("saloes")
+            .insert({
+                nome: salaoNome,
+                telefone: session.telefone,
+                endereco: session.endereco,
+                created_by_user_id: userId,
+            })
+            .select("id")
+            .single();
+
+        if (salaoErr) {
+            console.error("Salao Create Error:", salaoErr);
+            // Should we rollback user? ideally yes, but complex. 
+            // For MVP, if this fails, user exists but no salao. Log error.
+            // We can try to proceed or return error.
+            return new Response(
+                JSON.stringify({ success: false, error: "Conta criada, mas erro ao configurar estabelecimento. Contate suporte." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+            );
+        }
+
+        // Create User Role
+        await admin.from("user_roles").upsert(
+            { user_id: userId, role: "admin", salao_id: newSalao.id },
+            { onConflict: "user_id,salao_id,role" }
+        );
+
+        // Upsert Cadastro
+        const accessUntil = new Date();
+        accessUntil.setDate(accessUntil.getDate() + 30);
+
+        await admin.from("cadastros_estabelecimento").upsert(
+            {
+                user_id: userId,
+                nome_estabelecimento: session.nome_estabelecimento,
+                endereco: session.endereco,
+                telefone: session.telefone,
+                nome_proprietario: session.nome_proprietario,
+                email: session.user_email,
+                plano_atual: session.plan_id || "profissional",
+                status: "active",
+                acesso_ate: accessUntil.toISOString(),
+            },
+            { onConflict: "user_id" }
+        );
+
+        // 6) Update Session
+        await admin
+            .from("payment_sessions")
+            .update({
+                created_user_at: new Date().toISOString(),
+                status: "paid" // Ensure it's marked as fully paid/complete
+            })
+            .eq("id", session_id);
+
+        return new Response(
+            JSON.stringify({ success: true, message: "Conta criada com sucesso!" }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        );
+
+    } catch (err: any) {
+        console.error("Internal Error:", err);
+        return new Response(
+            JSON.stringify({ success: false, error: "Erro interno do servidor" }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+        );
+    }
+});

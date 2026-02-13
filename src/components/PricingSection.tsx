@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const PricingSection = () => {
   const plans = [
@@ -42,7 +43,7 @@ const PricingSection = () => {
         "🤖 Mensagens de retorno automático",
         "🤖 Aniversários via WhatsApp",
         "🤖 Promoções e eventos automatizados",
-        "🤖 Nunca perca cliente por falta de resposta", 
+        "🤖 Nunca perca cliente por falta de resposta",
       ],
       popular: true,
     },
@@ -73,11 +74,10 @@ const PricingSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className={`relative bg-card rounded-2xl p-8 border ${
-                plan.popular
+              className={`relative bg-card rounded-2xl p-8 border ${plan.popular
                   ? "border-primary glow-primary"
                   : "border-border"
-              }`}
+                }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
@@ -90,10 +90,10 @@ const PricingSection = () => {
 
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-2">
-                  {Array.isArray(plan.name) 
+                  {Array.isArray(plan.name)
                     ? plan.name.map((line, i) => (
-                        <div key={i}>{line}</div>
-                      ))
+                      <div key={i}>{line}</div>
+                    ))
                     : plan.name
                   }
                 </h3>
@@ -119,11 +119,14 @@ const PricingSection = () => {
               </ul>
 
               <Button
+                asChild
                 className="w-full"
                 variant={plan.popular ? "default" : "outline"}
                 size="lg"
               >
-                {plan.popular ? "Começar Agora" : "Escolher Plano"}
+                <Link to={`/planos?plan=${plan.popular ? "pro_ia" : "profissional"}`}>
+                  {plan.popular ? "Começar Agora" : "Escolher Plano"}
+                </Link>
               </Button>
             </motion.div>
           ))}

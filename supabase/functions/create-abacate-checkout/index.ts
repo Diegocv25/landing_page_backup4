@@ -1,0 +1,167 @@
+// Edge Function: create-abacate-checkout
+// Public endpoint (verify_jwt=false).
+// Creates AbacatePay billing for an existing, verified payment_session.
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.3";
+import { z } from "https://esm.sh/zod@3.25.76";
+
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+const schema = z.object({
+    session_id: z.string().uuid(),
+});
+
+Deno.serve(async (req) => {
+    if (req.method === "OPTIONS") {
+        return new Response("ok", { headers: corsHeaders });
+    }
+
+    try {
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+        const abacateApiKey = Deno.env.get("ABACATEPAY_API_KEY");
+
+        if (!abacateApiKey) {
+            throw new Error("ABACATEPAY_API_KEY missing");
+        }
+
+        const admin = createClient(supabaseUrl, serviceRoleKey);
+        const body = await req.json();
+        const parsed = schema.safeParse(body);
+
+        if (!parsed.success) {
+            return new Response(
+                JSON.stringify({ success: false, error: "ID da sessão inválido" }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+            );
+        }
+
+        const { session_id } = parsed.data;
+
+        // 1) Fetch Session
+        const { data: session, error: sessErr } = await admin
+            .from("payment_sessions")
+            .select("*")
+            .eq("id", session_id)
+            .single();
+
+        if (sessErr || !session) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Sessão não encontrada." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 404 }
+            );
+        }
+
+        // 2) Verify Email Status
+        if (!session.email_verified_at) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Email não verificado. Por favor, verifique seu email antes de pagar." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 403 }
+            );
+        }
+
+        // 3) Idempotency Check
+        if (session.provider_checkout_url && session.status !== "paid" && session.status !== "canceled") {
+            return new Response(
+                JSON.stringify({
+                    success: true,
+                    checkout_url: session.provider_checkout_url,
+                    session_id: session.id
+                }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+            );
+        }
+
+        // 4) Prepare Abacate Payload
+        // Determine info source
+        const planName = session.plan_id === "pro_ia" ? "Plano PRO + IA" : "Plano Profissional";
+        const amount = session.amount_cents;
+
+        const origin = req.headers.get("origin") || "https://nexus-automacoes.com";
+        const returnUrl = `${origin}/pagamento/retorno`; // Redirect here after payment
+        const completionUrl = `${origin}/pagamento/retorno?session=${session_id}`;
+
+        const abacateBody = {
+            frequency: "ONE_TIME",
+            methods: ["PIX", "CARD"],
+            products: [
+                {
+                    externalId: session_id,
+                    name: planName,
+                    description: `${planName} — 30 dias de acesso`,
+                    quantity: 1,
+                    price: amount,
+                },
+            ],
+            returnUrl,
+            completionUrl,
+            customer: {
+                name: session.nome_proprietario,
+                email: session.user_email,
+                cellphone: session.telefone.replace(/\D/g, ""),
+                taxId: session.tax_id.replace(/\D/g, ""), // Use stored TAX ID
+            },
+            metadata: {
+                session_id: session_id,
+            },
+        };
+
+        // 5) Call AbacatePay
+        const abacateRes = await fetch("https://api.abacatepay.com/v1/billing/create", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${abacateApiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(abacateBody),
+        });
+
+        if (!abacateRes.ok) {
+            const errText = await abacateRes.text();
+            console.error("AbacatePay Error:", abacateRes.status, errText);
+            return new Response(
+                JSON.stringify({ success: false, error: `Erro na AbacatePay: ${errText}` }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 502 }
+            );
+        }
+
+        const abacateData = await abacateRes.json();
+        const billId = abacateData?.data?.id;
+        const checkoutUrl = abacateData?.data?.url;
+
+        if (!billId || !checkoutUrl) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Resposta inesperada do provedor." }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 502 }
+            );
+        }
+
+        // 6) Update Session
+        await admin
+            .from("payment_sessions")
+            .update({
+                provider_bill_id: billId,
+                provider_checkout_url: checkoutUrl,
+            })
+            .eq("id", session_id);
+
+        return new Response(
+            JSON.stringify({
+                success: true,
+                checkout_url: checkoutUrl,
+                session_id: session_id
+            }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        );
+
+    } catch (err: any) {
+        console.error("Internal Error:", err);
+        return new Response(
+            JSON.stringify({ success: false, error: "Erro interno do servidor" }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+        );
+    }
+});

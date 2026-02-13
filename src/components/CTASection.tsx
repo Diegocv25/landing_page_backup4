@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const CTASection = () => {
   return (
@@ -21,12 +22,14 @@ const CTASection = () => {
               Pronto para revolucionar seu negócio?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-              Junte-se a milhares de empresas que já transformaram seu atendimento com o 
+              Junte-se a milhares de empresas que já transformaram seu atendimento com o
               Nexus Automações. Teste grátis por 7 dias.
             </p>
-            <Button size="lg" className="text-base px-8 group">
-              Começar Agora
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <Button asChild size="lg" className="text-base px-8 group">
+              <Link to="/planos">
+                Começar Agora
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
           </div>
         </motion.div>
