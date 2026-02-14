@@ -12,7 +12,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Loader2, ArrowRight, Lock } from "lucide-react";
 
 // Same URL as Planos.tsx
-const SYSTEM_AUTH_URL = "https://id-preview--2195ef19-036f-4926-9a8e-4b3085c4a170.lovable.app/auth";
+const SYSTEM_AUTH_URL = (import.meta.env.VITE_AUTH_BASE_URL || "").replace(/\/\/$/, "");
 
 const schema = z
     .object({

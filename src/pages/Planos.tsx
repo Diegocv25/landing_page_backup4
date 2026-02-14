@@ -15,7 +15,7 @@ import { Check, ArrowRight, Loader2, CreditCard, QrCode, Mail } from "lucide-rea
 
 import { supabase } from "@/integrations/supabase/client";
 
-const SYSTEM_AUTH_URL = "https://id-preview--2195ef19-036f-4926-9a8e-4b3085c4a170.lovable.app/auth";
+const SYSTEM_AUTH_URL = (import.meta.env.VITE_AUTH_BASE_URL || "").replace(/\/\/$/, "");
 
 const PLANS = {
     profissional: {
