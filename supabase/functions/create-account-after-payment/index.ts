@@ -34,6 +34,7 @@ Deno.serve(async (req) => {
         const resendReplyTo = Deno.env.get("RESEND_REPLY_TO");
         const resendTestTo = Deno.env.get("RESEND_TEST_TO");
         const authBaseUrl = (Deno.env.get("AUTH_BASE_URL") || "").replace(/\/+$/, "");
+        let emailSendResult: any = null;
 
         const body = await req.json();
         const parsed = schema.safeParse(body);
@@ -169,8 +170,10 @@ Deno.serve(async (req) => {
         // 7) Send access email (best-effort)
         try {
             if (!resendApiKey || !resendFrom) {
+                emailSendResult = { ok: false, skipped: true, reason: "missing_RESEND_API_KEY_or_RESEND_FROM" };
                 console.warn("[email] RESEND_API_KEY/RESEND_FROM not set; skipping access email");
             } else if (!authBaseUrl) {
+                emailSendResult = { ok: false, skipped: true, reason: "missing_AUTH_BASE_URL" };
                 console.warn("[email] AUTH_BASE_URL not set; skipping access email");
             } else {
                 const accessLink = `${authBaseUrl}/auth`;
@@ -213,6 +216,8 @@ Deno.serve(async (req) => {
                 };
                 if (resendReplyTo) payload.reply_to = resendReplyTo;
 
+                console.log("[email] sending", JSON.stringify({ to: toAddress, hasApiKey: Boolean(resendApiKey), hasFrom: Boolean(resendFrom), authBaseUrlSet: Boolean(authBaseUrl) }));
+
                 const r = await fetch("https://api.resend.com/emails", {
                     method: "POST",
                     headers: {
@@ -222,16 +227,24 @@ Deno.serve(async (req) => {
                     body: JSON.stringify(payload),
                 });
 
+                const t = await r.text();
+                let parsed: any = null;
+                try { parsed = t ? JSON.parse(t) : null; } catch { parsed = t; }
+
+                emailSendResult = { ok: r.ok, status: r.status, body: parsed };
+
                 if (!r.ok) {
-                    const t = await r.text();
-                    console.error("[email] Resend send failed", r.status, t);
+                    console.error("[email] Resend send failed", r.status, parsed);
+                } else {
+                    console.log("[email] Resend send ok", r.status);
                 }
             }
         } catch (e) {
+            emailSendResult = { ok: false, exception: String(e) };
             console.error("[email] send exception", e);
         }
         return new Response(
-            JSON.stringify({ success: true, message: "Conta criada com sucesso!" }),
+            JSON.stringify({ success: true, message: "Conta criada com sucesso!", ...(resendTestTo ? { email_send: emailSendResult } : {}) }),
             { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
         );
 
