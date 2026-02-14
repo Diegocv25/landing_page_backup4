@@ -30,6 +30,41 @@ function normalizeTaxId(raw: string) {
   return (raw || "").replace(/\D/g, "");
 }
 
+function isValidCPF(d: string) {
+  // d: 11 digits
+  if (!/^\d{11}$/.test(d)) return false;
+  if (/^(\d){10}$/.test(d)) return false;
+  let sum = 0;
+  for (let i = 0; i < 9; i++) sum += parseInt(d[i]) * (10 - i);
+  let r = (sum * 10) % 11;
+  if (r === 10) r = 0;
+  if (r !== parseInt(d[9])) return false;
+  sum = 0;
+  for (let i = 0; i < 10; i++) sum += parseInt(d[i]) * (11 - i);
+  r = (sum * 10) % 11;
+  if (r === 10) r = 0;
+  return r === parseInt(d[10]);
+}
+
+function isValidCNPJ(d: string) {
+  // d: 14 digits
+  if (!/^\d{14}$/.test(d)) return false;
+  if (/^(\d){13}$/.test(d)) return false;
+  const calc = (base: string) => {
+    const weights = base.length === 12
+      ? [5,4,3,2,9,8,7,6,5,4,3,2]
+      : [6,5,4,3,2,9,8,7,6,5,4,3,2];
+    let sum = 0;
+    for (let i = 0; i < weights.length; i++) sum += parseInt(base[i]) * weights[i];
+    const mod = sum % 11;
+    return mod < 2 ? 0 : 11 - mod;
+  };
+  const d1 = calc(d.slice(0, 12));
+  if (d1 !== parseInt(d[12])) return false;
+  const d2 = calc(d.slice(0, 13));
+  return d2 === parseInt(d[13]);
+}
+
 function isValidTaxIdDigits(d: string) {
   return d.length === 11 || d.length === 14; // CPF(11) or CNPJ(14)
 }
@@ -138,7 +173,7 @@ Deno.serve(async (req) => {
                 { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
             );
         }
-        if (!customerTaxIdDigits || !isValidTaxIdDigits(customerTaxIdDigits)) {
+        if (!customerTaxIdDigits || !isValidTaxIdDigits(customerTaxIdDigits) || (customerTaxIdDigits.length === 11 ? !isValidCPF(customerTaxIdDigits) : !isValidCNPJ(customerTaxIdDigits))) {
             return new Response(
                 JSON.stringify({ success: false, error: 'CPF/CNPJ inválido para cobrança.' }),
                 { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
