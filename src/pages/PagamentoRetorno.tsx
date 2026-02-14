@@ -7,8 +7,8 @@ import { Loader2, CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 
-const SYSTEM_AUTH_URL =
-    "https://id-preview--2195ef19-036f-4926-9a8e-4b3085c4a170.lovable.app/auth";
+const AUTH_BASE = import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") ?? "";
+const SYSTEM_AUTH_URL = AUTH_BASE.endsWith("/auth") ? AUTH_BASE : `${AUTH_BASE}/auth`;
 
 type SessionStatus = "pending" | "paid" | "paid_waiting_account" | "failed" | "expired" | "unknown";
 
