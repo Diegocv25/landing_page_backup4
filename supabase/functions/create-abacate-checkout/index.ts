@@ -123,7 +123,8 @@ Deno.serve(async (req) => {
         const customerName = (session.nome_proprietario ?? '').trim();
         const customerEmail = (session.user_email ?? '').trim();
         const customerPhone = normalizePhoneBR(session.telefone ?? '');
-        const customerTaxId = normalizeTaxId(session.tax_id ?? '');
+        const customerTaxIdDigits = normalizeTaxId(session.tax_id ?? '');
+        const customerTaxId = formatTaxIdBR(session.tax_id ?? '');
 
         if (!customerName || !customerEmail) {
             return new Response(
