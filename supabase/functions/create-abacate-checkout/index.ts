@@ -14,6 +14,22 @@ const schema = z.object({
     session_id: z.string().uuid(),
 });
 
+function normalizePhoneBR(raw: string) {
+  const digits = (raw || "").replace(/\D/g, "");
+  // AbacatePay tends to expect BR numbers with country code.
+  if (digits.startsWith("55")) return digits;
+  if (digits.length === 10 || digits.length === 11) return `55${digits}`;
+  return digits;
+}
+
+function normalizeTaxId(raw: string) {
+  return (raw || "").replace(/\D/g, "");
+}
+
+function isValidTaxIdDigits(d: string) {
+  return d.length === 11 || d.length === 14; // CPF(11) or CNPJ(14)
+}
+
 function redacted(obj: any) {
   try {
     const clone = JSON.parse(JSON.stringify(obj ?? {}));
@@ -93,6 +109,30 @@ Deno.serve(async (req) => {
         const planName = session.plan_id === "pro_ia" ? "Plano PRO + IA" : "Plano Profissional";
         const amount = session.amount_cents;
 
+        const customerName = (session.nome_proprietario ?? '').trim();
+        const customerEmail = (session.user_email ?? '').trim();
+        const customerPhone = normalizePhoneBR(session.telefone ?? '');
+        const customerTaxId = normalizeTaxId(session.tax_id ?? '');
+
+        if (!customerName || !customerEmail) {
+            return new Response(
+                JSON.stringify({ success: false, error: 'Dados do cliente incompletos (nome/email).' }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+            );
+        }
+        if (!customerPhone || customerPhone.length < 12) {
+            return new Response(
+                JSON.stringify({ success: false, error: 'Telefone inválido para cobrança.' }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+            );
+        }
+        if (!customerTaxId || !isValidTaxIdDigits(customerTaxId)) {
+            return new Response(
+                JSON.stringify({ success: false, error: 'CPF/CNPJ inválido para cobrança.' }),
+                { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+            );
+        }
+
         const origin = req.headers.get("origin")
   || Deno.env.get("PAYMENT_RETURN_URL")
   || Deno.env.get("APP_BASE_URL")
@@ -116,10 +156,10 @@ Deno.serve(async (req) => {
             returnUrl,
             completionUrl,
             customer: {
-                name: session.nome_proprietario,
-                email: session.user_email,
-                cellphone: session.telefone.replace(/\D/g, ""),
-                taxId: session.tax_id.replace(/\D/g, ""), // Use stored TAX ID
+                name: customerName,
+                email: customerEmail,
+                cellphone: customerPhone,
+                taxId: customerTaxId,
             },
             metadata: {
                 session_id: session_id,
@@ -151,6 +191,13 @@ Deno.serve(async (req) => {
         try { abacateData = abacateText ? JSON.parse(abacateText) : null; } catch { /* keep as text */ }
         const billId = abacateData?.data?.id;
         const checkoutUrl = abacateData?.data?.url;
+
+        if (abacateData && abacateData.success === false) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Erro na AbacatePay", provider_status: abacateRes.status, provider_body: abacateData ?? abacateText }),
+                { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 502 }
+            );
+        }
 
         if (!billId || !checkoutUrl) {
             return new Response(
