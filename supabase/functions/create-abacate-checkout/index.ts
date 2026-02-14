@@ -14,6 +14,19 @@ const schema = z.object({
     session_id: z.string().uuid(),
 });
 
+function redacted(obj: any) {
+  try {
+    const clone = JSON.parse(JSON.stringify(obj ?? {}));
+    // redact any obvious secrets
+    if (clone?.Authorization) clone.Authorization = "[REDACTED]";
+    if (clone?.apikey) clone.apikey = "[REDACTED]";
+    if (clone?.serviceRoleKey) clone.serviceRoleKey = "[REDACTED]";
+    return clone;
+  } catch {
+    return { note: "[unserializable]" };
+  }
+}
+
 Deno.serve(async (req) => {
     if (req.method === "OPTIONS") {
         return new Response("ok", { headers: corsHeaders });
@@ -114,6 +127,7 @@ Deno.serve(async (req) => {
         };
 
         // 5) Call AbacatePay
+        console.log("[abacate] request", JSON.stringify({ endpoint: "https://api.abacatepay.com/v1/billing/create", returnUrl, completionUrl, hasApiKey: Boolean(abacateApiKey), body: redacted(abacateBody) }));
         const abacateRes = await fetch("https://api.abacatepay.com/v1/billing/create", {
             method: "POST",
             headers: {
@@ -132,13 +146,15 @@ Deno.serve(async (req) => {
             );
         }
 
-        const abacateData = await abacateRes.json();
+        const abacateText = await abacateRes.text();
+        let abacateData: any = null;
+        try { abacateData = abacateText ? JSON.parse(abacateText) : null; } catch { /* keep as text */ }
         const billId = abacateData?.data?.id;
         const checkoutUrl = abacateData?.data?.url;
 
         if (!billId || !checkoutUrl) {
             return new Response(
-                JSON.stringify({ success: false, error: "Resposta inesperada do provedor." }),
+                JSON.stringify({ success: false, error: "Resposta inesperada do provedor.", provider_status: abacateRes.status, provider_body: abacateData ?? abacateText }),
                 { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 502 }
             );
         }
