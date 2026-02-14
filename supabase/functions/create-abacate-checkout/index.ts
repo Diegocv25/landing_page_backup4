@@ -16,10 +16,14 @@ const schema = z.object({
 
 function normalizePhoneBR(raw: string) {
   const digits = (raw || "").replace(/\D/g, "");
-  // AbacatePay tends to expect BR numbers with country code.
-  if (digits.startsWith("55")) return digits;
-  if (digits.length === 10 || digits.length === 11) return `55${digits}`;
-  return digits;
+  // Expect BR local digits: 10 (landline) or 11 (mobile)
+  if (digits.length === 10) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  }
+  if (digits.length === 11) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  }
+  return (raw || "").trim() || digits;
 }
 
 function normalizeTaxId(raw: string) {
@@ -28,6 +32,13 @@ function normalizeTaxId(raw: string) {
 
 function isValidTaxIdDigits(d: string) {
   return d.length === 11 || d.length === 14; // CPF(11) or CNPJ(14)
+}
+
+function formatTaxIdBR(raw: string) {
+  const d = normalizeTaxId(raw);
+  if (d.length === 11) return `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6, 9)}-${d.slice(9)}`;
+  if (d.length === 14) return `${d.slice(0, 2)}.${d.slice(2, 5)}.${d.slice(5, 8)}/${d.slice(8, 12)}-${d.slice(12)}`;
+  return (raw || "").trim() || d;
 }
 
 function redacted(obj: any) {
@@ -120,13 +131,13 @@ Deno.serve(async (req) => {
                 { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
             );
         }
-        if (!customerPhone || customerPhone.length < 12) {
+        if (!customerPhone || customerPhone.replace(/\D/g, "").length < 10) {
             return new Response(
                 JSON.stringify({ success: false, error: 'Telefone inválido para cobrança.' }),
                 { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
             );
         }
-        if (!customerTaxId || !isValidTaxIdDigits(customerTaxId)) {
+        if (!customerTaxIdDigits || !isValidTaxIdDigits(customerTaxIdDigits)) {
             return new Response(
                 JSON.stringify({ success: false, error: 'CPF/CNPJ inválido para cobrança.' }),
                 { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
