@@ -13,7 +13,8 @@ import { toast } from "@/components/ui/use-toast";
 
 import { supabase } from "@/integrations/supabase/client";
 
-const SYSTEM_AUTH_URL = (import.meta.env.VITE_AUTH_BASE_URL || "").replace(/\/\/$/, "");
+const AUTH_BASE = import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") ?? "";
+const SYSTEM_AUTH_URL = AUTH_BASE.endsWith("/auth") ? AUTH_BASE : `${AUTH_BASE}/auth`;
 
 function bytesToHex(bytes: ArrayBuffer) {
   return Array.from(new Uint8Array(bytes))
