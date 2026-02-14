@@ -80,7 +80,11 @@ Deno.serve(async (req) => {
         const planName = session.plan_id === "pro_ia" ? "Plano PRO + IA" : "Plano Profissional";
         const amount = session.amount_cents;
 
-        const origin = req.headers.get("origin") || "https://nexus-automacoes.com";
+        const origin = req.headers.get("origin")
+  || Deno.env.get("PAYMENT_RETURN_URL")
+  || Deno.env.get("APP_BASE_URL")
+  || Deno.env.get("LANDING_BASE_URL")
+  || "http://localhost:8080";
         const returnUrl = `${origin}/pagamento/retorno`; // Redirect here after payment
         const completionUrl = `${origin}/pagamento/retorno?session=${session_id}`;
 
