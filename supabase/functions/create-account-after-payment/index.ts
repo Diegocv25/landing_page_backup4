@@ -29,6 +29,13 @@ Deno.serve(async (req) => {
         const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
         const admin = createClient(supabaseUrl, serviceRoleKey);
 
+        const resendApiKey = Deno.env.get("RESEND_API_KEY");
+        const resendFrom = Deno.env.get("RESEND_FROM");
+        const resendReplyTo = Deno.env.get("RESEND_REPLY_TO");
+        const resendTestTo = Deno.env.get("RESEND_TEST_TO");
+        const authBaseUrl = (Deno.env.get("AUTH_BASE_URL") || "").replace(/\/+$/, "");
+        let emailSendResult: any = null;
+
         const body = await req.json();
         const parsed = schema.safeParse(body);
 
@@ -158,8 +165,86 @@ Deno.serve(async (req) => {
             })
             .eq("id", session_id);
 
+
+
+        // 7) Send access email (best-effort)
+        try {
+            if (!resendApiKey || !resendFrom) {
+                emailSendResult = { ok: false, skipped: true, reason: "missing_RESEND_API_KEY_or_RESEND_FROM" };
+                console.warn("[email] RESEND_API_KEY/RESEND_FROM not set; skipping access email");
+            } else if (!authBaseUrl) {
+                emailSendResult = { ok: false, skipped: true, reason: "missing_AUTH_BASE_URL" };
+                console.warn("[email] AUTH_BASE_URL not set; skipping access email");
+            } else {
+                const accessLink = `${authBaseUrl}/auth`;
+                const toAddress = resendTestTo ? [resendTestTo] : [session.user_email];
+
+                const whatsapp = "48991015688";
+                const brand = "Nexus Automações";
+
+                const html = `
+                  <div style="font-family: sans-serif; font-size: 16px; color: #333;">
+                    ${resendTestTo ? `<p style="background:#ffeb3b; padding:10px; font-weight:bold;">[TEST MODE] Original recipient: ${session.user_email}</p>` : ""}
+                    <h1>Bem-vindo(a)!</h1>
+                    <p>Sua conta foi criada com sucesso.</p>
+                    <p><strong>Seu link de acesso foi enviado para o seu e-mail.</strong></p>
+                    <p>Para abrir o sistema, siga as instruções:</p>
+                    <ol>
+                      <li>Clique no botão abaixo para acessar a tela de login.</li>
+                      <li>Entre com o <strong>e-mail do cadastro</strong> e a <strong>senha criada</strong>.</li>
+                    </ol>
+                    <p>
+                      <a href="${accessLink}" style="display:inline-block;background:#000;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;">
+                        Acessar o sistema
+                      </a>
+                    </p>
+                    <p style="font-size: 14px; color: #666;">
+                      Ou copie e cole este link:<br>
+                      <a href="${accessLink}">${accessLink}</a>
+                    </p>
+                    <hr style="border:none;border-top:1px solid #eee;margin:24px 0;"/>
+                    <p>Dúvidas? Fale com a gente no WhatsApp: <strong>${whatsapp}</strong></p>
+                    <p>${brand}</p>
+                  </div>
+                `;
+
+                const payload: any = {
+                    from: resendFrom,
+                    to: toAddress,
+                    subject: "Seu acesso ao sistema — Nexus Automações",
+                    html,
+                };
+                if (resendReplyTo) payload.reply_to = resendReplyTo;
+
+                console.log("[email] sending", JSON.stringify({ to: toAddress, hasApiKey: Boolean(resendApiKey), hasFrom: Boolean(resendFrom), authBaseUrlSet: Boolean(authBaseUrl) }));
+
+                const r = await fetch("https://api.resend.com/emails", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${resendApiKey}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const t = await r.text();
+                let parsed: any = null;
+                try { parsed = t ? JSON.parse(t) : null; } catch { parsed = t; }
+
+                emailSendResult = { ok: r.ok, status: r.status, body: parsed };
+
+                if (!r.ok) {
+                    console.error("[email] Resend send failed", r.status, parsed);
+                } else {
+                    console.log("[email] Resend send ok", r.status);
+                }
+            }
+        } catch (e) {
+            emailSendResult = { ok: false, exception: String(e) };
+            console.error("[email] send exception", e);
+        }
         return new Response(
-            JSON.stringify({ success: true, message: "Conta criada com sucesso!" }),
+            JSON.stringify({ success: true, message: "Conta criada com sucesso!", ...(resendTestTo ? { email_send: emailSendResult } : {}) }),
             { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
         );
 

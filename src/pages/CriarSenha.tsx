@@ -115,7 +115,7 @@ export default function CriarSenha() {
 
             toast({
                 title: "Conta criada com sucesso!",
-                description: "Seu acesso foi liberado.",
+                description: "Seu link de acesso foi enviado para o seu e-mail. Para abrir o sistema, clique no link recebido e faça login com seu e-mail de cadastro e a senha criada.",
             });
             setStatus("success");
 
