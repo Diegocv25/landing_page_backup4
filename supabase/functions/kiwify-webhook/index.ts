@@ -238,7 +238,6 @@ Deno.serve(async (req) => {
     const updateData: Record<string, any> = {
       provider: "kiwify",
       plan_id: inferredPlan,
-      status_pagamento: mapStatusPagamento(eventType),
       ultimo_evento: eventType || null,
       data_ultimo_evento: nowIso,
       payload_raw: payload,
@@ -248,6 +247,7 @@ Deno.serve(async (req) => {
     if (orderId) updateData.provider_bill_id = orderId;
 
     if (isActiveEvent(eventType)) {
+      updateData.status_pagamento = mapStatusPagamento(eventType);
       updateData.status = "paid_waiting_account";
       updateData.paid_at = session.paid_at ?? nowIso;
     }
