@@ -2,3 +2,21 @@ project_id = "idampxfbqakcdamqxgqe"
 
 [functions.public-signup-trial]
 verify_jwt = false
+
+[functions.start-email-verification]
+verify_jwt = false
+
+[functions.verify-email-token]
+verify_jwt = false
+
+[functions.create-abacate-checkout]
+verify_jwt = false
+
+[functions.check-payment-status]
+verify_jwt = false
+
+[functions.kiwify-webhook]
+verify_jwt = false
+
+[functions.create-account-after-payment]
+verify_jwt = false
