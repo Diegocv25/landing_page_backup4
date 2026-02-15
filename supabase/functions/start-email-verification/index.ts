@@ -122,7 +122,7 @@ Deno.serve(async (req) => {
                 to: toAddress,
                 subject: "Confirme seu e-mail — Nexus Automações",
                 html: (() => {
-                    const logoUrl = `${baseUrl}/nexus-logo.jpg`;
+                    const logoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim() || `${baseUrl}/nexus-logo.jpg`;
                     const planName = plan_id === "pro_ia" ? "PRO + IA" : "Profissional";
                     const whatsapp = "5548991015688";
                     const whatsappDisplay = "(48) 99101-5688";

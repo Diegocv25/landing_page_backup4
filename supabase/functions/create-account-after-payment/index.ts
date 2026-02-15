@@ -179,8 +179,9 @@ Deno.serve(async (req) => {
                 const accessLink = `${authBaseUrl}/auth`;
                 const toAddress = resendTestTo ? [resendTestTo] : [session.user_email];
 
+                const explicitLogoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim();
                 const publicSiteUrl = (Deno.env.get("PUBLIC_SITE_URL") || "").replace(/\/+$/, "");
-                const logoUrl = publicSiteUrl ? `${publicSiteUrl}/nexus-logo.jpg` : null;
+                const logoUrl = explicitLogoUrl ? explicitLogoUrl : (publicSiteUrl ? `${publicSiteUrl}/nexus-logo.jpg` : null);
 
                 const whatsapp = "5548991015688";
                 const whatsappDisplay = "(48) 99101-5688";
