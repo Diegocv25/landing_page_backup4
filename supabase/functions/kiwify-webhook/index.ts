@@ -156,9 +156,11 @@ Deno.serve(async (req) => {
     const tokenReceived =
       req.headers.get("x-webhook-token") ||
       req.headers.get("x-kiwify-token") ||
+      req.headers.get("x-kiwify-webhook-token") ||
       req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ||
       payload?.token ||
       payload?.webhook_token ||
+      payload?.webhooks_event?.token ||
       url.searchParams.get("token") ||
       "";
 
