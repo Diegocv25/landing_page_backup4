@@ -70,24 +70,24 @@ function inferPlanIdFromPayload(payload: any): "profissional" | "pro_ia" | null 
 function mapStatusPagamento(eventType: string): string {
   switch (eventType) {
     case "pix_gerado":
-      return "pix_gerado";
+      return "PENDENTE_PIX";
     case "compra_aprovada":
-      return "compra_aprovada";
+      return "PAGO";
     case "assinatura_renovada":
-      return "assinatura_renovada";
+      return "PAGO";
     case "reembolso":
-      return "reembolso";
+      return "REEMBOLSADO";
     case "assinatura_cancelada":
-      return "assinatura_cancelada";
+      return "CANCELADO";
     case "assinatura_atrasada":
-      return "assinatura_atrasada";
+      return "ATRASADO";
     default:
-      return eventType || "desconhecido";
+      return eventType || "DESCONHECIDO";
   }
 }
 
 function isActiveEvent(eventType: string): boolean {
-  return eventType === "compra_aprovada" || eventType === "assinatura_renovada" || eventType === "pix_gerado";
+  return eventType === "compra_aprovada" || eventType === "assinatura_renovada";
 }
 
 async function sendAccessEmail(session: any) {
