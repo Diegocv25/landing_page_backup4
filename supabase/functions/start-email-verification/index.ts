@@ -120,25 +120,90 @@ Deno.serve(async (req) => {
                 from: resendFrom,
                 ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
                 to: toAddress,
-                subject: "Verifique seu email para continuar",
-                html: `
-          <div style="font-family: sans-serif; font-size: 16px; color: #333;">
-            ${resendTestTo ? `<p style="background:#ffeb3b; padding:10px; font-weight:bold;">[TEST MODE] Original recipient: ${email}</p>` : ""}
-            <h1>Confirme seu email</h1>
-            <p>Olá <strong>${nome_proprietario}</strong>,</p>
-            <p>Recebemos seu pedido de cadastro para o plano <strong>${plan_id === "pro_ia" ? "PRO + IA" : "Profissional"}</strong>.</p>
-            <p>Para prosseguir com o pagamento, clique no botão abaixo:</p>
-            <p>
-              <a href="${verificationLink}" style="display: inline-block; background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">
-                Confirmar Email e Continuar
-              </a>
-            </p>
-            <p style="font-size: 14px; color: #666;">
-              Ou copie este link: <br>
-              <a href="${verificationLink}">${verificationLink}</a>
-            </p>
-          </div>
-        `,
+                subject: "Confirme seu e-mail — Nexus Automações",
+                html: (() => {
+                    const logoUrl = `${baseUrl}/nexus-logo.jpg`;
+                    const planName = plan_id === "pro_ia" ? "PRO + IA" : "Profissional";
+                    const whatsapp = "5548991015688";
+                    const whatsappDisplay = "(48) 99101-5688";
+
+                    return `
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);">
+        <tr>
+          <td style="padding:22px 24px;background:#0b0f19;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td valign="middle" style="font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <img src="${logoUrl}" width="56" height="56" alt="Nexus Automações" style="display:block;border-radius:10px;" />
+                    <div>
+                      <div style="font-size:18px;line-height:22px;font-weight:700;">Nexus Automações</div>
+                      <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Confirmação de e-mail</div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        ${resendTestTo ? `
+        <tr>
+          <td style="padding:10px 24px;background:#fff8d6;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#7a5b00;">
+            <strong>[TEST MODE]</strong> Destinatário original: ${email}
+          </td>
+        </tr>
+        ` : ""}
+
+        <tr>
+          <td style="padding:26px 24px 8px 24px;font-family:Arial,Helvetica,sans-serif;color:#111827;">
+            <div style="font-size:22px;line-height:28px;font-weight:800;margin:0 0 10px 0;">Confirme seu e-mail para continuar</div>
+            <div style="font-size:15px;line-height:22px;color:#374151;">Olá <strong>${nome_proprietario}</strong>, recebemos seu cadastro para o plano <strong>${planName}</strong>.</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:14px 24px;font-family:Arial,Helvetica,sans-serif;color:#374151;font-size:15px;line-height:22px;">
+            Para prosseguir com o pagamento, clique no botão abaixo:
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:8px 24px 22px 24px;">
+            <a href="${verificationLink}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;">
+              Confirmar e continuar
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 24px 18px 24px;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:18px;color:#6b7280;">
+            Se o botão não funcionar, copie e cole este link no navegador:<br/>
+            <a href="${verificationLink}" style="color:#2563eb;word-break:break-all;">${verificationLink}</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:16px 24px;background:#f9fafb;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:18px;color:#6b7280;">
+            Precisa de ajuda? Fale com a gente no WhatsApp:
+            <a href="https://wa.me/${whatsapp}" style="color:#111827;font-weight:700;text-decoration:none;">${whatsappDisplay}</a>
+            <br/>
+            <span style="color:#9ca3af;">Nexus Automações</span>
+          </td>
+        </tr>
+      </table>
+
+      <div style="max-width:600px;margin:10px auto 0 auto;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#94a3b8;">
+        Se você não solicitou este cadastro, pode ignorar este e-mail.
+      </div>
+    </td>
+  </tr>
+</table>
+                    `;
+                })(),
             }),
         });
 

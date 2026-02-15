@@ -179,33 +179,84 @@ Deno.serve(async (req) => {
                 const accessLink = `${authBaseUrl}/auth`;
                 const toAddress = resendTestTo ? [resendTestTo] : [session.user_email];
 
-                const whatsapp = "48991015688";
+                const publicSiteUrl = (Deno.env.get("PUBLIC_SITE_URL") || "").replace(/\/+$/, "");
+                const logoUrl = publicSiteUrl ? `${publicSiteUrl}/nexus-logo.jpg` : null;
+
+                const whatsapp = "5548991015688";
+                const whatsappDisplay = "(48) 99101-5688";
                 const brand = "Nexus Automações";
 
                 const html = `
-                  <div style="font-family: sans-serif; font-size: 16px; color: #333;">
-                    ${resendTestTo ? `<p style="background:#ffeb3b; padding:10px; font-weight:bold;">[TEST MODE] Original recipient: ${session.user_email}</p>` : ""}
-                    <h1>Bem-vindo(a)!</h1>
-                    <p>Sua conta foi criada com sucesso.</p>
-                    <p><strong>Seu link de acesso foi enviado para o seu e-mail.</strong></p>
-                    <p>Para abrir o sistema, siga as instruções:</p>
-                    <ol>
-                      <li>Clique no botão abaixo para acessar a tela de login.</li>
-                      <li>Entre com o <strong>e-mail do cadastro</strong> e a <strong>senha criada</strong>.</li>
-                    </ol>
-                    <p>
-                      <a href="${accessLink}" style="display:inline-block;background:#000;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;">
-                        Acessar o sistema
-                      </a>
-                    </p>
-                    <p style="font-size: 14px; color: #666;">
-                      Ou copie e cole este link:<br>
-                      <a href="${accessLink}">${accessLink}</a>
-                    </p>
-                    <hr style="border:none;border-top:1px solid #eee;margin:24px 0;"/>
-                    <p>Dúvidas? Fale com a gente no WhatsApp: <strong>${whatsapp}</strong></p>
-                    <p>${brand}</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);">
+        <tr>
+          <td style="padding:22px 24px;background:#0b0f19;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td valign="middle" style="font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    ${logoUrl ? `<img src="${logoUrl}" width="56" height="56" alt="${brand}" style="display:block;border-radius:10px;" />` : ""}
+                    <div>
+                      <div style="font-size:18px;line-height:22px;font-weight:700;">${brand}</div>
+                      <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Pagamento confirmado — acesso ao sistema</div>
+                    </div>
                   </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        ${resendTestTo ? `
+        <tr>
+          <td style="padding:10px 24px;background:#fff8d6;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#7a5b00;">
+            <strong>[TEST MODE]</strong> Destinatário original: ${session.user_email}
+          </td>
+        </tr>
+        ` : ""}
+
+        <tr>
+          <td style="padding:26px 24px 8px 24px;font-family:Arial,Helvetica,sans-serif;color:#111827;">
+            <div style="font-size:22px;line-height:28px;font-weight:800;margin:0 0 10px 0;">Pagamento confirmado ✅</div>
+            <div style="font-size:15px;line-height:22px;color:#374151;">Olá <strong>${session.nome_proprietario || ""}</strong>, seu pagamento foi confirmado e seu cadastro está ativo.</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:14px 24px;font-family:Arial,Helvetica,sans-serif;color:#374151;font-size:15px;line-height:22px;">
+            Para acessar o sistema de gestão, use o link abaixo:
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:8px 24px 22px 24px;">
+            <a href="${accessLink}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;">
+              Acessar o sistema
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 24px 18px 24px;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:18px;color:#6b7280;">
+            Ou copie o link:<br/>
+            <a href="${accessLink}" style="color:#2563eb;word-break:break-all;">${accessLink}</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:16px 24px;background:#f9fafb;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:18px;color:#6b7280;">
+            Dúvidas? WhatsApp:
+            <a href="https://wa.me/${whatsapp}" style="color:#111827;font-weight:700;text-decoration:none;">${whatsappDisplay}</a>
+            <br/>
+            <span style="color:#9ca3af;">${brand}</span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
                 `;
 
                 const payload: any = {
