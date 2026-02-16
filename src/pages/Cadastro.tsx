@@ -13,7 +13,8 @@ import { toast } from "@/components/ui/use-toast";
 
 import { supabase } from "@/integrations/supabase/client";
 
-const AUTH_BASE = import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") ?? "";
+const AUTH_BASE_FALLBACK = "https://gestaobackup4.vercel.app";
+const AUTH_BASE = (import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") || AUTH_BASE_FALLBACK).replace(/\/+$/, "");
 const SYSTEM_AUTH_URL = AUTH_BASE.endsWith("/auth") ? AUTH_BASE : `${AUTH_BASE}/auth`;
 
 function bytesToHex(bytes: ArrayBuffer) {

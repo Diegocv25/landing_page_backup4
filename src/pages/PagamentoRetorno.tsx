@@ -7,7 +7,8 @@ import { Loader2, CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 
-const AUTH_BASE = import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") ?? "";
+const AUTH_BASE_FALLBACK = "https://gestaobackup4.vercel.app";
+const AUTH_BASE = (import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") || AUTH_BASE_FALLBACK).replace(/\/+$/, "");
 const SYSTEM_AUTH_URL = AUTH_BASE.endsWith("/auth") ? AUTH_BASE : `${AUTH_BASE}/auth`;
 
 type SessionStatus = "pending" | "paid" | "paid_waiting_account" | "failed" | "expired" | "unknown";
