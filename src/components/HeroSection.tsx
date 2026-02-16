@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Play, Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import DemoVideoDialog from "@/components/DemoVideoDialog";
 const HeroSection = () => {
   const features = [
     "Agendamento automático via WhatsApp",
@@ -59,10 +60,7 @@ const HeroSection = () => {
                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                </Link>
              </Button>
-             <Button size="lg" variant="outline" className="text-base px-8">
-               <Play className="mr-2 w-4 h-4" />
-               Ver Demonstração
-             </Button>
+             <DemoVideoDialog />
            </div>
 
           <motion.div initial={{
