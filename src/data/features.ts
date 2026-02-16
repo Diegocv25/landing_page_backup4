@@ -62,7 +62,6 @@ export const FEATURES: FeatureDetails[] = [
       "Comissões a pagar (automático)",
       "Receita por dia/semana/mês por profissional",
       "Comparativo de desempenho entre profissionais",
-      "Serviços mais realizados por cada um",
     ],
     result: "Decisões baseadas em dados reais. Identifique talentos, otimize escalas e recompense quem mais produz.",
   },
@@ -89,9 +88,8 @@ export const FEATURES: FeatureDetails[] = [
     bullets: [
       "Lembretes de horário automáticos via WhatsApp",
       "Mensagens de retorno para clientes inativos",
-      "Envio de promoções e eventos para grupos específicos",
+      "Envio de promoções e eventos para o status",
       "Aniversariantes do dia com mensagens personalizadas",
-      "Avisos semanais no portal do cliente",
       "Confirmações automáticas de agendamento",
     ],
     result: "Reduza no-shows, aumente a frequência de retorno e mantenha o relacionamento ativo com seus clientes sem esforço manual.",
