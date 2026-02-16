@@ -369,7 +369,7 @@ export default function Cadastro() {
       <main className="container mx-auto px-4 py-10 md:py-14">
         <header className="max-w-2xl">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl md:text-4xl font-bold">Comece seu teste gratuito</h1>
+            <h1 className="text-3xl md:text-4xl font-bold">Teste gratuito</h1>
             <Button asChild variant="outline" size="sm">
               <Link to="/">Voltar</Link>
             </Button>
