@@ -26,9 +26,9 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-card border-t border-border py-10">
+    <footer className="bg-card border-t border-border py-8">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-6">
           <div className="col-span-2">
             <a href="#" className="flex items-center gap-3 mb-4">
               <div className="w-16 h-16 rounded-lg overflow-hidden bg-transparent">
