@@ -121,7 +121,6 @@ const schema = z
             }, "CPF (11) ou CNPJ (14) inválido"),
         nome_proprietario: z.string().trim().min(1, "Informe o nome do proprietário").max(200),
         email: z.string().trim().email("Email inválido").max(254),
-        email: z.string().trim().email("Email inválido").max(254),
     });
 
 type FormValues = z.infer<typeof schema>;
@@ -150,8 +149,6 @@ export default function Planos() {
             estado: "",
             telefone: "",
             taxId: "",
-            nome_proprietario: "",
-            email: "",
             nome_proprietario: "",
             email: "",
         },
