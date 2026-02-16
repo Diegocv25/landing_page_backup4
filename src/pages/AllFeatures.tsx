@@ -67,7 +67,7 @@ export default function AllFeatures() {
               <img
                 src="/nexus-logo.jpg"
                 alt="Nexus Automações"
-                className="h-12 w-12 rounded-lg object-cover"
+                className="h-14 w-14 rounded-lg object-cover"
                 loading="eager"
                 decoding="async"
               />
