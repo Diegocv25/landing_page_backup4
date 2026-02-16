@@ -19,7 +19,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <a href="#" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg overflow-hidden bg-transparent">
+            <div className="w-14 h-14 rounded-lg overflow-hidden bg-transparent">
               <img
                 src="/nexus-logo.jpg"
                 alt="Nexus Automações"
