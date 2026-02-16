@@ -585,8 +585,8 @@ export default function Cadastro() {
                     </Button>
 
                     <Button asChild type="button" variant="link" className="w-full">
-                      <a href={SYSTEM_AUTH_URL} target="_blank" rel="noreferrer">
-                        Já tem uma conta? Fazer login
+                      <a href={`${AUTH_BASE}/configuracoes`} target="_blank" rel="noreferrer">
+                        Já é cliente? Pague pelo sistema gestão
                       </a>
                     </Button>
                   </div>
