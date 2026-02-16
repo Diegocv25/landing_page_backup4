@@ -110,24 +110,18 @@ Deno.serve(async (req) => {
             console.warn(`[TEST MODE] Sending email to RESEND_TEST_TO: ${resendTestTo} instead of ${email}`);
         }
 
-        const resendRes = await fetch("https://api.resend.com/emails", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${resendApiKey}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                from: resendFrom,
-                ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
-                to: toAddress,
-                subject: "Confirme seu e-mail — Nexus Automações",
-                html: (() => {
-                    const logoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim() || `${baseUrl}/nexus-logo.jpg`;
-                    const planName = plan_id === "pro_ia" ? "PRO + IA" : "Profissional";
-                    const whatsapp = "5548991015688";
-                    const whatsappDisplay = "(48) 99101-5688";
+        const emailPayload: any = {
+            from: resendFrom,
+            ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
+            to: toAddress,
+            subject: "Confirme seu e-mail — Nexus Automações",
+            html: (() => {
+                const logoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim() || `${baseUrl}/nexus-logo.jpg`;
+                const planName = plan_id === "pro_ia" ? "PRO + IA" : "Profissional";
+                const whatsapp = "5548991015688";
+                const whatsappDisplay = "(48) 99101-5688";
 
-                    return `
+                return `
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
   <tr>
     <td align="center" style="padding:32px 12px;">
@@ -204,21 +198,33 @@ Deno.serve(async (req) => {
 </table>
                     `;
                 })(),
-            }),
+        };
+
+        const resendRes = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${resendApiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(emailPayload),
         });
 
-        if (!resendRes.ok) {
-            const resendBody = await resendRes.text();
-            console.error(`Resend API Error (${resendRes.status}):`, resendBody);
+        const resendText = await resendRes.text();
+        let resendBody: any = null;
+        try { resendBody = resendText ? JSON.parse(resendText) : null; } catch { resendBody = resendText; }
 
+        if (!resendRes.ok) {
+            console.error(`Resend API Error (${resendRes.status}):`, resendBody);
             return new Response(
-                JSON.stringify({ success: false, error: "Falha ao enviar o email de verificação." }),
+                JSON.stringify({ success: false, error: "Falha ao enviar o email de verificação.", email_send: { ok: false, status: resendRes.status, body: resendBody } }),
                 { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
             );
         }
 
+        const debug = resendTestTo ? { email_send: { ok: true, status: resendRes.status, body: resendBody, to: toAddress } } : {};
+
         return new Response(
-            JSON.stringify({ success: true, message: "Email de verificação enviado." }),
+            JSON.stringify({ success: true, message: "Email de verificação enviado.", ...debug }),
             { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
         );
 
