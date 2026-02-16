@@ -11,7 +11,7 @@ const FAQSection = () => {
     {
       question: "Como funciona o chatbot no WhatsApp?",
       answer:
-        "Nosso chatbot utiliza inteligência artificial avançada para responder seus clientes automaticamente, agendar horários, enviar lembretes e muito mais. Ele funciona 24 horas por dia, 7 dias por semana.",
+        "A IA atende no WhatsApp para tirar dúvidas sobre o seu estabelecimento e enviar o link de agendamento para o cliente. Ela funciona 24 horas por dia, 7 dias por semana.",
     },
     {
       question: "Preciso ter conhecimento técnico?",
@@ -26,7 +26,7 @@ const FAQSection = () => {
     {
       question: "Posso cancelar a qualquer momento?",
       answer:
-        "Sim! Não há fidelidade ou multa. Você pode cancelar sua assinatura a qualquer momento diretamente no painel do cliente.",
+        "Sim. Não há fidelidade nem multa. O cancelamento é feito na sua área de assinatura da Kiwify. Se tiver dificuldade, nosso suporte te orienta no passo a passo.",
     },
     {
       question: "O sistema funciona para qualquer tipo de negócio?",
@@ -36,7 +36,7 @@ const FAQSection = () => {
     {
       question: "Como funciona o suporte?",
       answer:
-        "Oferecemos suporte por e-mail para o plano Profissional e suporte prioritário 24/7 para o plano PRO + IA, incluindo atendimento por WhatsApp.",
+        "O suporte técnico é feito pelo WhatsApp.",
     },
   ];
 
