@@ -34,8 +34,9 @@ const AboutSection = () => {
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Sobre o Sistema</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Conheça a plataforma mais inovadora de gestão empresarial, que centraliza todos os processos em um único lugar: 
-            o aplicativo mais usado no Brasil: WhatsApp. Sua vida, sua empresa, seu caixa - todos facilitados.
+            Conheça uma plataforma completa de gestão para o seu negócio. Com ela, você organiza agenda,
+            clientes, vendas, financeiro e operação em um único sistema. O WhatsApp entra como canal de atendimento
+            e automações com IA — sem substituir o sistema de gestão.
           </p>
         </motion.div>
 

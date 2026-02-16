@@ -10,7 +10,7 @@ const PricingSection = () => {
       price: "197",
       description: "Para profissionais autônomos e pequenos negócios",
       features: [
-        "Estabelecimento com sistema de gestão completa",
+        "Estabelecimento com sistema de gestão completo",
         "Profissionais ilimitados",
         "Agenda online 24 horas por dia, 7 dias por semana",
         "Portal do cliente",
