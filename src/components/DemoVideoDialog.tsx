@@ -29,7 +29,7 @@ export default function DemoVideoDialog() {
 
         <div className="overflow-hidden rounded-xl border border-primary/20 bg-black">
           <video
-            src="/demo-nexus-v4.mp4"
+            src="/demo-nexus-v5.mp4"
             controls
             autoPlay
             muted
