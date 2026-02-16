@@ -534,13 +534,13 @@ export default function Planos() {
                                 </ul>
 
                                 <div className="pt-4 border-t border-border space-y-2 text-sm text-muted-foreground">
-                                    <p className="flex items-center gap-2">
-                                        <div className="flex gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex gap-1" aria-hidden="true">
                                             <QrCode className="w-4 h-4" />
                                             <CreditCard className="w-4 h-4" />
-                                        </div>
-                                        Pagamento via Pix ou Cartão
-                                    </p>
+                                        </span>
+                                        <p>Pagamento via Pix ou Cartão</p>
+                                    </div>
                                     <p>✅ Acesso imediato após confirmação</p>
                                     <p>✅ Cancele quando quiser</p>
                                 </div>
