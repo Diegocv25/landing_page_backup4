@@ -31,7 +31,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-6">
           <div className="col-span-2">
             <a href="#" className="flex items-center gap-3 mb-4">
-              <div className="w-16 h-16 rounded-lg overflow-hidden bg-transparent">
+              <div className="w-[72px] h-[72px] rounded-lg overflow-hidden bg-transparent">
                 <img
                   src="/nexus-logo.jpg"
                   alt="Nexus Automações"
