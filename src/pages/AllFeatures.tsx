@@ -63,8 +63,14 @@ export default function AllFeatures() {
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-primary" aria-hidden="true" />
+            <div className="flex items-center gap-3">
+              <img
+                src="/nexus-logo.jpg"
+                alt="Nexus Automações"
+                className="h-10 w-10 rounded-lg object-cover"
+                loading="eager"
+                decoding="async"
+              />
               <span className="font-bold text-lg">
                 Nexus<span className="text-primary">Automações</span>
               </span>
