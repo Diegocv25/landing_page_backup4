@@ -272,6 +272,15 @@ export default function Planos() {
                 return;
             }
 
+            // Debug friendly: surface server response in toast when available
+            const emailSend = (data as any)?.email_send;
+            if (emailSend) {
+                toast({
+                    title: "Envio de e-mail (Resend)",
+                    description: `ok=${emailSend.ok} status=${emailSend.status} to=${(emailSend.to || []).join(", ")}`,
+                });
+            }
+
             setEmailSent(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -370,7 +379,18 @@ export default function Planos() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+                                    <form
+                                        className="space-y-8"
+                                        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+                                            const firstKey = Object.keys(errors ?? {})[0];
+                                            const firstMsg = firstKey ? (errors as any)[firstKey]?.message : null;
+                                            toast({
+                                                title: "Formulário incompleto",
+                                                description: firstMsg ? String(firstMsg) : "Revise os campos em vermelho.",
+                                                variant: "destructive",
+                                            });
+                                        })}
+                                    >
                                         {/* ── Estabelecimento ── */}
                                         <section className="space-y-4">
                                             <h2 className="text-lg font-semibold">Estabelecimento</h2>
