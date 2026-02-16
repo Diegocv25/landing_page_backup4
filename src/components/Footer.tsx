@@ -26,9 +26,9 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-card border-t border-border py-16">
+    <footer className="bg-card border-t border-border py-10">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8">
           <div className="col-span-2">
             <a href="#" className="flex items-center gap-3 mb-4">
               <div className="w-16 h-16 rounded-lg overflow-hidden bg-transparent">
@@ -109,12 +109,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm">
-            © 2026 Nexus Automações. Todos os direitos reservados.
-          </p>
-          <p className="text-muted-foreground text-sm">
-            Feito com ❤️ no Brasil
+        <div className="border-t border-border pt-4">
+          <p className="text-muted-foreground text-xs text-center">
+            © 2026 Nexus Automações. Todos os direitos reservados. • Feito com ❤️ no Brasil
           </p>
         </div>
       </div>
