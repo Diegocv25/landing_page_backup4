@@ -1,4 +1,10 @@
-import { MessageSquare, Instagram, Youtube, Linkedin } from "lucide-react";
+import { Instagram } from "lucide-react";
+
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+    <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.52 0 .2 5.32.2 11.86c0 2.1.55 4.16 1.6 5.98L0 24l6.33-1.76a11.82 11.82 0 0 0 5.73 1.46h.01c6.54 0 11.86-5.32 11.86-11.86 0-3.17-1.23-6.15-3.41-8.36Zm-8.46 18.2h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.76 1.04 1-3.67-.23-.38a9.84 9.84 0 0 1-1.51-5.22c0-5.44 4.43-9.87 9.88-9.87 2.64 0 5.13 1.03 7 2.9a9.83 9.83 0 0 1 2.9 7c0 5.45-4.43 9.89-9.87 9.89Zm5.42-7.42c-.3-.15-1.8-.89-2.08-.99-.28-.1-.49-.15-.7.15-.2.3-.79.99-.97 1.2-.18.2-.35.23-.65.08-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.74-1.65-2.03-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.7-1.69-.96-2.32-.25-.6-.5-.52-.7-.53h-.6c-.2 0-.53.07-.8.38-.28.3-1.06 1.03-1.06 2.5 0 1.48 1.08 2.9 1.23 3.1.15.2 2.13 3.26 5.15 4.57.72.31 1.29.5 1.73.64.73.23 1.4.2 1.92.12.59-.09 1.8-.74 2.05-1.45.25-.72.25-1.33.17-1.45-.08-.12-.28-.2-.58-.35Z" />
+  </svg>
+);
 
 const Footer = () => {
   const links = {
@@ -19,10 +25,8 @@ const Footer = () => {
   };
 
   const socials = [
-    { icon: MessageSquare, href: "https://wa.me/554891015688", label: "WhatsApp" },
+    { icon: WhatsAppIcon, href: "https://wa.me/554891015688", label: "WhatsApp" },
     { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Youtube, href: "#", label: "Youtube" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
   ];
 
   return (
