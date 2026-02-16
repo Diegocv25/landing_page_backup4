@@ -1,7 +1,6 @@
 import { FEATURES } from "@/data/features";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function FeatureFullCard({ feature }: { feature: (typeof FEATURES)[number] }) {
@@ -72,7 +71,6 @@ export default function AllFeatures() {
             </div>
 
             <div className="flex items-center gap-2">
-              <ThemeToggleButton />
               <Button type="button" variant="outline" size="sm" onClick={handleBack} aria-label="Voltar">
                 Voltar
               </Button>
