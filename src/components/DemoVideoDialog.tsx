@@ -32,7 +32,6 @@ export default function DemoVideoDialog() {
             src="/demo-nexus-v5.mp4"
             controls
             autoPlay
-            muted
             playsInline
             preload="metadata"
             className="w-full aspect-video"
