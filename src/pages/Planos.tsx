@@ -454,7 +454,8 @@ export default function Planos() {
                                                     inputMode="tel"
                                                     autoComplete="tel"
                                                     {...form.register("telefone")}
-                                                    onChange={(e) => form.setValue("telefone", formatPhoneBR(e.target.value), { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
+                                                    onChange={(e) => form.setValue("telefone", e.target.value, { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
+                                                    onBlur={(e) => form.setValue("telefone", formatPhoneBR(e.target.value), { shouldDirty: true, shouldTouch: true, shouldValidate: true })}
                                                 />
                                                 {form.formState.errors.telefone && <p className="text-sm text-destructive">{form.formState.errors.telefone.message}</p>}
                                             </div>

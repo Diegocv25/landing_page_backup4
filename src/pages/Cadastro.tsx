@@ -492,6 +492,13 @@ export default function Cadastro() {
                         autoComplete="tel"
                         {...form.register("telefone")}
                         onChange={(e) => {
+                          form.setValue("telefone", e.target.value, {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                            shouldValidate: true,
+                          });
+                        }}
+                        onBlur={(e) => {
                           const formatted = formatPhoneBR(e.target.value);
                           form.setValue("telefone", formatted, {
                             shouldDirty: true,
