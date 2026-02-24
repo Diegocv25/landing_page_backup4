@@ -10,7 +10,7 @@ const FeaturesSection = () => {
   const from = `${location.pathname}${location.hash || "#funcionalidades"}`;
 
   return <section id="funcionalidades" className="py-24 bg-secondary/30">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-6xl">
         <motion.div initial={{
         opacity: 0,
         y: 20
@@ -28,7 +28,7 @@ const FeaturesSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
           {FEATURES.map((feature, index) => <motion.div key={feature.title} initial={{
           opacity: 0,
           scale: 0.9
@@ -39,9 +39,9 @@ const FeaturesSection = () => {
           once: true
         }} transition={{
           delay: index * 0.05
-          }} className="group rounded-2xl p-6 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 text-center bg-card">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                <feature.icon className="w-6 h-6 text-primary transition-colors" />
+          }} className="group rounded-2xl p-5 md:p-6 border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 text-center bg-card">
+              <div className="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                <feature.icon className="w-5 h-5 md:w-6 md:h-6 text-primary transition-colors" />
               </div>
               <h3 className="font-semibold mb-2 text-sm md:text-base text-foreground">{feature.title}</h3>
               <p className="text-xs md:text-sm text-muted-foreground">{feature.short}</p>
