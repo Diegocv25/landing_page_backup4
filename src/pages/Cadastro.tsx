@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -588,6 +589,17 @@ export default function Cadastro() {
                       <a href={`${AUTH_BASE}/configuracoes`} target="_blank" rel="noreferrer">
                         Já é cliente? Acessar Sistema
                       </a>
+                    </Button>
+
+                    <p className="text-sm text-muted-foreground text-center">
+                      Seu benefício chegou ao fim! Adquira nosso produto!
+                    </p>
+
+                    <Button asChild size="lg" className="w-full text-base px-8 group">
+                      <Link to="/planos">
+                        Começar agora
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Link>
                     </Button>
                   </div>
                 </form>
