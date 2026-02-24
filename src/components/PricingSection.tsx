@@ -21,7 +21,7 @@ const PricingSection = () => {
         "Gestão financeira completa",
         "Relatórios avançados",
         "5 níveis de acesso",
-        "Multiestabelecimentos",
+        "Multi-estabelecimentos",
         "Controle de lançamentos",
         "Suporte via WhatsApp",
         "Treinamento personalizado",
