@@ -7,7 +7,7 @@ const AboutSection = () => {
       icon: Layers,
       title: "Multi-Nicho",
       description:
-        "Funciona para qualquer negócio com agendamentos: salões, barbearias, clínicas, spas, consultórios e muito mais.",
+        "Funciona para qualquer negócio com agendamentos: salões, barbearias, spas.",
     },
     {
       icon: MessageSquare,
