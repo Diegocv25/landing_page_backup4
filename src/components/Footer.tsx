@@ -26,7 +26,7 @@ const Footer = () => {
 
   const socials = [
     { icon: WhatsAppIcon, href: "https://wa.me/554891015688", label: "WhatsApp" },
-    { icon: Instagram, href: "#", label: "Instagram" },
+    { icon: Instagram, href: "https://www.instagram.com/nexus.automacoes.saas/#", label: "Instagram" },
   ];
 
   return (
