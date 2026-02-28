@@ -339,21 +339,14 @@ export default function Cadastro() {
 
       if ((data as any)?.success) {
         toast({
-          title: "Conta criada com sucesso!",
-          description: "Conta criada com sucesso!",
+          title: "Conta criada! Confirme seu email",
+          description: "Enviamos um link de confirmação. Depois de confirmar, você consegue entrar no sistema.",
         });
 
-        // Tenta sair do embed do Lovable (iframe)
-        try {
-          if (window.top) {
-            window.top.location.href = SYSTEM_AUTH_URL;
-            return;
-          }
-        } catch {
-          // fallback abaixo
-        }
-
-        window.location.href = SYSTEM_AUTH_URL;
+        // Não redireciona pro sistema agora, porque o usuário ainda está com email não confirmado.
+        // O email enviado contém:
+        // - link de confirmação do trial
+        // - link do sistema (Gestão)
         return;
       }
 

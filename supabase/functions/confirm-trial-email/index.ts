@@ -74,6 +74,14 @@ Deno.serve(async (req) => {
       })
       .eq("user_id", row.user_id);
 
+    // confirma o email no Auth (senão o login falha no sistema)
+    // Supabase Admin API: email_confirm=true
+    try {
+      await admin.auth.admin.updateUserById(row.user_id, { email_confirm: true });
+    } catch {
+      // não derruba a confirmação do trial; mas o usuário pode continuar vendo erro de email não confirmado
+    }
+
     return json({ success: true }, { status: 200 }, cors);
   } catch {
     return json({ success: false, error: "Erro interno" }, { status: 500 }, cors);

@@ -12,6 +12,7 @@ import AllFeatures from "./pages/AllFeatures";
 import NotFound from "./pages/NotFound";
 import VerificarEmail from "./pages/VerificarEmail";
 import CriarSenha from "./pages/CriarSenha";
+import ConfirmarTrial from "./pages/ConfirmarTrial";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/pagamento/retorno" element={<PagamentoRetorno />} />
           <Route path="/funcionalidades" element={<AllFeatures />} />
           <Route path="/verificar-email" element={<VerificarEmail />} />
+          <Route path="/confirmar-trial" element={<ConfirmarTrial />} />
           <Route path="/criar-senha" element={<CriarSenha />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

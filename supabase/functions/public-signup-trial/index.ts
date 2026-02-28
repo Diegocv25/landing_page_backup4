@@ -113,6 +113,14 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
+    // Email (Resend) + links
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    const resendFrom = Deno.env.get("RESEND_FROM");
+    const resendReplyTo = Deno.env.get("RESEND_REPLY_TO");
+    const resendTestTo = Deno.env.get("RESEND_TEST_TO");
+    const publicSiteUrl = (Deno.env.get("PUBLIC_SITE_URL") || "").replace(/\/+$/, "");
+    const authBaseUrl = (Deno.env.get("AUTH_BASE_URL") || "").replace(/\/+$/, "");
+
     if (!supabaseUrl || !serviceRoleKey) {
       return json(
         { success: false, error: "Configuração do servidor ausente" },
@@ -124,6 +132,7 @@ Deno.serve(async (req) => {
     const admin = createClient(supabaseUrl, serviceRoleKey);
 
     // 1) Create auth user
+    // Obs.: mantemos email não confirmado e enviamos um link de confirmação via Resend.
     const { data: created, error: createErr } = await admin.auth.admin.createUser({
       email: payload.email,
       password: payload.password,
@@ -258,7 +267,108 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "Erro interno do servidor" }, { status: 500 }, corsHeaders);
     }
 
-    return json({ success: true, user_id: userId, salao_id: salaoId }, { status: 200 }, corsHeaders);
+    // 6) Gera token de confirmação + envia email (obrigatório, pois o user é criado com email NÃO confirmado)
+    const confirmToken = crypto.randomUUID();
+    const tokenHash = await sha256Hex(confirmToken);
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    const { error: tokenErr } = await admin.from("email_confirm_tokens").insert({
+      user_id: userId,
+      token_hash: tokenHash,
+      expires_at: expiresAt.toISOString(),
+    });
+
+    if (tokenErr) {
+      return json({ success: false, error: "Erro interno do servidor" }, { status: 500 }, corsHeaders);
+    }
+
+    const siteBase = publicSiteUrl || "https://landing-page-backup4.vercel.app";
+    const confirmLink = `${siteBase}/confirmar-trial?token=${confirmToken}`;
+    const systemLink = `${(authBaseUrl || "https://gestaobackup4.vercel.app").replace(/\/+$/, "")}/auth`;
+
+    if (resendApiKey && resendFrom) {
+      const toAddress = resendTestTo ? [resendTestTo] : [payload.email];
+
+      const emailPayload: any = {
+        from: resendFrom,
+        ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
+        to: toAddress,
+        subject: "Confirme seu e-mail — Nexus Automações (Teste Grátis)",
+        html: `
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);">
+        <tr>
+          <td style="padding:22px 24px;background:#0b0f19;font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
+            <div style="font-size:18px;line-height:22px;font-weight:800;">Nexus Automações</div>
+            <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Confirmação de e-mail — Teste Grátis</div>
+          </td>
+        </tr>
+
+        ${resendTestTo ? `
+        <tr>
+          <td style="padding:10px 24px;background:#fff8d6;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#7a5b00;">
+            <strong>[TEST MODE]</strong> Destinatário original: ${payload.email}
+          </td>
+        </tr>
+        ` : ""}
+
+        <tr>
+          <td style="padding:22px 24px 8px 24px;font-family:Arial,Helvetica,sans-serif;color:#111827;">
+            <div style="font-size:20px;line-height:26px;font-weight:800;margin:0 0 8px 0;">Confirme seu e-mail para ativar o teste</div>
+            <div style="font-size:14px;line-height:20px;color:#374151;">Olá <strong>${payload.nome_proprietario}</strong>. Para liberar o acesso ao teste grátis, confirme seu e-mail.</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:10px 24px 14px 24px;">
+            <a href="${confirmLink}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;padding:14px 18px;border-radius:10px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;">
+              Confirmar e ativar teste
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 24px 18px 24px;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:18px;color:#6b7280;">
+            Se o botão não funcionar, copie e cole este link:<br/>
+            <a href="${confirmLink}" style="color:#2563eb;word-break:break-all;">${confirmLink}</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:14px 24px;background:#f9fafb;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:18px;color:#6b7280;">
+            Link do sistema (Gestão):<br/>
+            <a href="${systemLink}" style="color:#111827;font-weight:700;text-decoration:none;">${systemLink}</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+        `,
+      };
+
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emailPayload),
+      });
+    }
+
+    return json(
+      {
+        success: true,
+        user_id: userId,
+        salao_id: salaoId,
+        confirm_link: confirmLink,
+      },
+      { status: 200 },
+      corsHeaders,
+    );
   } catch (_e) {
     return json({ success: false, error: "Erro interno do servidor" }, { status: 500 }, buildCorsHeaders(req));
   }
