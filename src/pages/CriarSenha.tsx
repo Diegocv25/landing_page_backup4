@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { Loader2, ArrowRight, Lock } from "lucide-react";
+import { Loader2, ArrowRight, Lock, Eye, EyeOff } from "lucide-react";
 
 // Same URL as Planos.tsx
 const AUTH_BASE_FALLBACK = "https://gestaobackup4.vercel.app";
@@ -35,6 +35,8 @@ export default function CriarSenha() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [userEmail, setUserEmail] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [status, setStatus] = useState<"loading" | "ready" | "error" | "success">("loading");
 
     const form = useForm<FormValues>({
@@ -72,7 +74,7 @@ export default function CriarSenha() {
                     return;
                 }
 
-                setUserEmail((data as any).user_email || "");
+                setUserEmail((data as any).user_email || (data as any).userEmail || "");
                 setStatus("ready");
 
             } catch (err) {
@@ -200,13 +202,45 @@ export default function CriarSenha() {
 
                         <div className="space-y-2">
                             <Label htmlFor="password">Senha</Label>
-                            <Input id="password" type="password" {...form.register("password")} />
+                            <div className="relative">
+                                <Input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    {...form.register("password")}
+                                    className="pr-10"
+                                    autoComplete="new-password"
+                                />
+                                <button
+                                    type="button"
+                                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                >
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
                             {form.formState.errors.password && <p className="text-sm text-destructive">{form.formState.errors.password.message}</p>}
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-                            <Input id="confirmPassword" type="password" {...form.register("confirmPassword")} />
+                            <div className="relative">
+                                <Input
+                                    id="confirmPassword"
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    {...form.register("confirmPassword")}
+                                    className="pr-10"
+                                    autoComplete="new-password"
+                                />
+                                <button
+                                    type="button"
+                                    aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    onClick={() => setShowConfirmPassword((v) => !v)}
+                                >
+                                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
                             {form.formState.errors.confirmPassword && <p className="text-sm text-destructive">{form.formState.errors.confirmPassword.message}</p>}
                         </div>
 
