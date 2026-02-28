@@ -99,7 +99,8 @@ Deno.serve(async (req) => {
         }
 
         // 5. Construct Verification Link
-        const baseUrl = publicSiteUrl!.replace(/\/$/, "");
+        // IMPORTANTE: usar URL estável de produção (evita links para deployments/preview inexistentes)
+        const baseUrl = "https://landing-page-backup4.vercel.app";
         const verificationLink = `${baseUrl}/verificar-email?token=${verification_token}`;
 
         // 6. Send Email via Resend
