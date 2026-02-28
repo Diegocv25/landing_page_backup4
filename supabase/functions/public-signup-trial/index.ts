@@ -282,7 +282,8 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "Erro interno do servidor" }, { status: 500 }, corsHeaders);
     }
 
-    const siteBase = publicSiteUrl || "https://landing-page-backup4.vercel.app";
+    // IMPORTANTE: usar URL estável de produção (evita link de preview/deployment inexistente)
+    const siteBase = "https://landing-page-backup4.vercel.app";
     const confirmLink = `${siteBase}/confirmar-trial?token=${confirmToken}`;
     const systemLink = `${(authBaseUrl || "https://gestaobackup4.vercel.app").replace(/\/+$/, "")}/auth`;
 
