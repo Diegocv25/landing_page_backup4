@@ -72,7 +72,14 @@ Deno.serve(async (req) => {
         // Prepare tax_id (digits only)
         const tax_id = cpf.replace(/\D/g, "");
 
-        // 4. Insert into payment_sessions
+        // 4. Cancel previous pending sessions for this email (avoid duplicates from retries/double-click)
+        await admin
+            .from("payment_sessions")
+            .update({ status: "canceled" })
+            .eq("user_email", email)
+            .in("status", ["pending_verification", "pending_payment"]);
+
+        // 5. Insert into payment_sessions
         const { data: session, error: dbError } = await admin
             .from("payment_sessions")
             .insert({
@@ -86,6 +93,7 @@ Deno.serve(async (req) => {
                 status: "pending_verification",
                 verification_token,
                 tax_id,
+                // NOTE: provider defaults in DB; checkout URL is generated later (Kiwify)
             })
             .select("id")
             .single();
