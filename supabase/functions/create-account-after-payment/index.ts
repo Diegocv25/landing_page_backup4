@@ -114,8 +114,7 @@ Deno.serve(async (req) => {
                 .replace(/\s+/g, "_")
                 .replace(/[^a-zA-Z0-9_\-]/g, "")
                 .replace(/_+/g, "_")
-                .replace(/^[_\-]+|[_\-]+$/g, "")
-                .toLowerCase();
+                .replace(/^[_\-]+|[_\-]+$/g, "");
         };
 
         // Create Salao
