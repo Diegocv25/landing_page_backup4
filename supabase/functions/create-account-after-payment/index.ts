@@ -107,8 +107,23 @@ Deno.serve(async (req) => {
 
         // 5) Create Resources (Salao, Roles, Cadastro)
 
+        const sanitizeEvolutionInstanceName = (input: string) => {
+            const base = String(input || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/\s+/g, "_")
+                .replace(/[^a-zA-Z0-9_\-]/g, "")
+                .replace(/_+/g, "_")
+                .replace(/^[_\-]+|[_\-]+$/g, "")
+                .toLowerCase();
+            return base;
+        };
+
         // Create Salao
         const salaoNome = session.nome_estabelecimento || "Meu Estabelecimento";
+        const evolutionBase = sanitizeEvolutionInstanceName(salaoNome);
+        const evolutionInstanceName = evolutionBase ? `${evolutionBase}_${userId.slice(0, 8)}` : null;
+
         const { data: newSalao, error: salaoErr } = await admin
             .from("saloes")
             .insert({
@@ -116,6 +131,7 @@ Deno.serve(async (req) => {
                 telefone: session.telefone,
                 endereco: session.endereco,
                 created_by_user_id: userId,
+                evolution_instance_name: evolutionInstanceName,
             })
             .select("id")
             .single();
