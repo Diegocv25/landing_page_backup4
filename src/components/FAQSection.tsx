@@ -26,12 +26,12 @@ const FAQSection = () => {
     {
       question: "Posso cancelar a qualquer momento?",
       answer:
-        "Sim. Não há fidelidade nem multa. O cancelamento é feito na sua área de assinatura da Kiwify. Se tiver dificuldade, nosso suporte te orienta no passo a passo.",
+        "Sim. Não há fidelidade nem multa. O cancelamento é feito na sua área de assinatura da Kiwify.",
     },
     {
       question: "O sistema funciona para qualquer tipo de negócio?",
       answer:
-        "Sim! O Nexus Automações é flexível e pode ser adaptado para diversos segmentos: salões de beleza, clínicas, consultórios, academias, escritórios, lojas e muito mais.",
+        "Sim! O Nexus Automações é flexível e pode ser adaptado para diversos segmentos: salões de beleza, barbearias, spas, estéticas e similares",
     },
     {
       question: "Como funciona o suporte?",
