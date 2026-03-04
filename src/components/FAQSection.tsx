@@ -31,7 +31,7 @@ const FAQSection = () => {
     {
       question: "O sistema funciona para qualquer tipo de negócio?",
       answer:
-        "Sim! O Nexus Automações é flexível e pode ser adaptado para diversos segmentos: salões de beleza, barbearias, spas, estéticas e similares",
+        "Sim! O Nexus Automações é flexível e pode ser adaptado para diversos segmentos: salões de beleza, barbearias, spas, estéticas e similares.",
     },
     {
       question: "Como funciona o suporte?",
