@@ -26,7 +26,7 @@ const Footer = () => {
 
   const socials = [
     { icon: WhatsAppIcon, href: "https://wa.me/554891015688", label: "WhatsApp" },
-    { icon: Instagram, href: "https://www.instagram.com/nexus.automacoes.saas/#", label: "Instagram" },
+    { icon: Instagram, href: "https://www.instagram.com/nexus.automacao.saas/", label: "Instagram" },
   ];
 
   return (
@@ -38,13 +38,13 @@ const Footer = () => {
               <div className="w-[72px] h-[72px] rounded-lg overflow-hidden bg-transparent">
                 <img
                   src="/nexus-logo.jpg"
-                  alt="Nexus Automações"
+                  alt="Nexus Automação"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
               </div>
               <span className="font-bold text-lg">
-                Nexus<span className="text-primary">Automações</span>
+                Nexus<span className="text-primary">Automação</span>
               </span>
             </a>
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
@@ -115,7 +115,7 @@ const Footer = () => {
 
         <div className="border-t border-border pt-4">
           <p className="text-muted-foreground text-xs text-center">
-            © 2026 Nexus Automações. Todos os direitos reservados. • Feito com ❤️ no Brasil
+            © 2026 Nexus Automação. Todos os direitos reservados. • Feito com ❤️ no Brasil
           </p>
         </div>
       </div>
