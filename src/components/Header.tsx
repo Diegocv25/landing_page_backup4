@@ -28,7 +28,7 @@ const Header = () => {
               />
             </div>
             <span className="font-bold text-lg">
-              Nexus<span className="text-primary">Automações</span>
+              Nexus<span className="text-primary">Automação</span>
             </span>
           </a>
 
