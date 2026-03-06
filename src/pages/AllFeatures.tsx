@@ -72,7 +72,7 @@ export default function AllFeatures() {
                 decoding="async"
               />
               <span className="font-bold text-lg">
-                Nexus<span className="text-primary">Automações</span>
+                Nexus<span className="text-primary">Automação</span>
               </span>
             </div>
 
@@ -91,7 +91,7 @@ export default function AllFeatures() {
             <header className="text-center mb-10 md:mb-14">
               <h1 className="text-3xl md:text-4xl font-bold">Todas as Funcionalidades</h1>
               <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-                Conheça em detalhes cada funcionalidade do sistema Nexus Automações. Veja tudo o que o sistema oferece
+                Conheça em detalhes cada funcionalidade do sistema Nexus Automação. Veja tudo o que o sistema oferece
                 para transformar a gestão do seu negócio.
               </p>
             </header>
@@ -118,7 +118,7 @@ export default function AllFeatures() {
             </div>
 
             <div className="mt-10 border-t border-border pt-6">
-              <p className="text-sm text-muted-foreground">© 2026 Nexus Automações. Todos os direitos reservados.</p>
+              <p className="text-sm text-muted-foreground">© 2026 Nexus Automação. Todos os direitos reservados.</p>
             </div>
           </div>
         </section>
