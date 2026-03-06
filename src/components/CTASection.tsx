@@ -23,7 +23,7 @@ const CTASection = () => {
             </h2>
             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
               Junte-se a milhares de empresas que já transformaram seu atendimento com o
-              Nexus Automações. Teste grátis por 7 dias.
+              Nexus Automação. Teste grátis por 7 dias.
             </p>
             <Button asChild size="lg" className="text-base px-8 group">
               <Link to="/planos">

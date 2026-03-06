@@ -66,7 +66,7 @@ export default function AllFeatures() {
             <div className="flex items-center gap-3">
               <img
                 src="/nexus-logo.jpg"
-                alt="Nexus Automações"
+                alt="Nexus Automação"
                 className="h-14 w-14 rounded-lg object-cover"
                 loading="eager"
                 decoding="async"

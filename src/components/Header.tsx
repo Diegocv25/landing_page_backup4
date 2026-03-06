@@ -22,7 +22,7 @@ const Header = () => {
             <div className="w-14 h-14 rounded-lg overflow-hidden bg-transparent">
               <img
                 src="/nexus-logo.jpg"
-                alt="Nexus Automações"
+                alt="Nexus Automação"
                 className="w-full h-full object-cover"
                 loading="eager"
               />
