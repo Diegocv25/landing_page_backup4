@@ -290,6 +290,8 @@ Deno.serve(async (req) => {
 
     if (resendApiKey && resendFrom) {
       const toAddress = resendTestTo ? [resendTestTo] : [payload.email];
+      const explicitLogoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim();
+      const logoUrl = explicitLogoUrl ? explicitLogoUrl : `${siteBase}/nexus-logo.jpg`;
 
       const emailPayload: any = {
         from: resendFrom,
@@ -303,8 +305,13 @@ Deno.serve(async (req) => {
       <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);">
         <tr>
           <td style="padding:22px 24px;background:#0b0f19;font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
-            <div style="font-size:18px;line-height:22px;font-weight:800;">Nexus Automação</div>
-            <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Confirmação de e-mail — Teste Grátis</div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="${logoUrl}" width="56" height="56" alt="Nexus Automação" style="display:block;border-radius:10px;" />
+              <div>
+                <div style="font-size:18px;line-height:22px;font-weight:800;">Nexus Automação</div>
+                <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Confirmação de e-mail — Teste Grátis</div>
+              </div>
+            </div>
           </td>
         </tr>
 
