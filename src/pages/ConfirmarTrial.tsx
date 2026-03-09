@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, Loader2, XCircle, ArrowRight } from "lucide-react";
 
-const AUTH_BASE_FALLBACK = "https://gestaobackup4.vercel.app";
+const AUTH_BASE_FALLBACK = "https://app.ias-nexus-automacao.com.br";
 const AUTH_BASE = (import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") || AUTH_BASE_FALLBACK).replace(/\/+$/, "");
 const SYSTEM_AUTH_URL = AUTH_BASE.endsWith("/auth") ? AUTH_BASE : `${AUTH_BASE}/auth`;
 

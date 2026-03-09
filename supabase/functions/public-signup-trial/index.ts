@@ -283,9 +283,10 @@ Deno.serve(async (req) => {
     }
 
     // IMPORTANTE: usar URL estável de produção (evita link de preview/deployment inexistente)
-    const siteBase = "https://landing-page-backup4.vercel.app";
+    const siteBase = (Deno.env.get("PUBLIC_SITE_URL") || Deno.env.get("LANDING_BASE_URL") || "https://landing-page-backup4.vercel.app").replace(/\/+$/, "");
     const confirmLink = `${siteBase}/confirmar-trial?token=${confirmToken}`;
-    const systemLink = `${(authBaseUrl || "https://gestaobackup4.vercel.app").replace(/\/+$/, "")}/auth`;
+    const systemBase = (authBaseUrl || Deno.env.get("AUTH_BASE_URL") || Deno.env.get("APP_BASE_URL") || "https://gestaobackup4.vercel.app").replace(/\/+$/, "");
+    const systemLink = `${systemBase}/auth`;
 
     if (resendApiKey && resendFrom) {
       const toAddress = resendTestTo ? [resendTestTo] : [payload.email];
@@ -294,7 +295,7 @@ Deno.serve(async (req) => {
         from: resendFrom,
         ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
         to: toAddress,
-        subject: "Confirme seu e-mail — Nexus Automações (Teste Grátis)",
+        subject: "Confirme seu e-mail — Nexus Automação (Teste Grátis)",
         html: `
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
   <tr>
@@ -302,7 +303,7 @@ Deno.serve(async (req) => {
       <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);">
         <tr>
           <td style="padding:22px 24px;background:#0b0f19;font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
-            <div style="font-size:18px;line-height:22px;font-weight:800;">Nexus Automações</div>
+            <div style="font-size:18px;line-height:22px;font-weight:800;">Nexus Automação</div>
             <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Confirmação de e-mail — Teste Grátis</div>
           </td>
         </tr>

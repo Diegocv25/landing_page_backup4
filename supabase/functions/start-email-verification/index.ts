@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
 
         // 5. Construct Verification Link
         // IMPORTANTE: usar URL estável de produção (evita links para deployments/preview inexistentes)
-        const baseUrl = "https://landing-page-backup4.vercel.app";
+        const baseUrl = (Deno.env.get("PUBLIC_SITE_URL") || Deno.env.get("LANDING_BASE_URL") || "https://landing-page-backup4.vercel.app").replace(/\/+$/, "");
         const verificationLink = `${baseUrl}/verificar-email?token=${verification_token}`;
 
         // 6. Send Email via Resend
@@ -123,7 +123,7 @@ Deno.serve(async (req) => {
             from: resendFrom,
             ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
             to: toAddress,
-            subject: "Confirme seu e-mail — Nexus Automações",
+            subject: "Confirme seu e-mail — Nexus Automação",
             html: (() => {
                 const logoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim() || `${baseUrl}/nexus-logo.jpg`;
                 const planName = plan_id === "pro_ia" ? "PRO + IA" : "Profissional";
