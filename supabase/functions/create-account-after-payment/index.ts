@@ -197,7 +197,7 @@ Deno.serve(async (req) => {
 
                 const whatsapp = "5548991015688";
                 const whatsappDisplay = "(48) 99101-5688";
-                const brand = "Nexus Automações";
+                const brand = "Nexus Automação";
 
                 const html = `
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
@@ -275,7 +275,7 @@ Deno.serve(async (req) => {
                 const payload: any = {
                     from: resendFrom,
                     to: toAddress,
-                    subject: "Seu acesso ao sistema — Nexus Automações",
+                    subject: "Seu acesso ao sistema — Nexus Automação",
                     html,
                 };
                 if (resendReplyTo) payload.reply_to = resendReplyTo;

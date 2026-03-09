@@ -141,9 +141,9 @@ Deno.serve(async (req) => {
               <tr>
                 <td valign="middle" style="font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
                   <div style="display:flex;align-items:center;gap:12px;">
-                    <img src="${logoUrl}" width="56" height="56" alt="Nexus Automações" style="display:block;border-radius:10px;" />
+                    <img src="${logoUrl}" width="56" height="56" alt="Nexus Automação" style="display:block;border-radius:10px;" />
                     <div>
-                      <div style="font-size:18px;line-height:22px;font-weight:700;">Nexus Automações</div>
+                      <div style="font-size:18px;line-height:22px;font-weight:700;">Nexus Automação</div>
                       <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Confirmação de e-mail</div>
                     </div>
                   </div>
@@ -194,7 +194,7 @@ Deno.serve(async (req) => {
             Precisa de ajuda? Fale com a gente no WhatsApp:
             <a href="https://wa.me/${whatsapp}" style="color:#111827;font-weight:700;text-decoration:none;">${whatsappDisplay}</a>
             <br/>
-            <span style="color:#9ca3af;">Nexus Automações</span>
+            <span style="color:#9ca3af;">Nexus Automação</span>
           </td>
         </tr>
       </table>
