@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -313,7 +313,7 @@ export default function Cadastro() {
             toast({
               title: "Teste grátis indisponível",
               description:
-                "Teste grátis já utilizado para alguns dos dados informados. Se você já tem conta, faça login. Caso precise de acesso, entre em contato para assinar.",
+                "Seu teste grátis já foi utilizado. Para continuar usando o sistema, assine um plano.",
               variant: "destructive",
             });
           }
@@ -537,23 +537,24 @@ export default function Cadastro() {
                     </header>
 
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between gap-3">
-                        <Label htmlFor="password">Senha</Label>
-                        <Button
+                      <Label htmlFor="password">Senha</Label>
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          autoComplete="new-password"
+                          className="pr-10"
+                          {...form.register("password")}
+                        />
+                        <button
                           type="button"
-                          size="sm"
-                          variant="ghost"
+                          aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                           onClick={() => setShowPassword((v) => !v)}
                         >
-                          {showPassword ? "Ocultar" : "Mostrar"}
-                        </Button>
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
                       </div>
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        autoComplete="new-password"
-                        {...form.register("password")}
-                      />
                       {form.formState.errors.password ? (
                         <p className="text-sm text-destructive">{form.formState.errors.password.message}</p>
                       ) : null}
@@ -561,12 +562,23 @@ export default function Cadastro() {
 
                     <div className="space-y-2">
                       <Label htmlFor="confirmPassword">Confirmar senha</Label>
-                      <Input
-                        id="confirmPassword"
-                        type={showPassword ? "text" : "password"}
-                        autoComplete="new-password"
-                        {...form.register("confirmPassword")}
-                      />
+                      <div className="relative">
+                        <Input
+                          id="confirmPassword"
+                          type={showPassword ? "text" : "password"}
+                          autoComplete="new-password"
+                          className="pr-10"
+                          {...form.register("confirmPassword")}
+                        />
+                        <button
+                          type="button"
+                          aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          onClick={() => setShowPassword((v) => !v)}
+                        >
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
                       {form.formState.errors.confirmPassword ? (
                         <p className="text-sm text-destructive">{form.formState.errors.confirmPassword.message}</p>
                       ) : null}
