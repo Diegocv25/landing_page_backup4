@@ -195,12 +195,6 @@ export default function CriarSenha() {
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        {userEmail ? (
-                          <div className="space-y-2">
-                            <Label>Email</Label>
-                            <Input value={userEmail} disabled className="bg-muted" />
-                          </div>
-                        ) : null}
 
                         <div className="space-y-2">
                             <Label htmlFor="password">Senha</Label>
