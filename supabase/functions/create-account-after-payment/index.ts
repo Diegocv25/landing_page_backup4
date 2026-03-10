@@ -89,13 +89,105 @@ Deno.serve(async (req) => {
         });
 
         if (createErr) {
-            const msg = createErr.message.toLowerCase();
-            if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+            const msg = (createErr.message || "").toLowerCase();
+            const alreadyExists = msg.includes("already") || msg.includes("registered") || msg.includes("exists");
+
+            if (alreadyExists) {
+                // Conta já existe (ex.: usuário veio do trial). Não bloquear o fluxo de pagamento.
+                // 1) Atualiza sessão para finalizar (idempotência)
+                await admin
+                    .from("payment_sessions")
+                    .update({
+                        created_user_at: new Date().toISOString(),
+                        status: "paid",
+                    })
+                    .eq("id", session_id);
+
+                // 2) Atualiza cadastro comercial (best-effort) pelo email
+                try {
+                    const accessUntil = new Date();
+                    accessUntil.setDate(accessUntil.getDate() + 30);
+
+                    await admin
+                        .from("cadastros_estabelecimento")
+                        .update({
+                            plano_atual: session.plan_id || "profissional",
+                            status: "active",
+                            acesso_ate: accessUntil.toISOString(),
+                        })
+                        .eq("email", session.user_email);
+                } catch (e) {
+                    console.warn("[paid-existing-user] failed updating cadastros_estabelecimento", e);
+                }
+
+                // 3) Envia e-mail de acesso (best-effort)
+                try {
+                    if (resendApiKey && resendFrom && authBaseUrl) {
+                        const accessLink = `${authBaseUrl}/auth`;
+                        const toAddress = resendTestTo ? [resendTestTo] : [session.user_email];
+
+                        const explicitLogoUrl = (Deno.env.get("NEXUS_LOGO_URL") || "").trim();
+                        const publicSiteUrl = (Deno.env.get("PUBLIC_SITE_URL") || "").replace(/\/+$|\s+/g, "");
+                        const logo = explicitLogoUrl ? explicitLogoUrl : (publicSiteUrl ? `${publicSiteUrl}/nexus-logo.jpg` : null);
+
+                        const brand = "Nexus Automação";
+                        const html = `
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;padding:0;background:#0b0f19;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25);">
+        <tr>
+          <td style="padding:22px 24px;background:#0b0f19;">
+            <div style="display:flex;align-items:center;gap:12px;font-family:Arial,Helvetica,sans-serif;color:#ffffff;">
+              ${logo ? `<img src="${logo}" width="56" height="56" alt="${brand}" style="display:block;border-radius:10px;" />` : ""}
+              <div>
+                <div style="font-size:18px;line-height:22px;font-weight:800;">${brand}</div>
+                <div style="font-size:13px;line-height:18px;color:#b7c0d6;">Pagamento confirmado — acesso ao sistema</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px;font-family:Arial,Helvetica,sans-serif;color:#111827;">
+            <div style="font-size:18px;line-height:24px;font-weight:800;margin-bottom:8px;">Seu acesso está liberado</div>
+            <div style="font-size:14px;line-height:20px;color:#374151;">Seu pagamento foi confirmado. Como você já possuía conta, basta acessar com seu e-mail e senha.</div>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:0 24px 24px 24px;">
+            <a href="${accessLink}" style="display:inline-block;background:#111827;color:#ffffff;text-decoration:none;padding:14px 20px;border-radius:10px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;">Acessar o sistema</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`;
+
+                        await fetch("https://api.resend.com/emails", {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Bearer ${resendApiKey}`,
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                from: resendFrom,
+                                ...(resendReplyTo ? { reply_to: resendReplyTo } : {}),
+                                to: toAddress,
+                                subject: "Seu acesso ao sistema — Nexus Automação",
+                                html,
+                            }),
+                        });
+                    }
+                } catch (e) {
+                    console.warn("[paid-existing-user] email send failed", e);
+                }
+
                 return new Response(
-                    JSON.stringify({ success: false, error: "Este email já possui conta. Por favor, faça login." }),
-                    { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 409 }
+                    JSON.stringify({ success: true, message: "Pagamento confirmado. Este email já possui conta. Faça login para acessar." }),
+                    { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
                 );
             }
+
             console.error("Auth Create Error:", createErr);
             return new Response(
                 JSON.stringify({ success: false, error: "Erro ao criar usuário." }),
