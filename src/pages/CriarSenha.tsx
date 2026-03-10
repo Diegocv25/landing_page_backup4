@@ -191,14 +191,16 @@ export default function CriarSenha() {
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle>Criar sua senha</CardTitle>
-                    <CardDescription>Defina uma senha segura para acessar o sistema.</CardDescription>
+                    <CardDescription>Defina uma senha segura para acessar o sistema. Seu email é o mesmo do cadastro.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <div className="space-y-2">
+                        {userEmail ? (
+                          <div className="space-y-2">
                             <Label>Email</Label>
                             <Input value={userEmail} disabled className="bg-muted" />
-                        </div>
+                          </div>
+                        ) : null}
 
                         <div className="space-y-2">
                             <Label htmlFor="password">Senha</Label>
