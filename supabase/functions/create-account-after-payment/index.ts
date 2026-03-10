@@ -269,7 +269,43 @@ Deno.serve(async (req) => {
             })
             .eq("id", session_id);
 
+        // 6.1) Upsert subscription (best-effort) - app reads plan from `subscriptions`
+        try {
+            const productId = String(session.plan_id || "profissional");
+            const productName = productId === "pro_ia" ? "PRO + IA" : "Profissional";
+            const customerEmail = String(session.user_email || "").trim().toLowerCase();
 
+            if (customerEmail) {
+                // Try upsert with onConflict (if unique exists)
+                const { error: subErr } = await admin.from("subscriptions").upsert(
+                    {
+                        provider: "kiwify",
+                        customer_email: customerEmail,
+                        product_id: productId,
+                        product_name: productName,
+                        status: "approved",
+                        last_event_trigger: "create_account_after_payment",
+                        meta: { source: "landing", session_id },
+                    },
+                    { onConflict: "provider,customer_email" }
+                );
+
+                if (subErr) {
+                    // Fallback to simple insert (may duplicate if no unique constraint, but better than missing)
+                    await admin.from("subscriptions").insert({
+                        provider: "kiwify",
+                        customer_email: customerEmail,
+                        product_id: productId,
+                        product_name: productName,
+                        status: "approved",
+                        last_event_trigger: "create_account_after_payment",
+                        meta: { source: "landing", session_id },
+                    });
+                }
+            }
+        } catch (e) {
+            console.warn("[subscription] failed to upsert subscription", e);
+        }
 
         // 7) Send access email (best-effort)
         try {
