@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import DemoVideoDialog from "@/components/DemoVideoDialog";
 const HeroSection = () => {
   const features = [
-    "Agendamento automático via WhatsApp",
+    "Agendamento automático via link",
     "Atendimento inteligente com IA",
     "Gestão financeira e administrativa",
     "Relatórios e métricas",
@@ -38,7 +38,7 @@ const HeroSection = () => {
           delay: 0.1
         }} className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            <span className="text-sm text-primary font-medium">Funciona para: Salão • Barbearia • Spa</span>
+            <span className="text-sm text-primary font-medium">Funciona para: Salão • Barbearia • Spa • Estética</span>
           </motion.div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -48,9 +48,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-balance">
-            Sua secretária virtual disponível 24 horas por dia. Fácil de usar, 
-            revoluciona o atendimento dos seus clientes, gerencia sua agenda e cuida do seu 
-            caixa financeiro.
+            Sua secretária virtual atende seus clientes 24 horas por dia, enquanto nosso sistema, fácil e intuitivo, gerencia sua agenda e cuida do seu caixa financeiro. Revolucione seu atendimento e sua gestão em um só lugar.
           </p>
 
            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">

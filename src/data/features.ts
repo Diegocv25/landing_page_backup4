@@ -220,7 +220,8 @@ export const FEATURES: FeatureDetails[] = [
     bullets: [
       "Salão de Beleza - Manicure, cabeleireiro, maquiagem",                                                
       "Barbearia - Corte, barba, tratamentos",                                                              
-      "Spa - Massagens, estética, tratamentos", 
+      "Spa - Massagens, tratamentos corporais", 
+      "Estética - Procedimentos faciais, depilação",
     ],
     result: "Um sistema que CRESCE com você. Mudou de nicho? Não precisa trocar de sistema!",
   },
