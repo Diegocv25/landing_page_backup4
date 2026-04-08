@@ -15,8 +15,8 @@ const schema = z.object({
 });
 
 const KIWIFY_CHECKOUTS = {
-  profissional: "https://pay.kiwify.com.br/H5429N1",
-  pro_ia: "https://pay.kiwify.com.br/Bru2N8Q",
+  profissional: "https://pay.kiwify.com.br/mI9r7xH",
+  pro_ia: "https://pay.kiwify.com.br/vmsHT1F",
 } as const;
 
 Deno.serve(async (req) => {
