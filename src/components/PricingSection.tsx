@@ -7,7 +7,7 @@ const PricingSection = () => {
   const plans = [
     {
       name: "Profissional",
-      price: "197",
+      price: "89,90",
       description: "Para profissionais autônomos e pequenos negócios",
       features: [
         "Estabelecimento com sistema de gestão completo",
@@ -33,7 +33,7 @@ const PricingSection = () => {
         "PRO + IA",
         "Tudo do plano Profissional + IA",
       ],
-      price: "347",
+      price: "247",
       description: "Para empresas que querem escalar com inteligência artificial",
       features: [
         "🤖 IA Atendente no WhatsApp 24 horas por dia, 7 dias por semana",

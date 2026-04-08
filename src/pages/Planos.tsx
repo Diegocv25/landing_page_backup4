@@ -23,7 +23,7 @@ const PLANS = {
     profissional: {
         id: "profissional",
         name: "Profissional",
-        price: "197",
+        price: "89,90",
         priceCents: 19700,
         description: "Sistema completo de gestão para o seu negócio",
         features: [
@@ -40,7 +40,7 @@ const PLANS = {
     pro_ia: {
         id: "pro_ia",
         name: "PRO + IA",
-        price: "347",
+        price: "247",
         priceCents: 34700,
         description: "Tudo do Profissional + IA no WhatsApp",
         features: [
