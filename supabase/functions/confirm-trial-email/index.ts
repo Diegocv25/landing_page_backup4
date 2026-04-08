@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
       return json({ success: false, error: "Token expirado" }, { status: 400 }, cors);
 
     const now = new Date();
-    const trialFim = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const trialFim = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
     // marca token como usado
     await admin.from("email_confirm_tokens").update({ used_at: now.toISOString() }).eq("token_hash", tokenHash);

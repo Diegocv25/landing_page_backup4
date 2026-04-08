@@ -108,7 +108,7 @@ export default function AllFeatures() {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-bold">Pronto para começar?</h2>
             <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-              Teste todas essas funcionalidades gratuitamente por 7 dias. Sem compromisso, sem cartão de crédito.
+              Teste todas essas funcionalidades gratuitamente por 30 dias. Sem compromisso, sem cartão de crédito.
             </p>
 
             <div className="mt-8 flex justify-center">

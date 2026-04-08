@@ -54,7 +54,7 @@ const HeroSection = () => {
            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
              <Button asChild size="lg" className="group text-base px-8 animate-pulse-glow">
                <Link to="/cadastro">
-                 Quero Testar por 7 Dias
+                 Quero Testar por 30 Dias
                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                </Link>
              </Button>

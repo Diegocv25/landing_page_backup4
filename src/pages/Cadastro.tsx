@@ -130,7 +130,7 @@ export default function Cadastro() {
   }, []);
 
   const badges = useMemo(
-    () => ["7 dias grátis", "Plano Profissional", "Sem cartão", "Acesso imediato"],
+    () => ["30 dias grátis", "Plano Profissional", "Sem cartão", "Acesso imediato"],
     [],
   );
 
@@ -370,7 +370,7 @@ export default function Cadastro() {
             </Button>
           </div>
           <p className="mt-3 text-muted-foreground">
-            Crie sua conta e utilize o sistema no Plano Profissional por 7 dias gratuitamente. Sem cartão de crédito.
+            Crie sua conta e utilize o sistema no Plano Profissional por 30 dias gratuitamente. Sem cartão de crédito.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -619,7 +619,7 @@ export default function Cadastro() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <p>1) Você cria sua conta e seu salão é configurado automaticamente.</p>
-                <p>2) Você entra no Plano Profissional por 7 dias (trial).</p>
+                <p>2) Você entra no Plano Profissional por 30 dias (trial).</p>
                 <p>3) Depois do cadastro, você será redirecionado para o login do sistema.</p>
               </CardContent>
             </Card>
