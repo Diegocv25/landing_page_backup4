@@ -1,9 +1,9 @@
-import { FEATURES } from "@/data/features";
+import { PUBLIC_FEATURES } from "@/data/features";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function FeatureFullCard({ feature }: { feature: (typeof FEATURES)[number] }) {
+function FeatureFullCard({ feature }: { feature: (typeof PUBLIC_FEATURES)[number] }) {
   const Icon = feature.icon;
 
   return (
@@ -97,7 +97,7 @@ export default function AllFeatures() {
             </header>
 
             <div className="space-y-5 md:space-y-6">
-              {FEATURES.map((feature) => (
+              {PUBLIC_FEATURES.map((feature) => (
                 <FeatureFullCard key={feature.title} feature={feature} />
               ))}
             </div>

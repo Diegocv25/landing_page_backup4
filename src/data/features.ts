@@ -237,3 +237,9 @@ export const FEATURES: FeatureDetails[] = [
     result: "Fidelização através do carinho. Cliente fica feliz por ser lembrado e você ganha pontos de relacionamento!",
   },
 ];
+
+// As cinco primeiras funcionalidades pertencem ao pacote Pro + IA. Elas permanecem
+// no catálogo técnico para futura reativação, mas não podem aparecer na vitrine pública.
+export const PRO_IA_FEATURES = FEATURES.slice(0, 5);
+export const PRO_IA_FEATURE_TITLES = new Set(PRO_IA_FEATURES.map((feature) => feature.title));
+export const PUBLIC_FEATURES = FEATURES.slice(5);

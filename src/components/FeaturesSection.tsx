@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import FeatureDetailsDialog from "@/components/FeatureDetailsDialog";
 import { Button } from "@/components/ui/button";
-import { FEATURES } from "@/data/features";
+import { PUBLIC_FEATURES } from "@/data/features";
 const FeaturesSection = () => {
   const location = useLocation();
 
@@ -29,7 +29,7 @@ const FeaturesSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-          {FEATURES.map((feature, index) => <motion.div key={feature.title} initial={{
+          {PUBLIC_FEATURES.map((feature, index) => <motion.div key={feature.title} initial={{
           opacity: 0,
           scale: 0.9
         }} whileInView={{
