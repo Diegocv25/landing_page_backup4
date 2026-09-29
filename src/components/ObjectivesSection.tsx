@@ -4,11 +4,11 @@ const ObjectivesSection = () => {
   const objectives = [{
     icon: TrendingUp,
     title: "Aumentar seu Faturamento",
-    description: "Gestão integrada de clientes, atendimentos automatizados pelo WhatsApp. Agenda cheia = mais lucro. Acompanhe métricas em tempo real e otimize seus resultados."
+    description: "Gestão integrada de clientes, agenda, vendas e financeiro. Acompanhe métricas em tempo real e otimize seus resultados."
   }, {
     icon: Clock,
     title: "Economizar seu Tempo",
-    description: "Automatize tarefas repetitivas, agende compromissos automaticamente, envie lembretes aos clientes e tenha uma secretária virtual trabalhando 24/7 por você."
+    description: "Centralize tarefas repetitivas, organize compromissos e acompanhe sua operação com mais agilidade e menos trabalho manual."
   }, {
     icon: Eye,
     title: "Dar Visibilidade Total",

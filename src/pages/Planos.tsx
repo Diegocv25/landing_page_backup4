@@ -8,54 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 
 import { Check, ArrowRight, Loader2, CreditCard, QrCode, Mail } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { getInitialPlanId, PLANS, VISIBLE_PLAN_IDS, type PlanId } from "@/lib/publicPlans";
 
 const AUTH_BASE_FALLBACK = "https://app.ias-nexus-automacao.com.br";
 const AUTH_BASE = (import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") || AUTH_BASE_FALLBACK).replace(/\/+$/, "");
 const SYSTEM_AUTH_URL = AUTH_BASE.endsWith("/auth") ? AUTH_BASE : `${AUTH_BASE}/auth`;
-
-const PLANS = {
-    profissional: {
-        id: "profissional",
-        name: "Profissional",
-        price: "89,90",
-        priceCents: 19700,
-        description: "Sistema completo de gestão para o seu negócio",
-        features: [
-            "Estabelecimento com gestão completa",
-            "Profissionais ilimitados",
-            "Agenda online 24/7",
-            "CRM de clientes",
-            "Gestão financeira",
-            "Relatórios avançados",
-            "5 níveis de acesso",
-            "Suporte via WhatsApp",
-        ],
-    },
-    pro_ia: {
-        id: "pro_ia",
-        name: "PRO + IA",
-        price: "247",
-        priceCents: 34700,
-        description: "Tudo do Profissional + IA no WhatsApp",
-        features: [
-            "Tudo do plano Profissional",
-            "🤖 IA Atendente no WhatsApp 24/7",
-            "🤖 Respostas automáticas",
-            "🤖 Lembretes automáticos",
-            "🤖 Mensagens de retorno",
-            "🤖 Aniversários automatizados",
-            "🤖 Promoções e eventos via WhatsApp",
-        ],
-    },
-} as const;
-
-type PlanId = keyof typeof PLANS;
 
 function formatPhoneBR(value: string) {
     const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -128,11 +90,9 @@ type FormValues = z.infer<typeof schema>;
 
 export default function Planos() {
     const [searchParams] = useSearchParams();
-    const initialPlan = (searchParams.get("plan") as PlanId) || "profissional";
+    const initialPlan = getInitialPlanId(searchParams.get("plan"));
 
-    const [selectedPlan, setSelectedPlan] = useState<PlanId>(
-        initialPlan in PLANS ? initialPlan : "profissional",
-    );
+    const [selectedPlan, setSelectedPlan] = useState<PlanId>(initialPlan);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
 
@@ -306,8 +266,8 @@ export default function Planos() {
                 </header>
 
                 {/* ── Plan Selector ── */}
-                <div className="mt-8 grid gap-4 md:grid-cols-2 max-w-3xl">
-                    {(Object.keys(PLANS) as PlanId[]).map((key) => {
+                <div className="mt-8 grid gap-4 max-w-3xl">
+                    {VISIBLE_PLAN_IDS.map((key) => {
                         const p = PLANS[key];
                         const isSelected = selectedPlan === key;
                         return (
@@ -322,9 +282,6 @@ export default function Planos() {
                             >
                                 <div className="flex items-center justify-between mb-3">
                                     <h3 className="text-lg font-bold">{p.name}</h3>
-                                    {key === "pro_ia" && (
-                                        <Badge className="bg-primary text-primary-foreground">Popular</Badge>
-                                    )}
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-4">{p.description}</p>
                                 <div className="flex items-baseline gap-1 mb-4">

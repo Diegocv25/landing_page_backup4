@@ -48,7 +48,7 @@ const Footer = () => {
               </span>
             </a>
             <p className="text-muted-foreground text-sm mb-6 max-w-xs">
-              Sistema completo de gestão empresarial com inteligência artificial integrada ao WhatsApp.
+              Sistema completo para organizar agenda, clientes, vendas, estoque, comissões e financeiro.
             </p>
             <div className="flex gap-4">
               {socials.map((social) => (

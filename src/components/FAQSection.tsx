@@ -9,19 +9,14 @@ import {
 const FAQSection = () => {
   const faqs = [
     {
-      question: "Como funciona o chatbot no WhatsApp?",
+      question: "Como os clientes fazem agendamentos?",
       answer:
-        "A IA atende no WhatsApp para tirar dúvidas sobre o seu estabelecimento e enviar o link de agendamento para o cliente. Ela funciona 24 horas por dia, 7 dias por semana.",
+        "Você pode disponibilizar o portal do cliente para que cada pessoa consulte horários e faça o agendamento online.",
     },
     {
       question: "Preciso ter conhecimento técnico?",
       answer:
         "Não! O sistema foi desenvolvido para ser simples e intuitivo. Em poucos minutos você configura tudo e está pronto para usar. Além disso, oferecemos suporte completo.",
-    },
-    {
-      question: "O WhatsApp precisa ficar conectado?",
-      answer:
-        "Sim, o WhatsApp precisa estar conectado ao nosso sistema através do WhatsApp Web. Fornecemos um QR Code para fazer a conexão de forma simples e segura.",
     },
     {
       question: "Posso cancelar a qualquer momento?",

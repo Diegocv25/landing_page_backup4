@@ -4,50 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const PricingSection = () => {
-  const plans = [
-    {
-      name: "Profissional",
-      price: "89,90",
-      description: "Para profissionais autônomos e pequenos negócios",
-      features: [
-        "Estabelecimento com sistema de gestão completo",
-        "Profissionais ilimitados",
-        "Agenda online 24 horas por dia, 7 dias por semana",
-        "Portal do cliente",
-        "CRM de clientes",
-        "Controle de estoque",
-        "Comandas e vendas",
-        "Sistema de remuneração",
-        "Gestão financeira completa",
-        "Relatórios avançados",
-        "5 níveis de acesso",
-        "Multi-estabelecimentos",
-        "Controle de lançamentos",
-        "Suporte via WhatsApp",
-        "Treinamento personalizado",
-      ],
-      popular: false,
-    },
-    {
-      name: [
-        "PRO + IA",
-        "Tudo do plano Profissional + IA",
-      ],
-      price: "247",
-      description: "Para empresas que querem escalar com inteligência artificial",
-      features: [
-        "🤖 IA Atendente no WhatsApp 24 horas por dia, 7 dias por semana",
-        "🤖 IA responde dúvidas automaticamente",
-        "🤖 IA envia links de agendamento",
-        "🤖 Lembretes automáticos via WhatsApp",
-        "🤖 Mensagens de retorno automático",
-        "🤖 Aniversários via WhatsApp",
-        "🤖 Promoções e eventos automatizados",
-        "🤖 Nunca perca cliente por falta de resposta",
-      ],
-      popular: true,
-    },
-  ];
+  const plan = {
+    name: "Plano Pro",
+    price: "30",
+    description: "Gestão completa para salões, barbearias, spas e estéticas",
+    features: [
+      "Estabelecimento com sistema de gestão completo",
+      "Profissionais ilimitados",
+      "Agenda online 24 horas por dia, 7 dias por semana",
+      "Portal do cliente",
+      "CRM de clientes",
+      "Controle de estoque",
+      "Comandas e vendas",
+      "Sistema de remuneração",
+      "Gestão financeira completa",
+      "Relatórios avançados",
+      "5 níveis de acesso",
+      "Multi-estabelecimentos",
+      "Controle de lançamentos",
+      "Suporte via WhatsApp",
+      "Treinamento personalizado",
+    ],
+  };
 
   return (
     <section id="precos" className="py-24 bg-secondary/30">
@@ -66,70 +44,45 @@ const PricingSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={Array.isArray(plan.name) ? plan.name[0] : plan.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative bg-card rounded-2xl p-8 border ${plan.popular
-                  ? "border-primary glow-primary"
-                  : "border-border"
-                }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <div className="flex items-center gap-1 bg-primary text-primary-foreground text-sm font-medium px-4 py-1 rounded-full">
-                    <Star className="w-4 h-4 fill-current" />
-                    Mais Popular
-                  </div>
-                </div>
-              )}
-
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">
-                  {Array.isArray(plan.name)
-                    ? plan.name.map((line, i) => (
-                      <div key={i}>{line}</div>
-                    ))
-                    : plan.name
-                  }
-                </h3>
-                <p className="text-muted-foreground text-sm mb-4">
-                  {plan.description}
-                </p>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-muted-foreground">R$</span>
-                  <span className="text-5xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground">/mês</span>
-                </div>
+        <div className="max-w-xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative bg-card rounded-2xl p-8 border border-primary glow-primary"
+          >
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+              <div className="flex items-center gap-1 bg-primary text-primary-foreground text-sm font-medium px-4 py-1 rounded-full">
+                <Star className="w-4 h-4 fill-current" />
+                Oferta atual
               </div>
+            </div>
 
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 text-primary" />
-                    </div>
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+              <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
+              <div className="flex items-baseline justify-center gap-1">
+                <span className="text-muted-foreground">R$</span>
+                <span className="text-5xl font-bold">{plan.price}</span>
+                <span className="text-muted-foreground">/mês</span>
+              </div>
+            </div>
 
-              <Button
-                asChild
-                className="w-full"
-                variant={plan.popular ? "default" : "outline"}
-                size="lg"
-              >
-                <Link to={`/planos?plan=${plan.popular ? "pro_ia" : "profissional"}`}>
-                  {plan.popular ? "Começar Agora" : "Escolher Plano"}
-                </Link>
-              </Button>
-            </motion.div>
-          ))}
+            <ul className="space-y-4 mb-8">
+              {plan.features.map((feature) => (
+                <li key={feature} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-sm">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Button asChild className="w-full" size="lg">
+              <Link to="/planos?plan=profissional">Escolher Plano Pro</Link>
+            </Button>
+          </motion.div>
         </div>
 
         <motion.div

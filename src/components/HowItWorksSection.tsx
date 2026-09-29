@@ -21,7 +21,7 @@ const HowItWorksSection = () => {
       number: "3",
       icon: Rocket,
       title: "Comece a Usar",
-      description: "Pronto! Sua IA está ativa e trabalhando por você 24 horas por dia.",
+      description: "Pronto! Sua operação está configurada para organizar agenda, clientes e financeiro em um só lugar.",
     },
   ];
 
@@ -36,7 +36,7 @@ const HowItWorksSection = () => {
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Como Começar</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Em apenas 3 passos simples, sua empresa estará funcionando com inteligência artificial.
+            Em apenas 3 passos simples, sua empresa estará pronta para usar o sistema de gestão.
           </p>
         </motion.div>
 

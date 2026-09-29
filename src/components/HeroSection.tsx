@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button";
 import DemoVideoDialog from "@/components/DemoVideoDialog";
 const HeroSection = () => {
   const features = [
-    "Agendamento automático via link",
-    "Atendimento inteligente com IA",
+    "Agenda online para seus clientes",
     "Gestão financeira e administrativa",
-    "Relatórios e métricas",
+    "CRM, estoque, vendas e relatórios",
   ];
   return <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       {/* Background gradient */}
@@ -44,11 +43,11 @@ const HeroSection = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
             Sistema Completo de Gestão
             <br />
-            <span className="gradient-text">+ IA no WhatsApp</span>
+            <span className="gradient-text">para o seu Negócio</span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-balance">
-            Sua secretária virtual atende seus clientes 24 horas por dia, enquanto nosso sistema, fácil e intuitivo, gerencia sua agenda e cuida do seu caixa financeiro. Revolucione seu atendimento e sua gestão em um só lugar.
+            Organize agenda, clientes, vendas, estoque, comissões e financeiro em um sistema simples e intuitivo. Tenha controle da operação e informações para decidir melhor em um só lugar.
           </p>
 
            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">

@@ -11,9 +11,9 @@ const AboutSection = () => {
     },
     {
       icon: MessageSquare,
-      title: "IA no WhatsApp",
+      title: "Portal do Cliente",
       description:
-        "Atendente automático responde dúvidas, envia links de agendamento e funciona 24/7, mesmo quando você está fechado.",
+        "Facilite o agendamento e dê autonomia aos clientes com acesso online ao seu negócio.",
     },
     {
       icon: TrendingUp,
@@ -34,9 +34,8 @@ const AboutSection = () => {
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Sobre o Sistema</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Conheça uma plataforma completa de gestão para o seu negócio. Com ela, você organiza agenda,
-            clientes, vendas, financeiro e operação em um único sistema. O WhatsApp entra como canal de atendimento
-            e automações com IA — sem substituir o sistema de gestão.
+            Conheça uma plataforma completa de gestão para o seu negócio. Organize agenda, clientes, vendas,
+            financeiro e operação em um único sistema simples, centralizado e preparado para crescer.
           </p>
         </motion.div>
 

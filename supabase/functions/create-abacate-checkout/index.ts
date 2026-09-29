@@ -15,7 +15,8 @@ const schema = z.object({
 });
 
 const KIWIFY_CHECKOUTS = {
-  profissional: "https://pay.kiwify.com.br/mI9r7xH",
+  profissional: "https://pay.kiwify.com.br/6UA9zPA",
+  // Mantido apenas para compatibilidade histórica; não é exibido na oferta pública.
   pro_ia: "https://pay.kiwify.com.br/vmsHT1F",
 } as const;
 

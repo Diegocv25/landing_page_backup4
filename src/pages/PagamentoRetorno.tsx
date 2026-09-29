@@ -164,7 +164,7 @@ export default function PagamentoRetorno() {
                                 <p className="text-sm text-muted-foreground">
                                     Seu acesso ao{" "}
                                     <span className="font-medium">
-                                        {planId === "pro_ia" ? "Plano PRO + IA" : "Plano Profissional"}
+                                        {planId === "pro_ia" ? "Plano PRO + IA" : "Plano Pro"}
                                     </span>{" "}
                                     já está ativo.
                                 </p>
