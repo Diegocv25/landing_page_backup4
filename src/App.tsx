@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { initializeMetaPixel } from "./lib/analytics";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import Index from "./pages/Index";
 import Cadastro from "./pages/Cadastro";
 import Planos from "./pages/Planos";
 import PagamentoRetorno from "./pages/PagamentoRetorno";
+import { initializeAnalytics, storeAttributionFromUrl, trackPageView } from "@/lib/analytics";
 import AllFeatures from "./pages/AllFeatures";
 import NotFound from "./pages/NotFound";
 import VerificarEmail from "./pages/VerificarEmail";
@@ -15,6 +17,21 @@ import CriarSenha from "./pages/CriarSenha";
 import ConfirmarTrial from "./pages/ConfirmarTrial";
 
 const queryClient = new QueryClient();
+
+function AnalyticsObserver() {
+  const location = useLocation();
+
+  useEffect(() => {
+    initializeMetaPixel();
+    storeAttributionFromUrl();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(location.pathname, location.search);
+  }, [location.pathname, location.search]);
+
+  return null;
+}
 
 function ScrollToTopOnRouteChange() {
   const location = useLocation();
@@ -33,6 +50,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AnalyticsObserver />
         <ScrollToTopOnRouteChange />
         <Routes>
           <Route path="/" element={<Index />} />
