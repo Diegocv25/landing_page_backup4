@@ -4,18 +4,39 @@ export const META_PIXEL_ID = "1128814962933802";
 export function initializeMetaPixel() {
   if (typeof window === "undefined" || typeof document === "undefined") return;
   if (document.querySelector("script[data-meta-pixel]")) return;
+
+  const w = window as typeof window & {
+    _fbq?: (...args: unknown[]) => void;
+    fbq?: ((...args: unknown[]) => void) & {
+      callMethod?: (...args: unknown[]) => void;
+      queue: unknown[][];
+      push: (...args: unknown[]) => void;
+      loaded?: boolean;
+      version?: string;
+    };
+  };
+
+  if (!w.fbq) {
+    const fbq = ((...args: unknown[]) => {
+      if (fbq.callMethod) fbq.callMethod(...args);
+      else fbq.queue.push(args);
+    }) as NonNullable<typeof w.fbq>;
+    w._fbq = fbq;
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = "2.0";
+    fbq.queue = [];
+    w.fbq = fbq;
+  }
+
   const script = document.createElement("script");
-  script.dataset.metaPixel = META_PIXEL_ID;
-  script.src = "https://connect.facebook.net/en_US/fbevents.js";
   script.async = true;
+  script.src = "https://connect.facebook.net/en_US/fbevents.js";
+  script.dataset.metaPixel = META_PIXEL_ID;
   document.head.appendChild(script);
-  window.setTimeout(() => {
-    const fbq = (window as typeof window & { fbq?: (...args: unknown[]) => void }).fbq;
-    if (fbq) {
-      fbq("init", META_PIXEL_ID);
-      fbq("track", "PageView");
-    }
-  }, 0);
+
+  w.fbq("init", META_PIXEL_ID);
+  w.fbq("track", "PageView");
 }
 export const CANONICAL_ORIGIN = "https://page.ias-nexus-automacao.com.br";
 
