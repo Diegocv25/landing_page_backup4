@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 
 import { supabase } from "@/integrations/supabase/client";
+import { getStoredAttribution, trackEvent, trackMetaEvent } from "@/lib/analytics";
 
 const AUTH_BASE_FALLBACK = "https://app.ias-nexus-automacao.com.br";
 const AUTH_BASE = (import.meta.env.VITE_AUTH_BASE_URL?.replace(/\/+$/, "") || AUTH_BASE_FALLBACK).replace(/\/+$/, "");
@@ -136,6 +137,7 @@ export default function Cadastro() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
+    mode: "onTouched",
     defaultValues: {
       nome_estabelecimento: "",
       rua: "",
@@ -150,8 +152,14 @@ export default function Cadastro() {
       password: "",
       confirmPassword: "",
     },
-    mode: "onTouched",
   });
+  const formStartedRef = useRef(false);
+
+  const trackFormStart = () => {
+    if (formStartedRef.current) return;
+    formStartedRef.current = true;
+    trackEvent("form_start", { form_name: "trial_signup" });
+  };
 
 
   const buildEndereco = (values: FormValues) => {
@@ -289,6 +297,7 @@ export default function Cadastro() {
         email: values.email,
         password: values.password,
         device_fingerprint: deviceFingerprint || undefined,
+        attribution: getStoredAttribution(),
       };
 
       const { data, error } = await supabase.functions.invoke("public-signup-trial", {
@@ -338,6 +347,8 @@ export default function Cadastro() {
       }
 
       if ((data as any)?.success) {
+        trackEvent("generate_lead", { form_name: "trial_signup" });
+        trackMetaEvent("Lead", { content_name: "trial_signup" });
         toast({
           title: "Conta criada! Confirme seu email",
           description: "Enviamos um link de confirmação. Depois de confirmar, você consegue entrar no sistema.",
@@ -392,7 +403,11 @@ export default function Cadastro() {
                 <CardTitle>Crie sua conta</CardTitle>
               </CardHeader>
               <CardContent>
-                <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+                <form
+                  className="space-y-8"
+                  onFocusCapture={trackFormStart}
+                  onSubmit={form.handleSubmit(onSubmit)}
+                >
                   <section className="space-y-4">
                     <header>
                       <h2 className="text-lg font-semibold">Estabelecimento</h2>

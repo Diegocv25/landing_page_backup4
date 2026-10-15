@@ -173,6 +173,14 @@ export function trackEvent(name: string, params: AnalyticsParams = {}) {
   window.gtag?.("event", name, cleanParams(params));
 }
 
+export function trackMetaEvent(
+  name: string,
+  params: AnalyticsParams = {},
+) {
+  initializeMetaPixel();
+  window.fbq?.("track", name, cleanParams(params));
+}
+
 export function buildPageViewParams(pathname: string, search: string) {
   const pagePath = `${pathname}${search}`;
   return {
