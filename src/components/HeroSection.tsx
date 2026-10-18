@@ -3,39 +3,26 @@ import { ArrowRight, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import DemoVideoDialog from "@/components/DemoVideoDialog";
+import { useRef } from "react";
+import { trackEvent } from "@/lib/analytics";
+import ScrollFrames from "@/components/ScrollFrames";
+
 const HeroSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const features = [
     "Agenda online para seus clientes",
     "Gestão financeira e administrativa",
     "CRM, estoque, vendas e relatórios",
   ];
-  return <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-      
-      {/* Decorative elements */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+  return <section ref={sectionRef} className="hero-scroll-section">
+    <div ref={stageRef} className="hero-stage">
+      <ScrollFrames sectionRef={sectionRef} stageRef={stageRef} />
+      <div className="hero-scrim" aria-hidden="true" />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.6
-      }} className="text-center max-w-4xl mx-auto">
-          <motion.div initial={{
-          opacity: 0,
-          scale: 0.9
-        }} animate={{
-          opacity: 1,
-          scale: 1
-        }} transition={{
-          delay: 0.1
-        }} className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
+      <div className="hero-content container mx-auto px-4 relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="hero-copy text-center max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
             <span className="text-sm text-primary font-medium">Funciona para: Salão • Barbearia • Spa • Estética</span>
           </motion.div>
@@ -50,32 +37,25 @@ const HeroSection = () => {
             Organize agenda, clientes, vendas, estoque, comissões e financeiro em um sistema simples e intuitivo. Tenha controle da operação e informações para decidir melhor em um só lugar.
           </p>
 
-           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-             <Button asChild size="lg" className="group text-base px-8 animate-pulse-glow">
-               <Link to="/cadastro">
-                 Quero Testar por 30 Dias
-                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-               </Link>
-             </Button>
-             <DemoVideoDialog />
-           </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <Button asChild size="lg" className="group text-base px-8 animate-pulse-glow">
+              <Link to="/cadastro" onClick={() => trackEvent("click_primary_cta", { cta_location: "hero" })}>
+                Quero Testar por 30 Dias
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            <DemoVideoDialog />
+          </div>
 
-          <motion.div initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          delay: 0.4
-        }} className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
             {features.map(feature => <div key={feature} className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Check className="w-3 h-3 text-primary" />
-                </div>
-                <span>{feature}</span>
-              </div>)}
+              <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center"><Check className="w-3 h-3 text-primary" /></div>
+              <span>{feature}</span>
+            </div>)}
           </motion.div>
         </motion.div>
       </div>
-    </section>;
+    </div>
+  </section>;
 };
 export default HeroSection;

@@ -1,0 +1,1343 @@
+/* Landing-only visual layer. No shared application tokens are changed. */
+.landing-page,
+body:has(.landing-page) [role="dialog"] {
+  --background: 210 10% 4%;
+  --foreground: 45 25% 94%;
+  --card: 216 13% 8%;
+  --card-foreground: 45 25% 94%;
+  --popover: 216 13% 8%;
+  --popover-foreground: 45 25% 94%;
+  --primary: 40 48% 60%;
+  --primary-foreground: 210 10% 4%;
+  --secondary: 210 13% 9%;
+  --secondary-foreground: 45 25% 94%;
+  --muted: 210 13% 9%;
+  --muted-foreground: 220 3% 61%;
+  --accent: 210 13% 11%;
+  --accent-foreground: 43 60% 72%;
+  --border: 220 7% 16%;
+  --input: 220 7% 22%;
+  --ring: 40 48% 60%;
+  color: #f3f1eb;
+  color-scheme: dark;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.landing-page {
+  background: #090a0b;
+}
+
+.landing-page *,
+body:has(.landing-page) [role="dialog"] * {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.landing-page .container {
+  max-width: 1280px;
+  padding-inline: clamp(1.25rem, 4.2vw, 4rem);
+}
+
+.landing-page a,
+.landing-page button,
+body:has(.landing-page) [role="dialog"] a,
+body:has(.landing-page) [role="dialog"] button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.landing-page a:focus-visible,
+.landing-page button:focus-visible,
+body:has(.landing-page) [role="dialog"] a:focus-visible,
+body:has(.landing-page) [role="dialog"] button:focus-visible {
+  outline: 2px solid #e3ca8e;
+  outline-offset: 5px;
+}
+
+.landing-page .gradient-text {
+  color: #e3ca8e;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.landing-page .animate-pulse,
+.landing-page .animate-pulse-glow {
+  animation: none;
+}
+
+.landing-page .glow-primary {
+  box-shadow: 0 28px 70px -32px rgba(0, 0, 0, 0.85);
+}
+
+.landing-page .bg-primary,
+body:has(.landing-page) [role="dialog"] .bg-primary {
+  background-color: #c9a867;
+  color: #090a0b;
+}
+
+.landing-page :is(a, button).bg-primary,
+body:has(.landing-page) [role="dialog"] :is(a, button).bg-primary {
+  min-height: 46px;
+  border: 1px solid rgba(227, 202, 142, 0.65);
+  border-radius: 7px;
+  background: #c9a867;
+  color: #090a0b;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.landing-page :is(a, button).bg-primary:hover,
+body:has(.landing-page) [role="dialog"] :is(a, button).bg-primary:hover {
+  background: #e3ca8e;
+  border-color: #e3ca8e;
+  box-shadow: 0 8px 28px rgba(201, 168, 103, 0.13);
+}
+
+.landing-page :is(a, button).border-input,
+body:has(.landing-page) [role="dialog"] :is(a, button).border-input {
+  min-height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 7px;
+  background: rgba(17, 19, 22, 0.72);
+  color: #f3f1eb;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.landing-page :is(a, button).border-input:hover,
+body:has(.landing-page) [role="dialog"] :is(a, button).border-input:hover {
+  border-color: rgba(201, 168, 103, 0.6);
+  background: #15181b;
+  color: #e3ca8e;
+}
+
+/* Keep the existing navigation and breakpoint, with room for every link. */
+.landing-page > header {
+  background: rgba(9, 10, 11, 0.93);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.landing-page > header > .container > div {
+  height: 80px;
+  gap: 1rem;
+}
+
+.landing-page > header a[href="#"] {
+  flex: 0 0 auto;
+  gap: 0.6rem;
+}
+
+.landing-page > header a[href="#"] > div {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+}
+
+.landing-page > header a[href="#"] > span {
+  font-size: 1rem;
+  letter-spacing: -0.04em;
+}
+
+.landing-page > header nav {
+  gap: clamp(1rem, 2.2vw, 2rem);
+}
+
+.landing-page > header nav > a {
+  color: #a7a8aa;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: color 160ms ease;
+}
+
+.landing-page > header nav > a:hover,
+.landing-page > header nav > a:focus-visible {
+  color: #e3ca8e;
+}
+
+.landing-page > header > .container > div > div.hidden.md\:flex {
+  gap: 0.65rem;
+}
+
+.landing-page > header :is(a, button).bg-primary,
+.landing-page > header :is(a, button).border-input {
+  min-height: 38px;
+  font-size: 0.78rem;
+  padding-inline: 0.9rem;
+}
+
+/* A single pinned stage holds the frame canvas and the existing hero content. */
+.landing-page .hero-scroll-section {
+  position: relative;
+  height: calc(var(--hero-stage-height, 100svh) + 240svh);
+  background: #090a0b;
+}
+
+.landing-page .hero-stage {
+  position: sticky;
+  top: min(0px, calc(100svh - var(--hero-stage-height, 100svh)));
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  height: auto;
+  overflow: hidden;
+  padding-top: 80px;
+  background: #090a0b;
+}
+
+.landing-page .hero-frames,
+.landing-page .hero-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.landing-page .hero-frames {
+  z-index: -3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.landing-page .hero-frames canvas,
+.landing-page .hero-frames img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.landing-page .hero-scrim {
+  z-index: -2;
+  background: linear-gradient(90deg, rgba(9, 10, 11, 0.97) 0%, rgba(9, 10, 11, 0.91) 29%, rgba(9, 10, 11, 0.76) 56%, rgba(9, 10, 11, 0.05) 85%), linear-gradient(0deg, #090a0b 0%, rgba(9, 10, 11, 0) 25%, rgba(9, 10, 11, 0) 80%, rgba(9, 10, 11, 0.4) 100%);
+}
+
+.landing-page .hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-block: 3.5rem;
+}
+
+.landing-page .hero-copy {
+  max-width: 760px;
+  margin-inline: 0;
+  text-align: left;
+}
+
+.landing-page .hero-copy > .inline-flex {
+  max-width: 100%;
+  margin-bottom: 1.75rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(201, 168, 103, 0.27);
+  border-radius: 5px;
+  background: rgba(17, 19, 22, 0.6);
+}
+
+.landing-page .hero-copy > .inline-flex > .text-sm {
+  color: #d6bd8a;
+  font-size: 0.73rem;
+  letter-spacing: 0.015em;
+  line-height: 1.6;
+}
+
+.landing-page .hero-copy > .inline-flex > .w-2 {
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  background: #c9a867;
+}
+
+.landing-page .hero-copy h1 {
+  margin-bottom: 1.65rem;
+  font-size: clamp(3rem, 4.8vw, 4.6rem);
+  font-weight: 600;
+  line-height: 1.055;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+
+.landing-page .hero-copy > p {
+  max-width: 650px;
+  margin: 0 0 2rem;
+  color: #b6b6b5;
+  font-size: 1.08rem;
+  font-weight: 400;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+
+.landing-page .hero-copy > .flex {
+  justify-content: flex-start;
+}
+
+.landing-page .hero-copy > .flex.mb-12 {
+  gap: 0.75rem;
+  margin-bottom: 2.25rem;
+}
+
+.landing-page .hero-copy > .flex.mb-12 :is(a, button) {
+  min-height: 52px;
+  padding-inline: 1.5rem;
+  font-size: 0.88rem;
+}
+
+.landing-page .hero-copy > .flex.text-sm {
+  max-width: 640px;
+  column-gap: 1.5rem;
+  row-gap: 0.9rem;
+  color: #a4a5a7;
+  font-size: 0.71rem;
+}
+
+.landing-page .hero-copy > .flex.text-sm > div > div {
+  width: 17px;
+  height: 17px;
+  background: rgba(201, 168, 103, 0.1);
+  border: 1px solid rgba(201, 168, 103, 0.22);
+}
+
+/* Subsequent sections retain their content, order, links, and responsive grids. */
+.landing-page main > section:not(.hero-scroll-section) {
+  padding-block: clamp(4.5rem, 8.4vw, 7.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+  background: #090a0b;
+  scroll-margin-top: 80px;
+}
+
+.landing-page main > section:is(#sobre, #precos) {
+  background: #0d0f11;
+}
+
+.landing-page main > section:not(.hero-scroll-section) .mb-16 {
+  margin-bottom: clamp(2.5rem, 4.2vw, 4rem);
+}
+
+.landing-page main > section:not(.hero-scroll-section) h2 {
+  max-width: 850px;
+  margin-inline: auto;
+  color: #f3f1eb;
+  font-size: clamp(1.95rem, 3vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.landing-page main > section:not(.hero-scroll-section) h2 + p {
+  margin-top: 1.2rem;
+  font-size: 0.96rem;
+  line-height: 1.8;
+}
+
+.landing-page main > section:not(.hero-scroll-section) h3 {
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+}
+
+.landing-page main > section:not(.hero-scroll-section) p {
+  line-height: 1.75;
+}
+
+.landing-page :is(#sobre, #funcionalidades) .grid > .group,
+.landing-page main > section:nth-child(3) .space-y-6 > .group {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: #111316;
+  box-shadow: 0 12px 30px -25px rgba(0, 0, 0, 0.9);
+  transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.landing-page :is(#sobre, #funcionalidades) .grid > .group:hover,
+.landing-page main > section:nth-child(3) .space-y-6 > .group:hover {
+  border-color: rgba(201, 168, 103, 0.4);
+  background: #15181b;
+  box-shadow: 0 16px 32px -22px rgba(0, 0, 0, 0.75);
+}
+
+.landing-page #sobre .grid {
+  gap: 1.15rem;
+}
+
+.landing-page #sobre .grid > .group {
+  max-width: none;
+  padding: 2rem;
+}
+
+.landing-page #sobre .group > div:first-child,
+.landing-page #funcionalidades .group > div:first-child {
+  border: 1px solid rgba(201, 168, 103, 0.15);
+  border-radius: 8px;
+  background: rgba(201, 168, 103, 0.055);
+}
+
+.landing-page #sobre .group > div:first-child {
+  width: 48px;
+  height: 48px;
+}
+
+.landing-page #sobre .group p {
+  font-size: 0.9rem;
+}
+
+.landing-page main > section:nth-child(3) .space-y-6 {
+  max-width: 1000px;
+}
+
+.landing-page main > section:nth-child(3) .space-y-6 > .group {
+  padding: 1.85rem 2rem;
+  gap: 1.7rem;
+}
+
+.landing-page main > section:nth-child(3) .group > .flex-shrink-0 {
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(201, 168, 103, 0.22);
+  border-radius: 8px;
+  background: rgba(201, 168, 103, 0.07);
+}
+
+.landing-page main > section:nth-child(3) .group > .flex-shrink-0 > svg {
+  width: 23px;
+  height: 23px;
+  color: #c9a867;
+}
+
+.landing-page main > section:nth-child(3) .group p {
+  font-size: 0.9rem;
+}
+
+.landing-page #funcionalidades .grid {
+  gap: 0.9rem;
+}
+
+.landing-page #funcionalidades .grid > .group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.55rem 1.25rem;
+  text-align: left;
+}
+
+.landing-page #funcionalidades .group > div:first-child {
+  margin-inline: 0;
+  margin-bottom: 1.4rem;
+  transform: none;
+}
+
+.landing-page #funcionalidades .group h3 {
+  min-height: 2.7em;
+  margin-bottom: 0.65rem;
+  font-size: 0.91rem;
+  font-weight: 600;
+}
+
+.landing-page #funcionalidades .group p {
+  flex: 1;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.landing-page #funcionalidades .group button {
+  margin-top: 1.4rem;
+  font-size: 0.76rem;
+}
+
+.landing-page #funcionalidades .mt-10 {
+  margin-top: 2.5rem;
+}
+
+.landing-page main > section:nth-child(5) .grid > div {
+  padding-inline: 0.75rem;
+}
+
+.landing-page main > section:nth-child(5) .grid > div > .w-20 {
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(201, 168, 103, 0.45);
+  border-radius: 50%;
+  background: #111316;
+  color: #e3ca8e;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.landing-page main > section:nth-child(5) .grid > div > .absolute {
+  top: 32px;
+  height: 1px;
+  background: rgba(201, 168, 103, 0.22);
+}
+
+.landing-page main > section:nth-child(5) .grid > div > .w-12 {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 1.2rem;
+  border: 0;
+  background: none;
+}
+
+.landing-page main > section:nth-child(5) .grid p {
+  font-size: 0.88rem;
+}
+
+.landing-page #precos > .container > .max-w-xl {
+  max-width: 640px;
+}
+
+.landing-page #precos .glow-primary {
+  padding: 2.75rem;
+  border: 1px solid rgba(201, 168, 103, 0.45);
+  border-radius: 12px;
+  background: #111316;
+  box-shadow: 0 32px 75px -30px rgba(0, 0, 0, 0.8);
+}
+
+.landing-page #precos .glow-primary > .absolute > div {
+  padding: 0.45rem 1rem;
+  border: 1px solid rgba(201, 168, 103, 0.45);
+  border-radius: 4px;
+  background: #15181b;
+  color: #e3ca8e;
+  font-size: 0.75rem;
+}
+
+.landing-page #precos .text-5xl {
+  padding-inline: 0.3rem;
+  color: #e3ca8e;
+  font-size: 4.5rem;
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 1.15;
+}
+
+.landing-page #precos ul {
+  margin-block: 2rem;
+  padding-block: 1.6rem;
+  border-block: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.landing-page #precos li {
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.landing-page #precos li > div {
+  margin-top: 1px;
+  background: rgba(201, 168, 103, 0.08);
+}
+
+.landing-page #precos li > span {
+  color: #c6c6c4;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.landing-page #precos .mt-12 p {
+  font-size: 0.8rem;
+}
+
+.landing-page #faq .max-w-3xl {
+  max-width: 840px;
+}
+
+.landing-page #faq [data-orientation="vertical"].space-y-4 > div {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: #111316;
+  transition: border-color 180ms ease;
+}
+
+.landing-page #faq [data-orientation="vertical"].space-y-4 > div[data-state="open"] {
+  border-color: rgba(201, 168, 103, 0.45);
+}
+
+.landing-page #faq h3 button {
+  gap: 1.5rem;
+  padding-block: 1.5rem;
+  font-size: 0.93rem;
+}
+
+.landing-page #faq h3 button > span {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.landing-page #faq h3 button > svg {
+  color: #c9a867;
+}
+
+.landing-page #faq [role="region"] > div {
+  max-width: 720px;
+  font-size: 0.87rem;
+  line-height: 1.8;
+}
+
+.landing-page main > section:last-child > .container > div {
+  max-width: 1100px;
+  padding: clamp(2rem, 5vw, 4.75rem);
+  border: 1px solid rgba(201, 168, 103, 0.25);
+  border-radius: 12px;
+  background: #111316;
+  box-shadow: 0 20px 60px -34px #000;
+}
+
+.landing-page main > section:last-child > .container > div > .absolute {
+  display: none;
+}
+
+.landing-page main > section:last-child h2 {
+  max-width: 700px;
+}
+
+.landing-page main > section:last-child p {
+  max-width: 650px;
+}
+
+/* Copyright remains a full-width row beneath every footer column. */
+.landing-page > footer {
+  padding-block: 3rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0c0d0f;
+}
+
+.landing-page > footer > .container {
+  display: block;
+  min-width: 0;
+}
+
+.landing-page > footer .grid {
+  min-width: 0;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.landing-page > footer .grid > div {
+  min-width: 0;
+}
+
+.landing-page > footer .grid a[href="#"].flex {
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.landing-page > footer .grid a[href="#"].flex > div {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+}
+
+.landing-page > footer .grid a[href="#"].flex > span {
+  font-size: 1rem;
+  letter-spacing: -0.035em;
+}
+
+.landing-page > footer h4 {
+  margin-bottom: 1.2rem;
+  color: #deddd7;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.landing-page > footer p,
+.landing-page > footer ul a {
+  font-size: 0.78rem;
+  line-height: 1.75;
+}
+
+.landing-page > footer ul a:hover {
+  color: #e3ca8e;
+}
+
+.landing-page > footer .flex.gap-4 a {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: #111316;
+}
+
+.landing-page > footer > .container > .border-t {
+  display: block;
+  clear: both;
+  width: 100%;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.landing-page > footer > .container > .border-t p {
+  color: #777a7e;
+  font-size: 0.68rem;
+}
+
+/* These tokens are applied only to dialogs opened from the public landing. */
+body:has(.landing-page) [role="dialog"] {
+  width: calc(100% - 2rem);
+  max-height: calc(100svh - 2rem);
+  overflow-y: auto;
+  border: 1px solid rgba(201, 168, 103, 0.28);
+  border-radius: 12px;
+  background: #111316;
+  box-shadow: 0 36px 100px rgba(0, 0, 0, 0.7);
+}
+
+body:has(.landing-page) [role="dialog"] [id$="description"] {
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .landing-page > header .container {
+    padding-inline: 1.25rem;
+  }
+
+  .landing-page > header > .container > div {
+    gap: 0.6rem;
+  }
+
+  .landing-page > header a[href="#"] > div {
+    width: 36px;
+    height: 36px;
+  }
+
+  .landing-page > header a[href="#"] > span {
+    font-size: 0.85rem;
+  }
+
+  .landing-page > header nav.hidden.md\:flex {
+    gap: 0.85rem;
+  }
+
+  .landing-page > header nav > a {
+    font-size: 0.73rem;
+  }
+
+  .landing-page > header :is(a, button).bg-primary,
+  .landing-page > header :is(a, button).border-input {
+    gap: 0.35rem;
+    padding-inline: 0.7rem;
+    font-size: 0.71rem;
+  }
+
+  .landing-page .hero-copy {
+    max-width: 660px;
+  }
+
+  .landing-page .hero-copy h1 {
+    font-size: 3.65rem;
+  }
+
+  .landing-page .hero-copy > p {
+    max-width: 590px;
+    font-size: 1rem;
+  }
+
+  .landing-page #sobre .grid > .group {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-page > header > .container > div {
+    height: 68px;
+  }
+
+  .landing-page > header a[href="#"] > div {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-page > header > .md\:hidden {
+    background: #111316;
+  }
+
+  .landing-page > header nav {
+    padding-block: 1.5rem;
+  }
+
+  .landing-page > header nav > a {
+    padding-block: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .landing-page .hero-stage {
+    padding-top: 68px;
+  }
+
+  .landing-page .hero-content {
+    padding-top: 2.25rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .landing-page .hero-copy {
+    max-width: 620px;
+  }
+
+  .landing-page .hero-copy > .inline-flex {
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .landing-page .hero-copy > .inline-flex > .text-sm {
+    font-size: 0.64rem;
+    letter-spacing: 0;
+  }
+
+  .landing-page .hero-copy h1 {
+    margin-bottom: 1.4rem;
+    font-size: clamp(2.3rem, 7.8vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.05em;
+  }
+
+  .landing-page .hero-copy > p {
+    margin-bottom: 1.65rem;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+
+  .landing-page .hero-copy > .flex.mb-12 {
+    align-items: stretch;
+    margin-bottom: 1.75rem;
+  }
+
+  .landing-page .hero-copy > .flex.mb-12 :is(a, button) {
+    min-height: 49px;
+    padding-inline: 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  .landing-page .hero-copy > .flex.text-sm {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.7rem;
+  }
+
+  .landing-page .hero-scrim {
+    background: linear-gradient(90deg, rgba(9, 10, 11, 0.86), rgba(9, 10, 11, 0.68)), linear-gradient(0deg, #090a0b 0%, rgba(9, 10, 11, 0.25) 42%, rgba(9, 10, 11, 0.76) 100%);
+  }
+
+  .landing-page .hero-frames {
+    mask-image: linear-gradient(to bottom, transparent calc(50% - 28.125vw), #000 calc(50% - 18vw), #000 calc(50% + 18vw), transparent calc(50% + 28.125vw));
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) {
+    scroll-margin-top: 68px;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) h2 {
+    font-size: 1.95rem;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) h2 + p {
+    font-size: 0.88rem;
+  }
+
+  .landing-page #sobre .grid > .group {
+    padding: 1.6rem;
+  }
+
+  .landing-page main > section:nth-child(3) .space-y-6 > .group {
+    padding: 1.5rem;
+    gap: 1.1rem;
+  }
+
+  .landing-page main > section:nth-child(3) .group > .flex-shrink-0 {
+    width: 42px;
+    height: 42px;
+  }
+
+  .landing-page main > section:nth-child(3) .group h3 {
+    font-size: 1.05rem;
+  }
+
+  .landing-page main > section:nth-child(3) .group p {
+    font-size: 0.84rem;
+  }
+
+  .landing-page #funcionalidades .grid > .group {
+    padding: 1.5rem;
+  }
+
+  .landing-page #funcionalidades .group h3 {
+    min-height: 0;
+    font-size: 1rem;
+  }
+
+  .landing-page #funcionalidades .group p {
+    font-size: 0.86rem;
+  }
+
+  .landing-page main > section:nth-child(5) .grid {
+    gap: 2.5rem;
+  }
+
+  .landing-page #precos .glow-primary {
+    padding: 2.25rem 1.5rem 1.5rem;
+  }
+
+  .landing-page #precos .text-5xl {
+    font-size: 4rem;
+  }
+
+  .landing-page #faq .px-6 {
+    padding-inline: 1.25rem;
+  }
+
+  .landing-page #faq h3 button {
+    font-size: 0.87rem;
+  }
+
+  .landing-page > footer .grid {
+    gap: 2rem 1.5rem;
+  }
+
+  .landing-page > footer .grid > .col-span-2 {
+    padding-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .landing-page .hero-copy > .inline-flex > .text-sm {
+    font-size: 0.58rem;
+  }
+
+  .landing-page .hero-copy h1 {
+    font-size: 2.15rem;
+  }
+
+  .landing-page main > section:nth-child(3) .space-y-6 > .group {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page *,
+  .landing-page *::before,
+  .landing-page *::after,
+  body:has(.landing-page) [role="dialog"] *,
+  body:has(.landing-page) [role="dialog"] *::before,
+  body:has(.landing-page) [role="dialog"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .landing-page [style*="opacity"],
+  .landing-page [style*="transform"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .landing-page .group:hover svg {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.landing-page) { scroll-behavior: auto; }
+  .landing-page .hero-scroll-section { height: auto; }
+  .landing-page .hero-stage { position: relative; top: auto; }
+}
+
+/* Complete desktop folds, using the space below the fixed navigation.
+   Natural height remains available for zoom, expanded content and small screens. */
+@media (min-width: 1024px) and (min-height: 640px) {
+  html:has(.landing-page) {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 80px;
+  }
+
+  .landing-page {
+    --landing-fold-height: calc(100svh - 80px);
+  }
+
+  .landing-page .hero-scroll-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    scroll-margin: 0;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) {
+    display: flex;
+    align-items: center;
+    min-height: var(--landing-fold-height);
+    padding-block: clamp(24px, 4svh, 40px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    scroll-margin-top: 0;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) > .container {
+    width: 100%;
+    max-width: 1600px;
+    padding-inline: clamp(24px, 3.5vw, 64px);
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) .mb-16 {
+    margin-bottom: 24px;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) h2 {
+    margin-bottom: 0;
+    font-size: clamp(34px, 4.5svh, 44px);
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) h2 + p {
+    margin-top: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .landing-page #sobre .grid > .group {
+    min-height: clamp(240px, 44svh, 430px);
+    padding: clamp(24px, 3svh, 36px);
+  }
+
+  .landing-page #sobre .group > div:first-child {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 20px;
+  }
+
+  .landing-page #sobre .group h3 {
+    font-size: 22px;
+  }
+
+  .landing-page #sobre .group p {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .landing-page main > section:nth-child(3) .space-y-6 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1400px;
+    gap: 16px;
+  }
+
+  .landing-page main > section:nth-child(3) .space-y-6 > .group {
+    flex-direction: column;
+    gap: 18px;
+    margin: 0;
+    min-height: clamp(260px, 46svh, 450px);
+    padding: clamp(24px, 3svh, 36px);
+  }
+
+  .landing-page main > section:nth-child(3) .group > .flex-shrink-0 {
+    width: 44px;
+    height: 44px;
+  }
+
+  .landing-page main > section:nth-child(3) .group h3 {
+    font-size: 22px;
+  }
+
+  .landing-page main > section:nth-child(3) .group p {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .landing-page #funcionalidades .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(12px, 1.8svh, 18px);
+  }
+
+  .landing-page #funcionalidades .grid > .group {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    align-items: start;
+    gap: 12px;
+    min-height: clamp(150px, calc((var(--landing-fold-height) - clamp(250px, 33svh, 310px)) / 2), 260px);
+    padding: clamp(18px, 2.5svh, 26px);
+  }
+
+  .landing-page #funcionalidades .group > div:first-child {
+    width: 40px;
+    height: 40px;
+    margin: 0;
+  }
+
+  .landing-page #funcionalidades .group > div:first-child svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .landing-page #funcionalidades .group h3 {
+    grid-column: 2;
+    align-self: center;
+    min-height: 0;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .landing-page #funcionalidades .group p {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .landing-page #funcionalidades .group button {
+    grid-column: 1 / -1;
+    justify-self: start;
+    min-height: 32px;
+    margin-top: 0;
+    font-size: 14px;
+  }
+
+  .landing-page #funcionalidades .mt-10 {
+    margin-top: 20px;
+  }
+
+  .landing-page main > section:nth-child(5) .grid {
+    min-height: clamp(220px, 35svh, 340px);
+    margin-bottom: 24px;
+  }
+
+  .landing-page main > section:nth-child(5) .grid > div > .w-20 {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+  }
+
+  .landing-page main > section:nth-child(5) .grid > div > .absolute {
+    top: 28px;
+  }
+
+  .landing-page main > section:nth-child(5) .grid > div > .w-12 {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 12px;
+  }
+
+  .landing-page main > section:nth-child(5) .grid h3 {
+    font-size: 22px;
+  }
+
+  .landing-page main > section:nth-child(5) .grid p {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .landing-page #precos > .container > .max-w-xl {
+    max-width: 1400px;
+  }
+
+  .landing-page #precos .glow-primary {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 2fr);
+    gap: 20px 28px;
+    padding: 28px;
+    min-height: clamp(280px, 42svh, 420px);
+  }
+
+  .landing-page #precos .glow-primary > .text-center {
+    align-self: center;
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  .landing-page #precos .glow-primary > .text-center p {
+    max-width: 240px;
+  }
+
+  .landing-page #precos .glow-primary .items-baseline {
+    justify-content: flex-start;
+  }
+
+  .landing-page #precos .text-5xl {
+    font-size: 64px;
+  }
+
+  .landing-page #precos ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: center;
+    gap: 12px 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .landing-page #precos li {
+    gap: 8px;
+    margin: 0;
+  }
+
+  .landing-page #precos li > div {
+    width: 16px;
+    height: 16px;
+  }
+
+  .landing-page #precos li > span {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .landing-page #precos .glow-primary > a {
+    grid-column: 1 / -1;
+  }
+
+  .landing-page #precos .mt-12 {
+    margin-top: 18px;
+  }
+
+  .landing-page #faq .max-w-3xl {
+    max-width: 1100px;
+  }
+
+  .landing-page #faq .space-y-4 {
+    display: grid;
+    gap: clamp(8px, 1.3svh, 12px);
+  }
+
+  .landing-page #faq .space-y-4 > div {
+    margin: 0;
+  }
+
+  .landing-page #faq h3 button {
+    padding-block: clamp(14px, 2svh, 20px);
+    font-size: 16px;
+  }
+
+  .landing-page #faq [role="region"] > div {
+    padding-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .landing-page main > section:last-child {
+    min-height: calc(var(--landing-fold-height) / 2);
+    padding-block: 20px;
+  }
+
+  .landing-page main > section:last-child > .container > div {
+    padding: 24px 32px;
+  }
+
+  .landing-page main > section:last-child h2 {
+    font-size: 32px;
+  }
+
+  .landing-page main > section:last-child p {
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .landing-page > footer {
+    display: flex;
+    align-items: center;
+    min-height: calc(var(--landing-fold-height) / 2);
+    padding-block: 18px;
+  }
+
+  .landing-page > footer > .container {
+    width: 100%;
+  }
+
+  .landing-page > footer .grid {
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+
+  .landing-page > footer .grid a[href="#"].flex {
+    margin-bottom: 10px;
+  }
+
+  .landing-page > footer .grid a[href="#"].flex > div {
+    width: 40px;
+    height: 40px;
+  }
+
+  .landing-page > footer .grid p {
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .landing-page > footer h4 {
+    margin-bottom: 10px;
+  }
+
+  .landing-page > footer li + li {
+    margin-top: 6px;
+  }
+
+  .landing-page > footer .flex.gap-4 a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .landing-page > footer > .container > .border-t {
+    padding-top: 14px;
+  }
+}
+
+@media (min-width: 1024px) and (min-height: 640px) and (max-height: 700px),
+  (min-width: 1024px) and (max-width: 1199px) {
+  .landing-page main > section:not(.hero-scroll-section) h2 {
+    font-size: 32px;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) h2 + p {
+    font-size: 14px;
+  }
+
+  .landing-page #sobre .group p,
+  .landing-page main > section:nth-child(3) .group p,
+  .landing-page main > section:nth-child(5) .grid p {
+    font-size: 14px;
+  }
+
+  .landing-page main > section:nth-child(3) .group h3,
+  .landing-page main > section:nth-child(5) .grid h3 {
+    font-size: 19px;
+  }
+
+  .landing-page #funcionalidades .grid > .group {
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 8px 10px;
+    padding: 16px;
+  }
+
+  .landing-page #funcionalidades .group > div:first-child {
+    width: 32px;
+    height: 32px;
+  }
+
+  .landing-page #funcionalidades .group h3 {
+    font-size: 15px;
+  }
+
+  .landing-page #funcionalidades .group p {
+    font-size: 14px;
+  }
+
+  .landing-page #funcionalidades .group button {
+    min-height: 30px;
+    font-size: 13px;
+  }
+
+  .landing-page #precos li > span {
+    font-size: 13.5px;
+  }
+
+  .landing-page #faq h3 button {
+    padding-block: 14px;
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.landing-page) {
+    scroll-snap-type: none;
+  }
+}
