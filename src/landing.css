@@ -670,7 +670,7 @@ body:has(.landing-page) [role="dialog"] :is(a, button).border-input:hover {
 
 .landing-page > footer > .container > .border-t p {
   color: #777a7e;
-  font-size: 0.68rem;
+  font-size: 1rem;
 }
 
 /* These tokens are applied only to dialogs opened from the public landing. */
