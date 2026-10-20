@@ -1021,9 +1021,31 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     font-size: 15px;
     line-height: 1.55;
   }
-  .landing-page #precos li > span,
-  .landing-page #faq h3 button {
-    font-size: 15px;
+  /* Readability overrides: exact component classes, without changing section height. */
+  .landing-page #funcionalidades .grid > .group.rounded-2xl {
+    padding: 20px !important;
+    gap: 10px 12px !important;
   }
-}
+  .landing-page #funcionalidades .grid > .group.rounded-2xl > div:first-child {
+    width: 36px !important;
+    height: 36px !important;
+    margin-bottom: 0 !important;
+  }
+  .landing-page #funcionalidades .grid > .group.rounded-2xl > div:first-child svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .landing-page #funcionalidades .grid > .group.rounded-2xl h3 {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+  .landing-page #funcionalidades .grid > .group.rounded-2xl p {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+  .landing-page #funcionalidades .grid > .group.rounded-2xl button {
+    min-height: 32px !important;
+    margin-top: 0 !important;
+    font-size: 13px !important;
+  }
 
