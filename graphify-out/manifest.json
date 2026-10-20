@@ -96,9 +96,9 @@
     "semantic_hash": ""
   },
   "src/components/ObjectivesSection.tsx": {
-    "mtime": 1790662109.2367587,
-    "seen": 1792474930.5080633,
-    "ast_hash": "04c4f2de6de99332f8194459a9fc8a3a",
+    "mtime": 1792517353.07043,
+    "seen": 1792524677.4364884,
+    "ast_hash": "c191d733af002b28a6888d0f38c28fbd",
     "semantic_hash": ""
   },
   "src/components/PricingSection.tsx": {
