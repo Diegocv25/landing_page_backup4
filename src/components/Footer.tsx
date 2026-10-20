@@ -19,8 +19,8 @@ const Footer = () => {
       { label: "Contato", href: "#" },
     ],
     legal: [
-      { label: "Termos de Uso", href: "#" },
-      { label: "Privacidade", href: "#" },
+      { label: "Termos de Uso", href: "/termos-de-uso" },
+      { label: "Privacidade", href: "/privacidade" },
     ],
   };
 
@@ -35,7 +35,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-6">
           <div className="col-span-2">
             <a href="#" className="flex items-center gap-3 mb-4">
-              <div className="w-[72px] h-[72px] rounded-lg overflow-hidden bg-transparent">
+              <div className="w-20 h-20 rounded-lg overflow-hidden bg-transparent">
                 <img
                   src="/nexus-logo.jpg"
                   alt="Nexus Automação"

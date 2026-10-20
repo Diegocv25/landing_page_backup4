@@ -15,6 +15,8 @@ import NotFound from "./pages/NotFound";
 import VerificarEmail from "./pages/VerificarEmail";
 import CriarSenha from "./pages/CriarSenha";
 import ConfirmarTrial from "./pages/ConfirmarTrial";
+import TermsOfUse from "./pages/TermsOfUse";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +63,8 @@ const App = () => (
           <Route path="/verificar-email" element={<VerificarEmail />} />
           <Route path="/confirmar-trial" element={<ConfirmarTrial />} />
           <Route path="/criar-senha" element={<CriarSenha />} />
+          <Route path="/termos-de-uso" element={<TermsOfUse />} />
+          <Route path="/privacidade" element={<PrivacyPolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

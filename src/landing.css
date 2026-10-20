@@ -673,6 +673,24 @@ body:has(.landing-page) [role="dialog"] :is(a, button).border-input:hover {
   font-size: 1rem;
 }
 
+/* Logos maiores no cabeçalho e no rodapé, preservando o recorte responsivo. */
+.landing-page > header a[href="#"] > div {
+  width: 64px;
+  height: 64px;
+}
+
+.landing-page > footer .grid a[href="#"] > div {
+  width: 88px;
+  height: 88px;
+}
+
+@media (max-width: 767px) {
+  .landing-page > header a[href="#"] > div {
+    width: 52px;
+    height: 52px;
+  }
+}
+
 /* These tokens are applied only to dialogs opened from the public landing. */
 body:has(.landing-page) [role="dialog"] {
   width: calc(100% - 2rem);
