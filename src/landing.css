@@ -954,8 +954,8 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     zoom: 0.75;
     width: 133.3333%;
     max-width: none;
-    margin-left: -16.6666%;
-    margin-right: -16.6666%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .landing-page #funcionalidades .grid {
