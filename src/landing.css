@@ -34,8 +34,8 @@ body:has(.landing-page) [role="dialog"] * {
 }
 
 .landing-page .container {
-  max-width: 1280px;
-  padding-inline: clamp(1.25rem, 4.2vw, 4rem);
+  max-width: 1440px;
+  padding-inline: clamp(1.25rem, 3vw, 3rem);
 }
 
 .landing-page a,
