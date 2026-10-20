@@ -951,12 +951,11 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
    Keep the viewport at 100% while reducing only the fold contents. */
 @media (min-width: 1024px) and (min-height: 640px) {
   .landing-page main > section:not(.hero-scroll-section) > .container {
-    zoom: 0.75;
-    width: 133.3333% !important;
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    align-self: flex-start;
+    zoom: 1;
+    width: auto;
+    max-width: 1152px;
+    margin-left: auto;
+    margin-right: auto;
     box-sizing: border-box;
   }
 
@@ -970,7 +969,7 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page main > section:not(.hero-scroll-section) > .container > * {
-    max-height: calc((100svh - 80px) / 0.75);
+    max-height: none;
   }
 
 
