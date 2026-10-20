@@ -1283,3 +1283,16 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     padding-top: 14px;
   }
 }
+
+
+/* Final desktop calibration: keep the approved 100% viewport composition. */
+@media (min-width: 1024px) and (min-height: 640px) {
+  .landing-page main > section:not(.hero-scroll-section) > .container {
+    zoom: 1 !important;
+    width: 100% !important;
+    max-width: 1152px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-height: none !important;
+  }
+}
