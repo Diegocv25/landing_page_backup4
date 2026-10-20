@@ -1285,14 +1285,14 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
 }
 
 
-/* Final desktop calibration: keep the approved 100% viewport composition. */
+/* Final desktop calibration: reproduce the approved 75% content scale at 100% browser zoom. */
 @media (min-width: 1024px) and (min-height: 640px) {
   .landing-page main > section:not(.hero-scroll-section) > .container {
-    zoom: 1 !important;
-    width: 100% !important;
-    max-width: 1152px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    max-height: none !important;
+    zoom: 0.75 !important;
+    width: 133.3333% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
   }
 }
