@@ -948,19 +948,8 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
 /* Complete desktop folds, using the space below the fixed navigation.
    Natural height remains available for zoom, expanded content and small screens. */
 @media (min-width: 1024px) and (min-height: 640px) {
-  html:has(.landing-page) {
-    scroll-snap-type: y mandatory;
-    scroll-padding-top: 80px;
-  }
-
   .landing-page {
     --landing-fold-height: calc(100svh - 80px);
-  }
-
-  .landing-page .hero-scroll-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
-    scroll-margin: 0;
   }
 
   .landing-page main > section:not(.hero-scroll-section) {
@@ -968,15 +957,10 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     align-items: center;
     min-height: var(--landing-fold-height);
     padding-block: clamp(24px, 4svh, 40px);
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    scroll-margin-top: 0;
   }
 
   .landing-page main > section:not(.hero-scroll-section) > .container {
     width: 100%;
-    max-width: 1600px;
-    padding-inline: clamp(24px, 3.5vw, 64px);
   }
 
   .landing-page main > section:not(.hero-scroll-section) .mb-16 {
@@ -985,18 +969,17 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
 
   .landing-page main > section:not(.hero-scroll-section) h2 {
     margin-bottom: 0;
-    font-size: clamp(34px, 4.5svh, 44px);
+    font-size: clamp(30px, 3.6svh, 40px);
   }
 
   .landing-page main > section:not(.hero-scroll-section) h2 + p {
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.6;
   }
 
   .landing-page #sobre .grid > .group {
-    min-height: clamp(240px, 44svh, 430px);
-    padding: clamp(24px, 3svh, 36px);
+    padding: 24px;
   }
 
   .landing-page #sobre .group > div:first-child {
@@ -1006,18 +989,18 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page #sobre .group h3 {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .landing-page #sobre .group p {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.65;
   }
 
   .landing-page main > section:nth-child(3) .space-y-6 {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    max-width: 1400px;
+    max-width: 1100px;
     gap: 16px;
   }
 
@@ -1025,8 +1008,7 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     flex-direction: column;
     gap: 18px;
     margin: 0;
-    min-height: clamp(260px, 46svh, 450px);
-    padding: clamp(24px, 3svh, 36px);
+    padding: 24px;
   }
 
   .landing-page main > section:nth-child(3) .group > .flex-shrink-0 {
@@ -1035,38 +1017,36 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page main > section:nth-child(3) .group h3 {
-    font-size: 22px;
+    font-size: 19px;
   }
 
   .landing-page main > section:nth-child(3) .group p {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.65;
   }
 
   .landing-page #funcionalidades .grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp(12px, 1.8svh, 18px);
+    gap: 12px;
   }
 
   .landing-page #funcionalidades .grid > .group {
     display: grid;
-    grid-template-columns: 40px minmax(0, 1fr);
-    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 30px minmax(0, 1fr);
     align-items: start;
-    gap: 12px;
-    min-height: clamp(150px, calc((var(--landing-fold-height) - clamp(250px, 33svh, 310px)) / 2), 260px);
-    padding: clamp(18px, 2.5svh, 26px);
+    gap: 8px 10px;
+    padding: 16px;
   }
 
   .landing-page #funcionalidades .group > div:first-child {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     margin: 0;
   }
 
   .landing-page #funcionalidades .group > div:first-child svg {
-    width: 22px;
-    height: 22px;
+    width: 17px;
+    height: 17px;
   }
 
   .landing-page #funcionalidades .group h3 {
@@ -1074,23 +1054,23 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     align-self: center;
     min-height: 0;
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.4;
   }
 
   .landing-page #funcionalidades .group p {
     grid-column: 1 / -1;
     margin: 0;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.5;
   }
 
   .landing-page #funcionalidades .group button {
     grid-column: 1 / -1;
     justify-self: start;
-    min-height: 32px;
+    min-height: 28px;
     margin-top: 0;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .landing-page #funcionalidades .mt-10 {
@@ -1098,7 +1078,6 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page main > section:nth-child(5) .grid {
-    min-height: clamp(220px, 35svh, 340px);
     margin-bottom: 24px;
   }
 
@@ -1119,16 +1098,16 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page main > section:nth-child(5) .grid h3 {
-    font-size: 22px;
+    font-size: 19px;
   }
 
   .landing-page main > section:nth-child(5) .grid p {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.65;
   }
 
   .landing-page #precos > .container > .max-w-xl {
-    max-width: 1400px;
+    max-width: 1100px;
   }
 
   .landing-page #precos .glow-primary {
@@ -1136,7 +1115,6 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     grid-template-columns: minmax(220px, 0.8fr) minmax(0, 2fr);
     gap: 20px 28px;
     padding: 28px;
-    min-height: clamp(280px, 42svh, 420px);
   }
 
   .landing-page #precos .glow-primary > .text-center {
@@ -1178,7 +1156,7 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page #precos li > span {
-    font-size: 15px;
+    font-size: 13.5px;
     line-height: 1.5;
   }
 
@@ -1191,12 +1169,12 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page #faq .max-w-3xl {
-    max-width: 1100px;
+    max-width: 960px;
   }
 
   .landing-page #faq .space-y-4 {
     display: grid;
-    gap: clamp(8px, 1.3svh, 12px);
+    gap: 8px;
   }
 
   .landing-page #faq .space-y-4 > div {
@@ -1204,8 +1182,8 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   }
 
   .landing-page #faq h3 button {
-    padding-block: clamp(14px, 2svh, 20px);
-    font-size: 16px;
+    padding-block: 14px;
+    font-size: 15px;
   }
 
   .landing-page #faq [role="region"] > div {
@@ -1278,66 +1256,5 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
 
   .landing-page > footer > .container > .border-t {
     padding-top: 14px;
-  }
-}
-
-@media (min-width: 1024px) and (min-height: 640px) and (max-height: 700px),
-  (min-width: 1024px) and (max-width: 1199px) {
-  .landing-page main > section:not(.hero-scroll-section) h2 {
-    font-size: 32px;
-  }
-
-  .landing-page main > section:not(.hero-scroll-section) h2 + p {
-    font-size: 14px;
-  }
-
-  .landing-page #sobre .group p,
-  .landing-page main > section:nth-child(3) .group p,
-  .landing-page main > section:nth-child(5) .grid p {
-    font-size: 14px;
-  }
-
-  .landing-page main > section:nth-child(3) .group h3,
-  .landing-page main > section:nth-child(5) .grid h3 {
-    font-size: 19px;
-  }
-
-  .landing-page #funcionalidades .grid > .group {
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 8px 10px;
-    padding: 16px;
-  }
-
-  .landing-page #funcionalidades .group > div:first-child {
-    width: 32px;
-    height: 32px;
-  }
-
-  .landing-page #funcionalidades .group h3 {
-    font-size: 15px;
-  }
-
-  .landing-page #funcionalidades .group p {
-    font-size: 14px;
-  }
-
-  .landing-page #funcionalidades .group button {
-    min-height: 30px;
-    font-size: 13px;
-  }
-
-  .landing-page #precos li > span {
-    font-size: 13.5px;
-  }
-
-  .landing-page #faq h3 button {
-    padding-block: 14px;
-    font-size: 15px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html:has(.landing-page) {
-    scroll-snap-type: none;
   }
 }
