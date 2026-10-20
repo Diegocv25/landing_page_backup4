@@ -6,65 +6,88 @@
 
 @layer base {
   :root {
-    --background: 240 61% 3%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 17%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
-    --primary: 24 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 63% 6%;
-    --secondary-foreground: 12 97% 12%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 62%;
-    --accent: 0 0% 20%;
-    --accent-foreground: 24 100% 50%;
+    --background: 210 10% 3.92%;
+    --foreground: 45 25% 93.73%;
+    --card: 216 12.82% 7.65%;
+    --card-foreground: 45 25% 93.73%;
+    --popover: 216 12.82% 7.65%;
+    --popover-foreground: 45 25% 93.73%;
+    --primary: 39.8 47.57% 59.61%;
+    --primary-foreground: 210 10% 3.92%;
+    --secondary: 210 12.5% 9.41%;
+    --secondary-foreground: 45 25% 93.73%;
+    --muted: 210 12.5% 9.41%;
+    --muted-foreground: 220 3.03% 61.18%;
+    --accent: 210 12.5% 9.41%;
+    --accent-foreground: 42.35 60.28% 72.35%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 53%;
-    --input: 0 0% 53%;
-    --ring: 24 100% 50%;
+    --border: 220 7% 16%;
+    --input: 218.18 5.31% 40.59%;
+    --ring: 39.8 47.57% 59.61%;
     --radius: 0.75rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 216 12.82% 7.65%;
+    --sidebar-foreground: 45 25% 93.73%;
+    --sidebar-primary: 39.8 47.57% 59.61%;
+    --sidebar-primary-foreground: 210 10% 3.92%;
+    --sidebar-accent: 210 12.5% 9.41%;
+    --sidebar-accent-foreground: 42.35 60.28% 72.35%;
+    --sidebar-border: 220 7% 16%;
+    --sidebar-ring: 39.8 47.57% 59.61%;
   }
 
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 17%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 24 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 24 100% 50%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 24 100% 50%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 210 10% 3.92%;
+    --foreground: 45 25% 93.73%;
+    --card: 216 12.82% 7.65%;
+    --card-foreground: 45 25% 93.73%;
+    --popover: 216 12.82% 7.65%;
+    --popover-foreground: 45 25% 93.73%;
+    --primary: 39.8 47.57% 59.61%;
+    --primary-foreground: 210 10% 3.92%;
+    --secondary: 210 12.5% 9.41%;
+    --secondary-foreground: 45 25% 93.73%;
+    --muted: 210 12.5% 9.41%;
+    --muted-foreground: 220 3.03% 61.18%;
+    --accent: 210 12.5% 9.41%;
+    --accent-foreground: 42.35 60.28% 72.35%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 7% 16%;
+    --input: 218.18 5.31% 40.59%;
+    --ring: 39.8 47.57% 59.61%;
+    --sidebar-background: 216 12.82% 7.65%;
+    --sidebar-foreground: 45 25% 93.73%;
+    --sidebar-primary: 39.8 47.57% 59.61%;
+    --sidebar-primary-foreground: 210 10% 3.92%;
+    --sidebar-accent: 210 12.5% 9.41%;
+    --sidebar-accent-foreground: 42.35 60.28% 72.35%;
+    --sidebar-border: 220 7% 16%;
+    --sidebar-ring: 39.8 47.57% 59.61%;
   }
+}
+
+/* Subpage palette only: retain the existing layout and semantic status colors. */
+body:not(:has(.landing-page)) {
+  color-scheme: dark;
+}
+
+body:not(:has(.landing-page)) :is(a, button).bg-primary:hover {
+  background-color: #e3ca8e;
+}
+
+body:not(:has(.landing-page)) :is(.text-green-500, .text-green-600, .text-green-700) {
+  color: #87b89b;
+}
+
+body:not(:has(.landing-page)) .bg-green-100 {
+  background-color: rgba(105, 161, 125, 0.14);
+}
+
+body:not(:has(.landing-page)) .destructive.bg-destructive {
+  background-color: #3b191e;
+  border-color: hsl(var(--destructive) / 0.6);
+  color: #f3f1eb;
 }
 
 @layer base {

@@ -8,10 +8,11 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import "@/landing.css";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="landing-page min-h-screen bg-background">
       <Header />
       <main>
         <HeroSection />
