@@ -38,16 +38,6 @@ body:has(.landing-page) [role="dialog"] * {
   padding-inline: clamp(1.25rem, 3vw, 3rem);
 }
 
-/* Amplia somente o quadro visual do hero; o palco continua recortando pela viewport. */
-@media (min-width: 768px) {
-  .landing-page .hero-frames {
-    width: 110vw;
-    max-width: none;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
 .landing-page a,
 .landing-page button,
 body:has(.landing-page) [role="dialog"] a,
