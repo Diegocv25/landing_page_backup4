@@ -952,10 +952,12 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
 @media (min-width: 1024px) and (min-height: 640px) {
   .landing-page main > section:not(.hero-scroll-section) > .container {
     zoom: 0.75;
-    width: 133.3333%;
-    max-width: none;
-    margin-left: 0;
-    margin-right: 0;
+    width: 133.3333% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    align-self: flex-start;
+    box-sizing: border-box;
   }
 
   .landing-page #funcionalidades .grid {
