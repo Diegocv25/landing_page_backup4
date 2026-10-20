@@ -962,15 +962,18 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     max-width: 1152px;
     margin-inline: auto;
   }
-  .landing-page main > section:not(.hero-scroll-section) .mb-16 { margin-bottom: 24px; }
+  .landing-page main > section:not(.hero-scroll-section) .mb-16 { margin-bottom: 20px; }
   .landing-page main > section:not(.hero-scroll-section) h2 { font-size: clamp(30px, 3.6svh, 40px); margin-bottom: 0; }
-  .landing-page main > section:not(.hero-scroll-section) h2 + p { margin-top: 10px; font-size: 14px; line-height: 1.6; }
-  .landing-page #sobre .grid > .group { padding: 24px; }
-  .landing-page #sobre .group > div:first-child { width: 44px; height: 44px; margin-bottom: 20px; }
-  .landing-page #sobre .group h3 { font-size: 20px; }
-  .landing-page #sobre .group p { font-size: 14px; line-height: 1.65; }
+  .landing-page main > section:not(.hero-scroll-section) h2 + p { margin-top: 8px; font-size: 15px; line-height: 1.45; }
+  .landing-page #sobre .grid > .group,
+  .landing-page main > section:nth-child(3) .space-y-6 > .group { padding: 28px; }
+  .landing-page #sobre .group h3,
+  .landing-page main > section:nth-child(3) .group h3 { font-size: 21px; }
+  .landing-page #sobre .group p,
+  .landing-page main > section:nth-child(3) .group p { font-size: 15px; line-height: 1.55; }
   .landing-page main > section:nth-child(3) .space-y-6 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1100px; gap: 16px; }
-  .landing-page main > section:nth-child(3) .space-y-6 > .group { flex-direction: column; gap: 18px; margin: 0; padding: 24px; }
+  .landing-page main > section:nth-child(3) .space-y-6 > .group { flex-direction: column; gap: 18px; margin: 0; padding: 28px; }
+  .landing-page main > section:nth-child(3) .space-y-6 > .group h3 { font-size: 20px; }
   .landing-page #funcionalidades .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
   .landing-page #funcionalidades .grid > .group { display: grid; grid-template-columns: 30px minmax(0, 1fr); align-items: start; gap: 8px 10px; padding: 16px; }
   .landing-page #funcionalidades .group > div:first-child { width: 30px; height: 30px; margin: 0; }
@@ -1043,9 +1046,16 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
     font-size: 14px !important;
     line-height: 1.45 !important;
   }
-  .landing-page #funcionalidades .grid > .group.rounded-2xl button {
-    min-height: 32px !important;
-    margin-top: 0 !important;
-    font-size: 13px !important;
+  .landing-page .hero-copy > p.text-lg {
+    font-size: 1.25rem;
+    line-height: 1.55;
   }
-}
+  .landing-page .hero-copy > .flex.flex-wrap {
+    flex-wrap: nowrap;
+    gap: 1rem;
+    font-size: 1rem;
+  }
+  .landing-page .hero-copy > .flex.flex-wrap > div { white-space: nowrap; }
+  .landing-page .hero-copy > .flex.flex-wrap .w-5 { width: 1.25rem; height: 1.25rem; }
+  .landing-page #sobre .grid > .group > div:first-child,
+  .landing-page main > section:nth-child(3) .group > .flex-shrink-0 { width: 52px; height: 52px; }
