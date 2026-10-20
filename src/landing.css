@@ -983,5 +983,47 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
   .landing-page #precos ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; margin: 0; padding: 0; border: 0; }
   .landing-page #precos li > span { font-size: 13.5px; line-height: 1.5; }
   .landing-page main > section:last-child { min-height: calc(var(--landing-fold-height) / 2); padding-block: 20px; }
-  .landing-page > footer { display: flex; align-items: center; min-height: calc(var(--landing-fold-height) / 2); padding-block: 18px; }
+  /* Moderate readability pass: enlarge content, preserve fold geometry. */
+  .landing-page #funcionalidades .grid > .group {
+    gap: 10px 12px;
+    padding: 20px;
+  }
+  .landing-page #funcionalidades .group > div:first-child {
+    width: 36px;
+    height: 36px;
+  }
+  .landing-page #funcionalidades .group > div:first-child svg {
+    width: 20px;
+    height: 20px;
+  }
+  .landing-page #funcionalidades .group h3 {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .landing-page #funcionalidades .group p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .landing-page #funcionalidades .group button {
+    min-height: 32px;
+    font-size: 13px;
+  }
+  .landing-page #sobre .grid > .group,
+  .landing-page main > section:nth-child(3) .space-y-6 > .group {
+    padding: 28px;
+  }
+  .landing-page #sobre .group h3,
+  .landing-page main > section:nth-child(3) .group h3 {
+    font-size: 21px;
+  }
+  .landing-page #sobre .group p,
+  .landing-page main > section:nth-child(3) .group p {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .landing-page #precos li > span,
+  .landing-page #faq h3 button {
+    font-size: 15px;
+  }
 }
+
