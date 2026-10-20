@@ -114,7 +114,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border pt-4">
-          <p className="text-muted-foreground text-sm text-center">
+          <p className="text-muted-foreground text-base text-center">
             © 2026 Nexus Automação. Todos os direitos reservados. • Feito com ❤️ no Brasil
           </p>
         </div>
