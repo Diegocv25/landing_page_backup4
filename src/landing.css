@@ -947,7 +947,31 @@ body:has(.landing-page) [role="dialog"] [id$="description"] {
 
 /* Complete desktop folds, using the space below the fixed navigation.
    Natural height remains available for zoom, expanded content and small screens. */
+/* Desktop fold calibration: the approved reference fit at 75% browser zoom.
+   Keep the viewport at 100% while reducing only the fold contents. */
 @media (min-width: 1024px) and (min-height: 640px) {
+  .landing-page main > section:not(.hero-scroll-section) > .container {
+    zoom: 0.75;
+    width: 133.3333%;
+    max-width: none;
+    margin-left: -16.6666%;
+    margin-right: -16.6666%;
+  }
+
+  .landing-page #funcionalidades .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .landing-page main > section:not(.hero-scroll-section),
+  .landing-page main > section:not(.hero-scroll-section) > .container {
+    overflow: visible;
+  }
+
+  .landing-page main > section:not(.hero-scroll-section) > .container > * {
+    max-height: calc((100svh - 80px) / 0.75);
+  }
+
+
   .landing-page {
     --landing-fold-height: calc(100svh - 80px);
   }
