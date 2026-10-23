@@ -87,9 +87,9 @@ export const FEATURES: FeatureDetails[] = [
     short: "Lembretes automatizados",
     bullets: [
       "Lembretes de horário automáticos via WhatsApp",
-      "Mensagens de retorno para clientes inativos",
-      "Envio de promoções e eventos para o status",
-      "Aniversariantes do dia com mensagens personalizadas",
+      "Envio de promoções e eventos para clientes segmentados",
+      "Controle de clientes inativos e histórico de relacionamento",
+      "Segmentação por status e comportamento de retorno",
       "Confirmações automáticas de agendamento",
     ],
     result: "Reduza no-shows, aumente a frequência de retorno e mantenha o relacionamento ativo com seus clientes sem esforço manual.",
@@ -227,15 +227,15 @@ export const FEATURES: FeatureDetails[] = [
   },
   {
     icon: Gift,
-    title: "Aniversariantes",
-    short: "Fidelização automática",
+    title: "Despesas e Fluxo de Caixa",
+    short: "Controle financeiro da operação",
     bullets: [
-      "Envio automático de mensagem de parabéns",
-      "Oportunidade de promoção especial de aniversário",
-      "Mensagens personalizadas por WhatsApp",
+      "Cadastre e acompanhe despesas variáveis do negócio",
+      "Registre pagamentos de salários e comissões",
+      "Visualize receitas, custos e resultado do período",
     ],
-    result: "Fidelização através do carinho. Cliente fica feliz por ser lembrado e você ganha pontos de relacionamento!",
-  },
+    result: "Tenha uma visão real do caixa e tome decisões com os números da sua operação organizados.",
+  }
 ];
 
 // As cinco primeiras funcionalidades pertencem ao pacote Pro + IA. Elas permanecem
