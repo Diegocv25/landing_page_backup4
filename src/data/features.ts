@@ -20,15 +20,19 @@ import type { FeatureDetails } from "@/components/FeatureDetailsDialog";
 
 export const FEATURES: FeatureDetails[] = [
   {
-    icon: Wallet,
-    title: "Sistema de Comissões",
-    short: "Controle claro das comissões da equipe",
+    icon: Bot,
+    title: "IA Atendente WhatsApp",
+    short: "Responde 24/7 automaticamente",
+    highlight: "O diferencial que seu concorrente não tem!",
     bullets: [
-      "Cálculo automático das comissões por atendimento",
-      "Acompanhamento de valores pagos e pendentes",
-      "Histórico organizado para cada profissional",
+      "Responde sobre duvidas em geral do estabelecimento, serviços, preços e horários",
+      "Envia link direto para o portal do cliente/agendamento",
+      "Tira dúvidas enquanto você trabalha",
+      "Nunca deixa cliente sem resposta",
+      "Você vê quem leu as mensagens (recurso nativo do WhatsApp)",
     ],
-    result: "Tenha transparência sobre o desempenho da equipe e mais segurança no controle dos pagamentos.",
+    result:
+      "Seus profissionais focam no atendimento presencial enquanto a IA cuida do WhatsApp. É como ter uma secretária que nunca tira folga, por uma fração do custo!",
   },
   {
     icon: Calendar,
@@ -223,7 +227,7 @@ export const FEATURES: FeatureDetails[] = [
   },
   {
     icon: Gift,
-    title: "Sistema de Comissões",
+    title: "Aniversariantes",
     short: "Fidelização automática",
     bullets: [
       "Envio automático de mensagem de parabéns",
