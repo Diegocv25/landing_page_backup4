@@ -80,7 +80,7 @@ const PricingSection = () => {
             </ul>
 
             <Button asChild className="w-full" size="lg">
-              <Link to="/planos?plan=profissional">Escolher Plano Pro</Link>
+              <Link to="/planos?plan=profissional">Adquirir Plano Pro</Link>
             </Button>
           </motion.div>
         </div>
